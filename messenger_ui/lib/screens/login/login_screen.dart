@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:messenger_ui/screens/login_screen/components/body.dart';
+import 'package:messenger_ui/screens/login/components/body.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 class LoginScreen extends StatelessWidget {
 
