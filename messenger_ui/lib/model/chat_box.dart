@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:messenger_ui/model/media.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/messenger.dart';
@@ -6,8 +7,9 @@ import 'package:json_annotation/json_annotation.dart';
 part 'chat_box.g.dart';
 @JsonSerializable()
 class ChatBox {
-  String color;
-  String name;
+  int id;
+  String? color;
+  String? name;
   bool isGroup;
   bool isNew;
   Media? image;
@@ -16,8 +18,7 @@ class ChatBox {
   Message lastMessage;
 
   ChatBox(
-      {required this.color,
-      required this.name,
+      {required this.id, this.color, this.name,
       required this.isGroup,
       required this.isNew,
         this.image,

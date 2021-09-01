@@ -8,9 +8,12 @@ part of 'message.dart';
 
 Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message(
-    content: json['content'] as String,
+    id: json['id'] as int,
+    content: json['content'] as String?,
     sender: Messenger.fromJson(json['sender'] as Map<String, dynamic>),
-    media: Media.fromJson(json['media'] as Map<String, dynamic>),
+    media: json['media'] == null
+        ? null
+        : Media.fromJson(json['media'] as Map<String, dynamic>),
     details: (json['details'] as List<dynamic>)
         .map((e) => MessageDetail.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -18,6 +21,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
+      'id': instance.id,
       'content': instance.content,
       'sender': instance.sender,
       'media': instance.media,

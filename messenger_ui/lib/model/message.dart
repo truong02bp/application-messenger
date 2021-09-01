@@ -6,12 +6,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'message.g.dart';
 @JsonSerializable()
 class Message {
-  String content;
+  int id;
+  String? content;
   Messenger sender;
-  Media media;
+  Media? media;
   List<MessageDetail> details;
 
-  Message({required this.content, required this.sender, required this.media, required this.details});
+  Message({required this.id, this.content, required this.sender, this.media, required this.details});
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 

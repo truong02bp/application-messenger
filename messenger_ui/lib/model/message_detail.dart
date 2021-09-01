@@ -7,12 +7,12 @@ part 'message_detail.g.dart';
 @JsonSerializable(explicitToJson: true)
 class MessageDetail {
   int id;
-  Reaction reaction;
+  Reaction? reaction;
   Messenger seenBy;
   DateTime createdDate;
 
 
-  MessageDetail({required this.id, required this.createdDate, required this.reaction, required this.seenBy});
+  MessageDetail({required this.id, required this.createdDate, this.reaction, required this.seenBy});
 
   factory MessageDetail.fromJson(Map<String, dynamic> json) => _$MessageDetailFromJson(json);
 

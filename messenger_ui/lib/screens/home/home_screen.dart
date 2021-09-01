@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/model/user.dart';
+import 'package:messenger_ui/screens/home/components/body.dart';
 import 'package:messenger_ui/screens/home/components/header.dart';
+import 'package:messenger_ui/screens/home/components/search_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   static final String routeName = "/home";
+
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +20,10 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               Header(user: user),
+              SizedBox(height: 20,),
+              SearchBar(),
+              SizedBox(height: 20,),
+              Body(user: user),
             ],
           ),
         ),
@@ -23,3 +31,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

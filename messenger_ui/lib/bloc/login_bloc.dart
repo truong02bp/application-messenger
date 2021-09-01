@@ -13,28 +13,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     // TODO: implement mapEventToState
     if (event is SubmitLogin) {
-      handleSubmitLogin(event);
+
+      yield Loading();
+      List<String> errors = validateInfo(event.username, event.password);
+      if (errors.isEmpty) {
+        final user = await userRepository.login(event.username, event.password);
+        if (user != null)
+          yield LoginSuccess(user: user);
+        else {
+          errors.add("Username, password incorrect");
+          yield LoginFailure(errors: errors);
+        }
+      }
+      else {
+        yield LoginFailure(errors: errors);
+      }
+      // handleSubmitLogin(event);
     }
     else
       yield LoginState();
   }
 
-  Stream<LoginState> handleSubmitLogin(SubmitLogin event) async* {
-    yield Loading();
-    List<String> errors = validateInfo(event.username, event.password);
-    if (errors.isEmpty) {
-      final user = await userRepository.login(event.username, event.password);
-      if (user != null)
-        yield LoginSuccess(user: user);
-      else {
-        errors.add("Username, password incorrect");
-        yield LoginFailure(errors: errors);
-      }
-    }
-    else {
-      yield LoginFailure(errors: errors);
-    }
-  }
 
   List<String> validateInfo(String username, String password) {
     List<String> errors = [];

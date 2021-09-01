@@ -10,7 +10,9 @@ MessageDetail _$MessageDetailFromJson(Map<String, dynamic> json) {
   return MessageDetail(
     id: json['id'] as int,
     createdDate: DateTime.parse(json['createdDate'] as String),
-    reaction: Reaction.fromJson(json['reaction'] as Map<String, dynamic>),
+    reaction: json['reaction'] == null
+        ? null
+        : Reaction.fromJson(json['reaction'] as Map<String, dynamic>),
     seenBy: Messenger.fromJson(json['seenBy'] as Map<String, dynamic>),
   );
 }
@@ -18,7 +20,7 @@ MessageDetail _$MessageDetailFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$MessageDetailToJson(MessageDetail instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'reaction': instance.reaction.toJson(),
+      'reaction': instance.reaction?.toJson(),
       'seenBy': instance.seenBy.toJson(),
       'createdDate': instance.createdDate.toIso8601String(),
     };

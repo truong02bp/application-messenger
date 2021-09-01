@@ -4,11 +4,12 @@ import 'package:json_annotation/json_annotation.dart';
 part 'messenger.g.dart';
 @JsonSerializable()
 class Messenger {
-  String nickName;
+  int id;
+  String? nickName;
   User user;
   int chatBoxId;
 
-  Messenger({required this.nickName, required this.user, required this.chatBoxId});
+  Messenger({required this.id, this.nickName, required this.user, required this.chatBoxId});
 
   factory Messenger.fromJson(Map<String, dynamic> json) => _$MessengerFromJson(json);
 

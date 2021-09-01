@@ -8,8 +8,9 @@ part of 'chat_box.dart';
 
 ChatBox _$ChatBoxFromJson(Map<String, dynamic> json) {
   return ChatBox(
-    color: json['color'] as String,
-    name: json['name'] as String,
+    id: json['id'] as int,
+    color: json['color'] as String?,
+    name: json['name'] as String?,
     isGroup: json['isGroup'] as bool,
     isNew: json['isNew'] as bool,
     image: json['image'] == null
@@ -25,6 +26,7 @@ ChatBox _$ChatBoxFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ChatBoxToJson(ChatBox instance) => <String, dynamic>{
+      'id': instance.id,
       'color': instance.color,
       'name': instance.name,
       'isGroup': instance.isGroup,
