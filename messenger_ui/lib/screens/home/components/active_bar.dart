@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/model/chat_box.dart';
+import 'package:messenger_ui/screens/chat_box/chat_box_screen.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
 
 class ActiveBar extends StatelessWidget {
@@ -54,7 +55,7 @@ class ActiveBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(25),
                       splashColor: Colors.pink.withOpacity(0.2),
                       onTap: (){
-
+                          Navigator.popAndPushNamed(context, ChatBoxScreen.routeName, arguments: {"chatBox" : chatBox});
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

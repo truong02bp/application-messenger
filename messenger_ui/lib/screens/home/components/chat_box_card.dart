@@ -5,6 +5,7 @@ import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/model/messenger.dart';
+import 'package:messenger_ui/screens/chat_box/chat_box_screen.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
 import 'package:messenger_ui/widgets/dot_seen.dart';
 import 'package:messenger_ui/widgets/dot_send.dart';
@@ -42,7 +43,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
       borderRadius: BorderRadius.circular(25),
       splashColor: Colors.pink.withOpacity(0.2),
       onTap: (){
-
+        Navigator.popAndPushNamed(context, ChatBoxScreen.routeName, arguments: {"chatBox" : chatBox});
       },
       child: Container(
         decoration: BoxDecoration(

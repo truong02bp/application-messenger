@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/host_api.dart';
 import 'package:messenger_ui/model/chat_box.dart';
+import 'package:messenger_ui/ultils/time_ulti.dart';
 
 class AvatarChatBox extends StatelessWidget {
 
@@ -53,17 +54,4 @@ class AvatarChatBox extends StatelessWidget {
     );
   }
 
-  int getTimeOnline({DateTime? time}) {
-    DateTime now = DateTime.now().toLocal();
-    int minute = now.difference(time!).inMinutes;
-    if (minute > 60) {
-      int hours = now.difference(time).inHours;
-      if (hours > 23) {
-        int days = now.difference(time).inDays;
-        return days;
-      }
-      return hours;
-    }
-    return minute;
-  }
 }

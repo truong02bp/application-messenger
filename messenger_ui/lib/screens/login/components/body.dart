@@ -32,7 +32,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           handleValidateInfoLoginFailure(state);
         }
         if (state is LoginSuccess) {
-          Navigator.pushNamed(context, HomeScreen.routeName, arguments: {"user" : state.user});
+          Navigator.popAndPushNamed(context, HomeScreen.routeName, arguments: {"user" : state.user});
         }
       },
       child: Padding(
