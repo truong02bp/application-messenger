@@ -15,10 +15,10 @@ class User {
   Media avatar;
   bool active;
   bool online;
-  DateTime lastOnline;
+  DateTime? lastOnline;
   User({required this.id, required this.name, required this.username,
     required this.password, required this.address, required this.roles,
-    required this.avatar, required this.active, required this.lastOnline, required this.online});
+    required this.avatar, required this.active, this.lastOnline, required this.online});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

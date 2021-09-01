@@ -18,7 +18,9 @@ User _$UserFromJson(Map<String, dynamic> json) {
         .toList(),
     avatar: Media.fromJson(json['avatar'] as Map<String, dynamic>),
     active: json['active'] as bool,
-    lastOnline: DateTime.parse(json['lastOnline'] as String),
+    lastOnline: json['lastOnline'] == null
+        ? null
+        : DateTime.parse(json['lastOnline'] as String),
     online: json['online'] as bool,
   );
 }
@@ -33,5 +35,5 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'avatar': instance.avatar.toJson(),
       'active': instance.active,
       'online': instance.online,
-      'lastOnline': instance.lastOnline.toIso8601String(),
+      'lastOnline': instance.lastOnline?.toIso8601String(),
     };
