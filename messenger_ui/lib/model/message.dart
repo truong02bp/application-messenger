@@ -11,8 +11,9 @@ class Message {
   Messenger sender;
   Media? media;
   List<MessageDetail> details;
+  DateTime createdDate;
 
-  Message({required this.id, this.content, required this.sender, this.media, required this.details});
+  Message({required this.id, this.content, required this.sender, this.media, required this.details, required this.createdDate});
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 

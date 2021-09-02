@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/host_api.dart';
 import 'package:messenger_ui/model/chat_box.dart';
-import 'package:messenger_ui/ultils/time_ulti.dart';
+import 'package:messenger_ui/ultils/time_ultil.dart';
 
 class AvatarChatBox extends StatelessWidget {
 
   final ChatBox chatBox;
-
-  AvatarChatBox({required this.chatBox});
+  double? height;
+  double? width;
+  AvatarChatBox({required this.chatBox, this.height=50, this.width=50});
 
   @override
   Widget build(BuildContext context) {
@@ -26,22 +27,22 @@ class AvatarChatBox extends StatelessWidget {
       children: [ClipRRect(
         borderRadius: BorderRadius.circular(25),
         child: FadeInImage(
-          height: 50,
-          width: 50,
+          height: height,
+          width: height,
           fit: BoxFit.cover,
           placeholder: AssetImage("assets/images/loading.gif"),
           image: NetworkImage(minioUrl + url),
         ),
       ),
         Positioned(
-          right: 3,
+          right: height!/20,
           bottom: 0,
           child: Container(
-            width: 12,
-            height: 12,
+            width: height!/5 + 2,
+            height: width!/5 +2,
             decoration: BoxDecoration(
                 color: isActive ? Colors.green.withOpacity(0.95): Colors.white70,
-                borderRadius: BorderRadius.circular(6)),
+                borderRadius: BorderRadius.circular(height!/10+1)),
             child: minuteLeave != 0 ? Center(
                 child: Text(
                   '$minuteLeave\'',

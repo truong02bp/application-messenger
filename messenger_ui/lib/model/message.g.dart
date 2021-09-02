@@ -17,6 +17,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
     details: (json['details'] as List<dynamic>)
         .map((e) => MessageDetail.fromJson(e as Map<String, dynamic>))
         .toList(),
+    createdDate: DateTime.parse(json['createdDate'] as String),
   );
 }
 
@@ -26,4 +27,5 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'sender': instance.sender,
       'media': instance.media,
       'details': instance.details,
+      'createdDate': instance.createdDate.toIso8601String(),
     };

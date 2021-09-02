@@ -9,6 +9,7 @@ import 'package:messenger_ui/screens/chat_box/chat_box_screen.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
 import 'package:messenger_ui/widgets/dot_seen.dart';
 import 'package:messenger_ui/widgets/dot_send.dart';
+import 'package:messenger_ui/widgets/message_status.dart';
 
 class ChatBoxCard extends StatefulWidget {
   final ChatBox chatBox;
@@ -120,23 +121,12 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
               color: Colors.black,
               fontWeight: isSeen ? FontWeight.normal : FontWeight.bold),
         ),
-        message.sender.id == chatBox.lastMessage.sender.id ? details.isNotEmpty ? Row(
-          children: List.generate(details.length, (index) => DotSeen(minioUrl + details[index].seenBy.user.avatar.url)),
-        ) : DotSend(color: getColor(chatBox.color)) : Container()
+        MessageStatus(message: message, currentUser: chatBox.currentUser)
       ],
     );
     return row;
   }
 
-  Color getColor(String? color) {
-    switch (color) {
-      case "RED":
-        return Colors.red;
-      case "PINK":
-        return Colors.pink.withOpacity(0.7);
-      default:
-        return Colors.blue.withOpacity(0.8);
-    }
-  }
+
 
 }
