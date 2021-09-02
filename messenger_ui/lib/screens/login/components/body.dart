@@ -35,79 +35,94 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           Navigator.popAndPushNamed(context, HomeScreen.routeName, arguments: {"user" : state.user});
         }
       },
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const Spacer(
-              flex: 7,
+      child: Column(
+        children: [
+          const Spacer(
+            flex: 7,
+          ),
+          const Flexible(
+            child: Text(
+              'Welcome back',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
             ),
-            const Flexible(
-              child: Text(
-                'Welcome back',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
-              ),
-              flex: 3,
-            ),
-            const Spacer(
-              flex: 2,
-            ),
-            TextFormField(
-              controller: _usernameController,
-              style: TextStyle(color: Colors.white, fontSize: 19),
-              decoration: buildInputDecoration(
-                  hintText: 'Enter your username', labelText: 'Username'),
-            ),
-            const Spacer(
-              flex: 1,
-            ),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              style: TextStyle(color: Colors.white, fontSize: 19),
-              decoration: buildInputDecoration(
-                  hintText: 'Enter your password', labelText: 'Password'),
-            ),
-            BlocBuilder(
-              bloc: _loginBloc,
-              builder: (context, state) {
-                if (state is Loading){
-                  return Flexible(
-                    flex: 4,
-                    child: Container(
-                      height: 70,
-                      width: 70,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/loading.gif"),
-                            fit: BoxFit.cover
-                        )
-                      ),
-                    ),
-                  );
-                }
-                return const Spacer(flex: 2,);
-              },
-            ),
-            InkWell(
-              onTap: (){
-                  _loginBloc.add(SubmitLogin(username: _usernameController.text, password: _passwordController.text));
-              },
-              child: Container(
-                height: 50,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.red
+            flex: 3,
+          ),
+          const Spacer(
+            flex: 2,
+          ),
+          Row(
+            children: [
+              Spacer(),
+              Flexible(
+                flex: 6,
+                child: TextFormField(
+                  controller: _usernameController,
+                  style: TextStyle(color: Colors.white, fontSize: 19),
+                  decoration: buildInputDecoration(
+                      hintText: 'Enter your username', labelText: 'Username'),
                 ),
-                child: Center(child: Text('Login', style: TextStyle(fontSize: 18, color: Colors.black),)),
               ),
+              Spacer(),
+            ],
+          ),
+          const Spacer(
+            flex: 1,
+          ),
+          Row(
+            children: [
+              Spacer(),
+              Flexible(
+                flex: 6,
+                child: TextFormField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  style: TextStyle(color: Colors.white, fontSize: 19),
+                  decoration: buildInputDecoration(
+                      hintText: 'Enter your password', labelText: 'Password'),
+                ),
+              ),
+              Spacer(),
+            ],
+          ),
+          BlocBuilder(
+            bloc: _loginBloc,
+            builder: (context, state) {
+              if (state is Loading){
+                return Flexible(
+                  flex: 3,
+                  child: Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/loading.gif"),
+                          fit: BoxFit.cover
+                      )
+                    ),
+                  ),
+                );
+              }
+              return const Spacer(flex: 1,);
+            },
+          ),
+          InkWell(
+            onTap: (){
+                _loginBloc.add(SubmitLogin(username: _usernameController.text, password: _passwordController.text));
+            },
+            child: Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.red
+              ),
+              child: Center(child: Text('Login', style: TextStyle(fontSize: 18, color: Colors.black),)),
             ),
-            const Spacer(
-              flex: 6,
-            ),
-          ],
-        ),
+          ),
+          const Spacer(
+            flex: 6,
+          ),
+        ],
       ),
     );
   }

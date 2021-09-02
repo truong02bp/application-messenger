@@ -16,6 +16,12 @@ class GetAllChatBoxFailure extends ChatBoxState {
 
 }
 
+class GetMessageSuccess extends ChatBoxState {
+  final List<Message> messages;
+
+  GetMessageSuccess({required this.messages});
+}
+
 class NewMessageState extends ChatBoxState {
   final int chatBoxId;
   final Message message;

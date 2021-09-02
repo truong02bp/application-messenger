@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:messenger_ui/bloc/message_bloc.dart';
-import 'package:messenger_ui/bloc_event/message_event.dart';
-import 'package:messenger_ui/bloc_state/message_state.dart';
+import 'package:messenger_ui/bloc/chat_box_bloc.dart';
+import 'package:messenger_ui/bloc_event/chat_box_event.dart';
+import 'package:messenger_ui/bloc_state/chat_box_state.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger_ui/model/message.dart';
-import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/screens/chat_box/components/message_card.dart';
 
 class Body extends StatefulWidget {
@@ -19,7 +18,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   late ChatBox chatBox;
-  late MessageBloc _messageBloc;
+  late ChatBoxBloc _chatBoxBloc;
   List<Message> messages = [];
   int size = 20;
   int page = 0;
@@ -30,12 +29,12 @@ class _BodyState extends State<Body> {
     // TODO: implement initState
     super.initState();
     chatBox = widget.chatBox;
-    _messageBloc = BlocProvider.of<MessageBloc>(context);
-    _messageBloc.add(GetMessage(chatBoxId: chatBox.id, size: size, page: page));
+    _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
+    _chatBoxBloc.add(GetMessage(chatBoxId: chatBox.id, size: size, page: page));
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _messageBloc.add(GetMessage(
+        _chatBoxBloc.add(GetMessage(
             page: page + 1, size: size, chatBoxId: widget.chatBox.id));
         setState(() {
           page = page + 1;
@@ -50,13 +49,17 @@ class _BodyState extends State<Body> {
     return Column(
       children: [
         BlocListener(
-          bloc: _messageBloc,
+          bloc: _chatBoxBloc,
           listener: (context, state) {
             if (state is GetMessageSuccess) {
               setState(() {
                 messages.addAll(state.messages);
               });
-              // messages.addAll(state.messages);
+            }
+            if (state is NewMessageState && state.chatBoxId == chatBox.id) {
+              setState(() {
+                messages.insert(0, state.message);
+              });
             }
           },
           child: Expanded(
@@ -75,7 +78,7 @@ class _BodyState extends State<Body> {
                     showDate = true;
                 }
                 Widget message = Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
+                  padding: const EdgeInsets.only(bottom: 7),
                   child: MessageCard(message: messages[index], chatBox: chatBox, needBuildDot: false, showDate: showDate,),
                 );
                 return message;

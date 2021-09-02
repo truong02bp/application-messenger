@@ -16,14 +16,21 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: blocs,
       child: MaterialApp(
-        theme:
-            ThemeData(primarySwatch: Colors.pink, brightness: Brightness.light),
+        theme: ThemeData(primarySwatch: Colors.pink, brightness: Brightness.light),
         themeMode: ThemeMode.light,
         darkTheme: ThemeData(
-            primarySwatch: Colors.teal,
-            primaryColor: Colors.orange,
-            accentColor: Colors.orange,
-            brightness: Brightness.dark),
+          // brightness: Brightness.dark,
+          primaryColor: Color(0x02596be),
+          accentColor: Colors.blueAccent,
+          backgroundColor: Color(0x02596be),
+          hintColor: Colors.deepOrangeAccent,
+          bottomAppBarColor: Colors.grey,
+          textTheme: TextTheme(
+            title: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
         home: LoginScreen(),
         routes: routes,
       ),

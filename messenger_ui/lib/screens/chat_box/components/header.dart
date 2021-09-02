@@ -41,82 +41,85 @@ class _HeaderState extends State<Header> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        InkWell(
-          onTap: () {
-            Navigator.popAndPushNamed(context, HomeScreen.routeName,
-                arguments: {"user": chatBox.currentUser.user});
-          },
-          child: Container(
-            height: 30,
-            width: 30,
-            child: Icon(Icons.arrow_back),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: Row(
+        children: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, HomeScreen.routeName,
+                  arguments: {"user": chatBox.currentUser.user});
+            },
+            child: Container(
+              height: 30,
+              width: 30,
+              child: Icon(Icons.arrow_back),
+            ),
           ),
-        ),
-        SizedBox(
-          width: 15,
-        ),
-        AvatarChatBox(chatBox: chatBox),
-        SizedBox(
-          width: 15,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('$name',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                )),
-            SizedBox(
-              height: 5,
-            ),
-            Text(
-              isActive ? 'Active' : "$leave",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-            ),
-          ],
-        ),
-        Spacer(),
-        PopupMenuButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-          itemBuilder: (context) {
-            return [
-              buildItem(
-                  text: 'Call',
-                  value: 'call',
-                  icon: Icon(
-                    Icons.phone,
+          SizedBox(
+            width: 15,
+          ),
+          AvatarChatBox(chatBox: chatBox),
+          SizedBox(
+            width: 15,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('$name',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
                   )),
-              buildItem(
-                  text: 'Video call',
-                  value: 'video_call',
-                  icon: Icon(Icons.video_call)),
-              buildItem(
-                  text: 'Search', value: 'search', icon: Icon(Icons.search)),
-              buildItem(
-                  text: 'Clear history',
-                  value: 'clear_history',
-                  icon: Icon(Icons.cleaning_services_outlined)),
-              buildItem(
-                  text: 'Mute notifications',
-                  value: 'mute_notification',
-                  icon: Icon(Icons.volume_mute)),
-              buildItem(
-                  text: 'Delete chat',
-                  value: 'delete_chat',
-                  icon: Icon(Icons.delete)),
-            ];
-          },
-          onSelected: (value) {
+              SizedBox(
+                height: 5,
+              ),
+              Text(
+                isActive ? 'Active' : "$leave",
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+              ),
+            ],
+          ),
+          Spacer(),
+          PopupMenuButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            itemBuilder: (context) {
+              return [
+                buildItem(
+                    text: 'Call',
+                    value: 'call',
+                    icon: Icon(
+                      Icons.phone,
+                    )),
+                buildItem(
+                    text: 'Video call',
+                    value: 'video_call',
+                    icon: Icon(Icons.video_call)),
+                buildItem(
+                    text: 'Search', value: 'search', icon: Icon(Icons.search)),
+                buildItem(
+                    text: 'Clear history',
+                    value: 'clear_history',
+                    icon: Icon(Icons.cleaning_services_outlined)),
+                buildItem(
+                    text: 'Mute notifications',
+                    value: 'mute_notification',
+                    icon: Icon(Icons.volume_mute)),
+                buildItem(
+                    text: 'Delete chat',
+                    value: 'delete_chat',
+                    icon: Icon(Icons.delete)),
+              ];
+            },
+            onSelected: (value) {
 
-          },
-        )
-      ],
+            },
+          )
+        ],
+      ),
     );
   }
 

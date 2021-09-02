@@ -9,8 +9,3 @@ class Loading extends MessageState {
 
 }
 
-class GetMessageSuccess extends MessageState {
-  final List<Message> messages;
-
-  GetMessageSuccess({required this.messages});
-}

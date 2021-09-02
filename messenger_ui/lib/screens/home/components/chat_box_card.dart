@@ -25,21 +25,26 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
   late ChatBox chatBox;
   late Messenger guest;
   bool isSeen = false;
-  late List<MessageDetail> details;
+  late List<MessageDetail> details = [];
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     chatBox = widget.chatBox;
     guest = chatBox.guestUser.first;
-    details = chatBox.lastMessage.details;
-    details.removeWhere((detail) => detail.seenBy.id == chatBox.lastMessage.sender.id);
+    details.addAll(chatBox.lastMessage.details);
+    print(details.length);
+    details.removeWhere((detail) => detail.seenBy.id == chatBox.currentUser.id);
     if (details.isNotEmpty)
+      isSeen = true;
+    if (chatBox.lastMessage.sender.id == chatBox.currentUser.id)
       isSeen = true;
   }
 
   @override
   Widget build(BuildContext context) {
+    print(isSeen);
     return InkWell(
       borderRadius: BorderRadius.circular(25),
       splashColor: Colors.pink.withOpacity(0.2),

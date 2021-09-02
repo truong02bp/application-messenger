@@ -9,12 +9,14 @@ import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/repository/chat_box_repository.dart';
 import 'package:messenger_ui/injection.dart';
+import 'package:messenger_ui/repository/message_repository.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
 
   ChatBoxRepository chatBoxRepository = getIt<ChatBoxRepository>();
+  MessageRepository messageRepository = getIt<MessageRepository>();
   static late StompClient stompClient;
 
   ChatBoxBloc() : super(ChatBoxState());
@@ -31,6 +33,11 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
         }
         else
           yield GetAllChatBoxFailure();
+        break;
+      case GetMessage:
+        event as GetMessage;
+        final messages = await messageRepository.getMessageByChatBoxId(chatBoxId: event.chatBoxId, size: event.size, page: event.page);
+        yield GetMessageSuccess(messages: messages);
         break;
       case NewMessageEvent:
         event as NewMessageEvent;
