@@ -46,6 +46,7 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     return Column(
       children: [
         BlocListener(
@@ -55,6 +56,7 @@ class _BodyState extends State<Body> {
               setState(() {
                 messages.addAll(state.messages);
               });
+              // messages.addAll(state.messages);
             }
           },
           child: Expanded(

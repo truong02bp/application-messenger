@@ -1,4 +1,6 @@
 
+import 'package:messenger_ui/model/dto/message_dto.dart';
+
 class MessageEvent {
 
 }
@@ -10,4 +12,9 @@ class GetMessage extends MessageEvent {
 
   GetMessage({required this.chatBoxId, required this.size, required this.page});
 
+}
+
+class SendMessage extends MessageEvent {
+  MessageDto messageDto;
+  SendMessage({required this.messageDto});
 }

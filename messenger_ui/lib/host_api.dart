@@ -5,3 +5,4 @@ final minioUrl = "http://$host:9000/company";
 final userUrl = baseUrl + "/api/user";
 final chatBoxUrl = baseUrl + "/api/chat-box";
 final messageUrl = baseUrl + "/api/message";
+final mediaUrl = baseUrl + "/api/media";
