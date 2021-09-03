@@ -1,5 +1,4 @@
 
-import 'package:messenger_ui/model/message.dart';
 
 class MessageState {
 

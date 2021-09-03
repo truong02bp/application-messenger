@@ -21,7 +21,6 @@ class UserRepository {
         url: baseUrl + "/authenticate", body: authenticationRequest);
     final token = await apiRepository.post(model);
     if (token != null) {
-      print(token);
       preferences.setString("token", token);
       model = new ApiModel(url: userUrl, parse: (json){
         return User.fromJson(json);

@@ -41,3 +41,10 @@ class UpdateMessageSeenSuccess extends ChatBoxState {
   UpdateMessageSeenSuccess({required this.messages, required this.chatBoxId});
 
 }
+
+class UpdateMessageReactionSuccess extends ChatBoxState {
+  final Message message;
+  final int chatBoxId;
+  UpdateMessageReactionSuccess({required this.message, required this.chatBoxId});
+
+}

@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   MessageRepository messageRepository = getIt<MessageRepository>();
   MediaRepository mediaRepository = getIt<MediaRepository>();
-
+  static int chatBoxIdUpdate = -1;
   MessageBloc() : super(MessageState());
 
   @override
@@ -25,7 +25,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       case SendMessage:
         yield Loading();
         event as SendMessage;
-        if (event.messageDto.isMedia) {
+        if (event.messageDto.isMedia!) {
           Media image = await mediaRepository.upload(mediaDto: MediaDto(name: event.messageDto.name!, bytes: event.messageDto.bytes!));
           event.messageDto.mediaId = image.id;
           event.messageDto.bytes = null;
@@ -34,6 +34,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         break;
       case UpdateMessageEvent:
         event as UpdateMessageEvent;
+        print('update seen');
+        chatBoxIdUpdate = event.messageDto.chatBoxId;
         if (event.option == "seen")
           ChatBoxBloc.stompClient!.send(destination: "/app/message/update/seen", body: jsonEncode(event.messageDto), headers: headers);
         else

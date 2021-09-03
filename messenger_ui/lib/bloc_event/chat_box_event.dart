@@ -27,3 +27,14 @@ class NewMessageEvent extends ChatBoxEvent {
   NewMessageEvent({required this.chatBoxId, required this.message});
 }
 
+class UpdateMessageSeenEvent extends ChatBoxEvent {
+  final List<Message> messages;
+
+  UpdateMessageSeenEvent({required this.messages});
+}
+
+class UpdateMessageReactionEvent extends ChatBoxEvent {
+  final Message message;
+
+  UpdateMessageReactionEvent({required this.message});
+}

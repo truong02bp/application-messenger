@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:messenger_ui/bloc/message_bloc.dart';
 import 'package:messenger_ui/bloc_event/chat_box_event.dart';
 import 'package:messenger_ui/bloc_state/chat_box_state.dart';
 import 'package:messenger_ui/host_api.dart';
@@ -13,8 +14,8 @@ import 'package:messenger_ui/repository/message_repository.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
-class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
 
+class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
   ChatBoxRepository chatBoxRepository = getIt<ChatBoxRepository>();
   MessageRepository messageRepository = getIt<MessageRepository>();
   static StompClient? stompClient;
@@ -26,53 +27,69 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
     switch (event.runtimeType) {
       case GetAllChatBox:
         event as GetAllChatBox;
-        final chatBoxes = await chatBoxRepository.getAllChatBoxByUserId(userId: event.userId);
+        final chatBoxes =
+            await chatBoxRepository.getAllChatBoxByUserId(userId: event.userId);
         if (chatBoxes.isNotEmpty) {
           connect(chatBoxes);
           yield GetAllChatBoxSuccess(chatBoxes: chatBoxes);
-        }
-        else
+        } else
           yield GetAllChatBoxFailure();
         break;
       case GetMessage:
         event as GetMessage;
-        final messages = await messageRepository.getMessageByChatBoxId(chatBoxId: event.chatBoxId, size: event.size, page: event.page);
+        final messages = await messageRepository.getMessageByChatBoxId(
+            chatBoxId: event.chatBoxId, size: event.size, page: event.page);
+
         yield GetMessageSuccess(messages: messages);
         break;
       case NewMessageEvent:
         event as NewMessageEvent;
-        yield NewMessageState(chatBoxId: event.chatBoxId, message: event.message);
+        yield NewMessageState(
+            chatBoxId: event.chatBoxId, message: event.message);
+        break;
+      case UpdateMessageSeenEvent:
+        event as UpdateMessageSeenEvent;
+        yield UpdateMessageSeenSuccess(messages: event.messages, chatBoxId: MessageBloc.chatBoxIdUpdate);
+        break;
+      case UpdateMessageReactionEvent:
+        event as UpdateMessageReactionEvent;
+        yield UpdateMessageReactionSuccess(message: event.message, chatBoxId: MessageBloc.chatBoxIdUpdate);
+        break;
     }
   }
 
   void connect(List<ChatBox> chatBoxes) {
-    if (stompClient != null)
-      stompClient!.deactivate();
+    if (stompClient != null) stompClient!.deactivate();
     stompClient = StompClient(
         config: StompConfig(
-          url: 'ws://$host:8080/ws-chat',
-          onConnect: (StompFrame client) {
-            chatBoxes.forEach((chatBox) {
-              stompClient!.subscribe(
-                  destination: '/topic/${chatBox.id}',
-                  callback: (StompFrame frame) {
-                    Message message = Message.fromJson(jsonDecode(frame.body!));
-                    add(NewMessageEvent(message: message, chatBoxId: chatBox.id));
-                  });
+      url: 'ws://$host:8080/ws-chat',
+      onConnect: (StompFrame client) {
+        chatBoxes.forEach((chatBox) {
+          stompClient!.subscribe(
+              destination: '/topic/${chatBox.id}',
+              callback: (StompFrame frame) {
+                Message message = Message.fromJson(jsonDecode(frame.body!));
+                add(NewMessageEvent(message: message, chatBoxId: chatBox.id));
+              });
+        });
+        stompClient!.subscribe(
+            destination: '/topic/update/seen',
+            callback: (StompFrame frame) {
+              List<Message> messages = jsonDecode(frame.body!)
+                  .map<Message>((json) => Message.fromJson(json))
+                  .toList();
+              add(UpdateMessageSeenEvent(messages: messages));
             });
-            log('Connected');
-          },
-          onWebSocketError: (dynamic error) => print(error.toString()),
-        ));
+        stompClient!.subscribe(
+            destination: '/topic/update/reaction',
+            callback: (StompFrame frame) {
+              Message message = Message.fromJson(jsonDecode(frame.body!));
+              add(UpdateMessageReactionEvent(message: message));
+            });
+        log('Connected');
+      },
+      onWebSocketError: (dynamic error) => print(error.toString()),
+    ));
     stompClient!.activate();
-
-    //   client.subscribe(destination: '/topic/update/seen', callback: (StompFrame frame){
-    //     List<Message> messages = jsonDecode(frame.body).map<Message>((json) => Message.fromJson(json)).toList();
-    //     add(UpdateMessageSeenEvent(messages: messages));
-    //   });
-    //   client.subscribe(destination: '/topic/update/reaction', callback: (StompFrame frame){
-    //     Message message = Message.fromJson(jsonDecode(frame.body));
-    //     add(UpdateMessageReactionEvent(message: message));
-    //   });
   }
 }

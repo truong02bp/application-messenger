@@ -59,7 +59,7 @@ class _MessageCardState extends State<MessageCard> {
                       height: 35,
                       width: 35,
                     ))
-                : Container(height: 35, width: 35,),
+                : Container(height: 35, width: 40,),
             Stack(children: [
               !isSender && widget.needAvatar ? Positioned(
                   bottom: -2,
@@ -75,11 +75,11 @@ class _MessageCardState extends State<MessageCard> {
                       maxWidth: MediaQuery.of(context).size.width * 2 / 3),
                   decoration: BoxDecoration(
                       borderRadius: isSender ?
-                      BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(9))
-                      : BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(9), bottomRight: Radius.circular(15)),
+                      BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
+                      : BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
                       color: color),
                   padding:
-                      EdgeInsets.only(left: 10, right: 10, bottom: 7, top: 7),
+                      EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
                   child: TextCard(
                     text: widget.message.content,
                   ),
@@ -140,15 +140,15 @@ class ChatBubbleTriangle extends CustomPainter {
       Path path;
       if (!isSender) {
         path = Path()
-          ..moveTo(5, size.height - 5)
-          ..quadraticBezierTo(-5, size.height, -16, size.height - 6)
+          ..moveTo(5, size.height - 4)
+          ..quadraticBezierTo(-5, size.height, -16, size.height - 10)
           ..quadraticBezierTo(-5, size.height - 5, 0, size.height - 12);
       }
       else {
         path = Path()
-          ..moveTo(size.width - 3, size.height - 4)
+          ..moveTo(size.width - 3, size.height - 5)
           ..quadraticBezierTo(
-              size.width + 5, size.height, size.width + 16, size.height - 6)
+              size.width + 5, size.height, size.width + 16, size.height - 10)
           ..quadraticBezierTo(
               size.width + 5, size.height - 5, size.width, size.height - 12);
       }

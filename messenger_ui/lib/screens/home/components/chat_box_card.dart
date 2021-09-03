@@ -47,55 +47,68 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(25),
-      splashColor: Colors.pink.withOpacity(0.2),
-      onTap: (){
-        Navigator.popAndPushNamed(context, ChatBoxScreen.routeName, arguments: {"chatBox" : chatBox});
+    return BlocListener(
+      bloc: _chatBoxBloc,
+      listener: (context, state) {
+        if (state is NewMessageState && state.chatBoxId == widget.chatBox.id) {
+          setState(() {
+            lastMessage = state.message;
+            isSeen = false;
+          });
+        }
+        if (state is UpdateMessageSeenSuccess &&
+            state.chatBoxId == widget.chatBox.id &&
+            state.messages.isNotEmpty) {
+          if (state.messages[0].sender.id == widget.chatBox.currentUser.id) {
+            setState(() {
+              lastMessage = state.messages[0];
+              isSeen = true;
+            });
+          }
+        }
       },
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: Colors.black.withOpacity(0.03)
-        ),
-        height: 70,
-        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AvatarChatBox(chatBox: chatBox),
-            SizedBox(width: 20,),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${chatBox.name != null ? chatBox.name : guest.nickName !=
-                        null ? guest.nickName : guest.user.name}',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight:
-                        isSeen ? FontWeight.normal : FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  BlocBuilder(
-                    bloc: _chatBoxBloc,
-                      builder: (context, state) {
-                        if (state is NewMessageState) {
-                          return buildLastMessage(message: state.message);
-                        }
-                        return buildLastMessage(message: lastMessage);
-                      },
-                  ),
-                ],
-              ),
-            )
-          ],
+      child: InkWell(
+        borderRadius: BorderRadius.circular(25),
+        splashColor: Colors.pink.withOpacity(0.2),
+        onTap: (){
+          Navigator.popAndPushNamed(context, ChatBoxScreen.routeName, arguments: {"chatBox" : chatBox});
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Colors.black.withOpacity(0.03)
+          ),
+          height: 70,
+          padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AvatarChatBox(chatBox: chatBox),
+              SizedBox(width: 20,),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${chatBox.name != null ? chatBox.name : guest.nickName !=
+                          null ? guest.nickName : guest.user.name}',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight:
+                          isSeen ? FontWeight.normal : FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    buildLastMessage(message: lastMessage),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
