@@ -26,3 +26,4 @@ class NewMessageEvent extends ChatBoxEvent {
 
   NewMessageEvent({required this.chatBoxId, required this.message});
 }
+

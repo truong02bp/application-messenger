@@ -18,6 +18,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   @override
   Stream<MessageState> mapEventToState(MessageEvent event) async* {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String? token = preferences.getString("token");
+    Map<String,String> headers = {'Authorization' : token!};
     switch (event.runtimeType) {
       case SendMessage:
         yield Loading();
@@ -27,10 +30,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
           event.messageDto.mediaId = image.id;
           event.messageDto.bytes = null;
         }
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        String? token = preferences.getString("token");
-        ChatBoxBloc.stompClient.send(destination: "/app/message/send", body: jsonEncode(event.messageDto), headers : {'Authorization' : token!});
+        ChatBoxBloc.stompClient!.send(destination: "/app/message/send", body: jsonEncode(event.messageDto), headers : headers);
         break;
+      case UpdateMessageEvent:
+        event as UpdateMessageEvent;
+        if (event.option == "seen")
+          ChatBoxBloc.stompClient!.send(destination: "/app/message/update/seen", body: jsonEncode(event.messageDto), headers: headers);
+        else
+        if (event.option == "reaction") {
+          ChatBoxBloc.stompClient!.send(destination: "/app/message/update/reaction", body: jsonEncode(event.messageDto), headers: headers);
+        }
     }
   }
 }

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:messenger_ui/bloc/chat_box_bloc.dart';
+import 'package:messenger_ui/bloc_state/chat_box_state.dart';
 import 'package:messenger_ui/content_type.dart';
-import 'package:messenger_ui/host_api.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/model/messenger.dart';
 import 'package:messenger_ui/screens/chat_box/chat_box_screen.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
-import 'package:messenger_ui/widgets/dot_seen.dart';
-import 'package:messenger_ui/widgets/dot_send.dart';
 import 'package:messenger_ui/widgets/message_status.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 class ChatBoxCard extends StatefulWidget {
   final ChatBox chatBox;
 
@@ -24,27 +23,30 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
 
   late ChatBox chatBox;
   late Messenger guest;
+  late Message lastMessage;
   bool isSeen = false;
   late List<MessageDetail> details = [];
-
+  late ChatBoxBloc _chatBoxBloc;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
     chatBox = widget.chatBox;
     guest = chatBox.guestUser.first;
-    details.addAll(chatBox.lastMessage.details);
-    print(details.length);
-    details.removeWhere((detail) => detail.seenBy.id == chatBox.currentUser.id);
-    if (details.isNotEmpty)
+    lastMessage = chatBox.lastMessage;
+    details.addAll(lastMessage.details);
+    details.removeWhere((detail) => detail.seenBy.id == lastMessage.sender.id);
+    if (lastMessage.sender.id == chatBox.currentUser.id){
       isSeen = true;
-    if (chatBox.lastMessage.sender.id == chatBox.currentUser.id)
+    }
+    if (details.isNotEmpty){
       isSeen = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(isSeen);
     return InkWell(
       borderRadius: BorderRadius.circular(25),
       splashColor: Colors.pink.withOpacity(0.2),
@@ -81,7 +83,15 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
                   SizedBox(
                     height: 10,
                   ),
-                  buildLastMessage(message: chatBox.lastMessage),
+                  BlocBuilder(
+                    bloc: _chatBoxBloc,
+                      builder: (context, state) {
+                        if (state is NewMessageState) {
+                          return buildLastMessage(message: state.message);
+                        }
+                        return buildLastMessage(message: lastMessage);
+                      },
+                  ),
                 ],
               ),
             )
@@ -126,7 +136,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
               color: Colors.black,
               fontWeight: isSeen ? FontWeight.normal : FontWeight.bold),
         ),
-        MessageStatus(message: message, currentUser: chatBox.currentUser)
+        MessageStatus(message: message, currentUser: chatBox.currentUser, color: chatBox.color,)
       ],
     );
     return row;

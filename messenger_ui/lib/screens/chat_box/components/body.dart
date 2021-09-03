@@ -23,6 +23,8 @@ class _BodyState extends State<Body> {
   int size = 20;
   int page = 0;
   ScrollController _scrollController = ScrollController(keepScrollOffset: true);
+  Set<int> idsNeedBuild = Set();
+  Set<int> idsNeedAvatar = Set();
 
   @override
   void initState() {
@@ -44,8 +46,14 @@ class _BodyState extends State<Body> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    messages.clear();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print('build');
     return Column(
       children: [
         BlocListener(
@@ -58,6 +66,10 @@ class _BodyState extends State<Body> {
             }
             if (state is NewMessageState && state.chatBoxId == chatBox.id) {
               setState(() {
+                if (state.message.sender.id == chatBox.currentUser.id)
+                  idsNeedBuild.add(state.message.id);
+                else
+                  idsNeedAvatar.add(state.message.id);
                 messages.insert(0, state.message);
               });
             }
@@ -70,18 +82,44 @@ class _BodyState extends State<Body> {
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 bool showDate = false;
+                Message message = messages[index];
                 if (index == messages.length -1)
                   showDate = true;
                 else {
-                  int minute = messages[index].createdDate.difference(messages[index+1].createdDate).inMinutes;
+                  int minute = message.createdDate.difference(messages[index+1].createdDate).inMinutes;
                   if (minute > 10)
                     showDate = true;
                 }
-                Widget message = Padding(
+                if (widget.chatBox.currentUser.id != message.sender.id) {
+                  if (index == 0)
+                    idsNeedAvatar.add(message.id);
+                  else {
+                    if (messages[index-1].sender.id == message.sender.id){
+                      int minute = messages[index-1].createdDate.difference(message.createdDate).inMinutes;
+                      print("${message.createdDate} ${messages[index-1].createdDate} $minute");
+                      if (minute > 10)
+                        idsNeedAvatar.add(message.id);
+                    }
+                    else
+                      idsNeedAvatar.add(message.id);
+                  }
+                }
+                if (widget.chatBox.currentUser.id == message.sender.id && !idsNeedBuild.contains(-1)) {
+                  idsNeedBuild.add(message.id);
+                  if (message.details.indexWhere((element) => element.seenBy.id != chatBox.currentUser.id) != -1) {
+                    idsNeedBuild.add(-1);
+                  }
+                }
+                else {
+                  idsNeedBuild.add(-1);
+                }
+                bool needMessageStatus = idsNeedBuild.contains(message.id);
+                bool needAvatar = idsNeedAvatar.contains(message.id);
+                Widget card = Padding(
                   padding: const EdgeInsets.only(bottom: 7),
-                  child: MessageCard(message: messages[index], chatBox: chatBox, needBuildDot: false, showDate: showDate,),
+                  child: MessageCard(message: message, chatBox: chatBox, needMessageStatus: needMessageStatus, showDate: showDate, needAvatar: needAvatar,),
                 );
-                return message;
+                return card;
               },
             ),
           ),

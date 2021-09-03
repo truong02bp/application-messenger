@@ -17,7 +17,7 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
 
   ChatBoxRepository chatBoxRepository = getIt<ChatBoxRepository>();
   MessageRepository messageRepository = getIt<MessageRepository>();
-  static late StompClient stompClient;
+  static StompClient? stompClient;
 
   ChatBoxBloc() : super(ChatBoxState());
 
@@ -46,12 +46,14 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
   }
 
   void connect(List<ChatBox> chatBoxes) {
+    if (stompClient != null)
+      stompClient!.deactivate();
     stompClient = StompClient(
         config: StompConfig(
           url: 'ws://$host:8080/ws-chat',
           onConnect: (StompFrame client) {
             chatBoxes.forEach((chatBox) {
-              stompClient.subscribe(
+              stompClient!.subscribe(
                   destination: '/topic/${chatBox.id}',
                   callback: (StompFrame frame) {
                     Message message = Message.fromJson(jsonDecode(frame.body!));
@@ -62,7 +64,7 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
           },
           onWebSocketError: (dynamic error) => print(error.toString()),
         ));
-    stompClient.activate();
+    stompClient!.activate();
 
     //   client.subscribe(destination: '/topic/update/seen', callback: (StompFrame frame){
     //     List<Message> messages = jsonDecode(frame.body).map<Message>((json) => Message.fromJson(json)).toList();

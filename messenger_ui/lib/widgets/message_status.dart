@@ -23,6 +23,7 @@ class MessageStatus extends StatelessWidget {
     if (message.sender.id == currentUser.id) {
       if (details.isNotEmpty)
         return Row(
+          mainAxisAlignment: MainAxisAlignment.end,
             children: List.generate(details.length, (index) => DotSeen(minioUrl + details[index].seenBy.user.avatar.url)));
       else
         return DotSend(color: getColor(color));

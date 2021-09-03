@@ -11,13 +11,13 @@ class MessageCard extends StatefulWidget {
   final Message message;
   final ChatBox chatBox;
   final bool showDate;
-  final bool needBuildDot;
-
+  final bool needMessageStatus;
+  final bool needAvatar;
   MessageCard(
       {required this.message,
       required this.chatBox,
       required this.showDate,
-      required this.needBuildDot});
+      required this.needMessageStatus, required this.needAvatar});
 
   @override
   _MessageCardState createState() => _MessageCardState();
@@ -42,6 +42,7 @@ class _MessageCardState extends State<MessageCard> {
     else
       color = getColor(widget.chatBox.color);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         widget.showDate || showDetail
             ? TimeBar(time: widget.message.createdDate)
@@ -50,7 +51,7 @@ class _MessageCardState extends State<MessageCard> {
           mainAxisAlignment:
               isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: [
-            !isSender
+            !isSender && widget.needAvatar
                 ? Container(
                     margin: EdgeInsets.only(right: 5),
                     child: AvatarChatBox(
@@ -58,42 +59,35 @@ class _MessageCardState extends State<MessageCard> {
                       height: 35,
                       width: 35,
                     ))
-                : Container(),
+                : Container(height: 35, width: 35,),
             Stack(children: [
-              !isSender ? Positioned(
+              !isSender && widget.needAvatar ? Positioned(
                   bottom: -2,
-                  left: -1,
+                  left: 8,
                   child: CustomPaint(
                     painter: ChatBubbleTriangle(isSender: isSender, color: color),
                   )
               ) : Container(),
-              Container(
-                constraints: new BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 2 / 3),
-                decoration: BoxDecoration(
-                    borderRadius: isSender ?
-                    BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(9))
-                    : BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(9), bottomRight: Radius.circular(15)),
-                    color: color),
-                padding:
-                    EdgeInsets.only(left: 10, right: 10, bottom: 7, top: 7),
-                child: TextCard(
-                  text: widget.message.content,
+              Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: Container(
+                  constraints: new BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 2 / 3),
+                  decoration: BoxDecoration(
+                      borderRadius: isSender ?
+                      BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(15), bottomRight: Radius.circular(9))
+                      : BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15), bottomLeft: Radius.circular(9), bottomRight: Radius.circular(15)),
+                      color: color),
+                  padding:
+                      EdgeInsets.only(left: 10, right: 10, bottom: 7, top: 7),
+                  child: TextCard(
+                    text: widget.message.content,
+                  ),
                 ),
               ),
-              widget.needBuildDot
-                  ? Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: MessageStatus(
-                        currentUser: widget.chatBox.currentUser,
-                        message: widget.message,
-                        color: widget.chatBox.color,
-                      ))
-                  : Container(),
               isSender ? Positioned(
                   bottom: -2,
-                  right: -1,
+                  right: 8,
                   child: CustomPaint(
                     painter: ChatBubbleTriangle(isSender: isSender, color: color),
                   )
@@ -117,6 +111,13 @@ class _MessageCardState extends State<MessageCard> {
             //     : Container()
           ],
         ),
+        widget.needMessageStatus
+            ? MessageStatus(
+          currentUser: widget.chatBox.currentUser,
+          message: widget.message,
+          color: widget.chatBox.color,
+        )
+            : Container(),
       ],
     );
   }
@@ -140,16 +141,16 @@ class ChatBubbleTriangle extends CustomPainter {
       if (!isSender) {
         path = Path()
           ..moveTo(5, size.height - 5)
-          ..quadraticBezierTo(-5, size.height, -16, size.height - 4)
-          ..quadraticBezierTo(-5, size.height - 5, 0, size.height - 17);
+          ..quadraticBezierTo(-5, size.height, -16, size.height - 6)
+          ..quadraticBezierTo(-5, size.height - 5, 0, size.height - 12);
       }
       else {
         path = Path()
-          ..moveTo(size.width - 6, size.height - 4)
+          ..moveTo(size.width - 3, size.height - 4)
           ..quadraticBezierTo(
-              size.width + 5, size.height, size.width + 16, size.height - 4)
+              size.width + 5, size.height, size.width + 16, size.height - 6)
           ..quadraticBezierTo(
-              size.width + 5, size.height - 5, size.width, size.height - 17);
+              size.width + 5, size.height - 5, size.width, size.height - 12);
       }
       return path;
     }

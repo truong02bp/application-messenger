@@ -28,3 +28,16 @@ class NewMessageState extends ChatBoxState {
 
   NewMessageState({required this.chatBoxId, required this.message});
 }
+
+class UpdateMessageSuccess extends ChatBoxState {
+  final Message message;
+
+  UpdateMessageSuccess({required this.message});
+}
+
+class UpdateMessageSeenSuccess extends ChatBoxState {
+  final List<Message> messages;
+  final int chatBoxId;
+  UpdateMessageSeenSuccess({required this.messages, required this.chatBoxId});
+
+}
