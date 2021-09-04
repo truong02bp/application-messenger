@@ -5,7 +5,9 @@ import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/dto/message_dto.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/message_detail.dart';
+import 'package:messenger_ui/screens/chat_box/components/chat_bubble_triangle.dart';
 import 'package:messenger_ui/screens/chat_box/components/reaction_bar.dart';
+import 'package:messenger_ui/screens/chat_box/components/reaction_status.dart';
 import 'package:messenger_ui/screens/chat_box/components/text_card.dart';
 import 'package:messenger_ui/ultils/time_ultil.dart';
 import 'package:messenger_ui/ultils/ultil.dart';
@@ -53,7 +55,6 @@ class _MessageCardState extends State<MessageCard> {
         }
         reactionDetails[detail.reaction!.code]!.add(name);
       }
-      print('${widget.message.content} ${reactionDetails.length}');
     }
   }
   @override
@@ -92,25 +93,7 @@ class _MessageCardState extends State<MessageCard> {
                 : Container(height: 35, width: 40,),
             InkWell(
               onLongPress: (){
-                  showDialog(
-                      builder: (context) => Hero(
-                        tag: 'dash',
-                        child: ReactionBar(
-                          callBack: (value) {
-                            setState(() {
-                              _messageBloc.add(UpdateMessageEvent(
-                                  option: "reaction",
-                                  messageDto: MessageDto(
-                                      messageId: widget.message.id,
-                                      messengerId: widget.chatBox.currentUser.id,
-                                      reaction: value,
-                                      chatBoxId: widget.chatBox.id)));
-                              Navigator.pop(context);
-                            });
-                          },
-                        ),
-                      ),
-                      context: context);
+                showReactionBar();
               },
               onTap: () {
                 setState(() {
@@ -118,6 +101,7 @@ class _MessageCardState extends State<MessageCard> {
                 });
               },
               child: Stack(children: [
+
                 !isSender && widget.needAvatar ? Positioned(
                     bottom: reactionDetails.isNotEmpty ? 4 : 2,
                     left: 9,
@@ -125,20 +109,20 @@ class _MessageCardState extends State<MessageCard> {
                       painter: ChatBubbleTriangle(isSender: isSender, color: color),
                     )
                 ) : Container(),
+
                 Padding(
                   padding: reactionDetails.isNotEmpty ? EdgeInsets.only(left: 8, right: 8, bottom: 7) : EdgeInsets.only(left: 8, right: 8),
                   child: Container(
                     constraints: new BoxConstraints(
                         maxWidth: MediaQuery.of(context).size.width * 2 / 3),
                     decoration: BoxDecoration(
-                        borderRadius: isSender ?
-                        BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))
-                        : BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
                         color: color),
                     padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
                     child: TextCard(text: widget.message.content,),
                   ),
                 ),
+
                 isSender ? Positioned(
                     bottom: reactionDetails.isNotEmpty ? 4 : 2,
                     right: 9,
@@ -146,7 +130,8 @@ class _MessageCardState extends State<MessageCard> {
                       painter: ChatBubbleTriangle(isSender: isSender, color: color),
                     )
                 ) : Container(),
-                reactionDetails.isNotEmpty ? Positioned(bottom: -2, right: 15, child: buildReaction()) : Container(),
+
+                reactionDetails.isNotEmpty ? Positioned(bottom: -2, right: 15, child: ReactionStatus(reactionDetails)) : Container(),
               ]),
             ),
           ],
@@ -177,83 +162,27 @@ class _MessageCardState extends State<MessageCard> {
       ],
     );
   }
-  InkWell buildReaction() {
-    int counter = 0;
-    List<Container> reactions = [];
-    reactionDetails.forEach((key, value) {
-      counter += value.length;
-      reactions.add(Container(
-        child: CustomIcon(
-          image: "assets/images/$key.png",
-          height: 16,
-          width: 16,
+  void showReactionBar() {
+    showDialog(
+        builder: (context) => Hero(
+          tag: 'dash',
+          child: ReactionBar(
+            callBack: (value) {
+              setState(() {
+                _messageBloc.add(UpdateMessageEvent(
+                    option: "reaction",
+                    messageDto: MessageDto(
+                        messageId: widget.message.id,
+                        messengerId: widget.chatBox.currentUser.id,
+                        reaction: value,
+                        chatBoxId: widget.chatBox.id)));
+                Navigator.pop(context);
+              });
+            },
+          ),
         ),
-      ));
-    });
-    if (counter > 1) {
-      reactions.add(Container(
-        margin: EdgeInsets.only(left: 4),
-        child: Text("$counter"),
-      ));
-    }
-    return InkWell(
-      onTap: () {},
-      child: Container(
-        width: (16 * reactions.length).toDouble(),
-        height: 18,
-        decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(25)),
-        child: Row(
-          children: reactions,
-        ),
-      ),
-    );
+        context: context);
   }
-
 }
 
-class ChatBubbleTriangle extends CustomPainter {
 
-  final Color color;
-  final bool isSender;
-
-
-  ChatBubbleTriangle({required this.color, required this.isSender});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color;
-
-    Path paintBubbleTail() {
-      Path path;
-      if (!isSender) {
-        path = Path()
-          ..moveTo(5, size.height - 4)
-          ..quadraticBezierTo(-5, size.height, -10, size.height - 10)
-          ..quadraticBezierTo(-5, size.height, 0, size.height - 12);
-      }
-      else {
-        path = Path()
-          ..moveTo(size.width - 3, size.height - 5)
-          ..quadraticBezierTo(
-              size.width + 5, size.height, size.width + 12, size.height - 10)
-          ..quadraticBezierTo(
-              size.width + 5, size.height , size.width, size.height - 12);
-      }
-      return path;
-    }
-
-    final RRect bubbleBody = RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, size.width, size.height), Radius.circular(16));
-    final Path bubbleTail = paintBubbleTail();
-
-    canvas.drawRRect(bubbleBody, paint);
-    canvas.drawPath(bubbleTail, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}

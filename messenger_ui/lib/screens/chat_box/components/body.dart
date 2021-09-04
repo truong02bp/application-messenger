@@ -137,7 +137,6 @@ class _BodyState extends State<Body> {
               itemCount: messages.length,
                 addAutomaticKeepAlives: true,
               itemBuilder: (context, index) {
-                print('Build ${messages[index].content}');
                 bool showDate = false;
                 Message message = messages[index];
                 if (index == messages.length - 1)
