@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/message_bloc.dart';
 import 'package:messenger_ui/bloc_event/message_event.dart';
+import 'package:messenger_ui/content_type.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/dto/message_dto.dart';
 import 'package:messenger_ui/model/message.dart';
@@ -11,6 +12,7 @@ import 'package:messenger_ui/screens/chat_box/components/reaction_bar.dart';
 import 'package:messenger_ui/screens/chat_box/components/reaction_status.dart';
 import 'package:messenger_ui/screens/chat_box/components/seen_info.dart';
 import 'package:messenger_ui/screens/chat_box/components/text_card.dart';
+import 'package:messenger_ui/screens/chat_box/components/video_card.dart';
 import 'package:messenger_ui/ultils/time_ultil.dart';
 import 'package:messenger_ui/ultils/ultil.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
@@ -115,7 +117,9 @@ class _MessageCardState extends State<MessageCard> {
 
                 Padding(
                   padding: reactionDetails.isNotEmpty ? EdgeInsets.only(left: 8, right: 8, bottom: 7) : EdgeInsets.only(left: 8, right: 8),
-                  child: widget.message.media == null ? TextCard(text: widget.message.content, color: color,) : ImageCard(url: widget.message.media!.url),
+                  child: widget.message.media == null ? TextCard(text: widget.message.content, color: color,)
+                      : imageContentType.contains(widget.message.media!.contentType) ? ImageCard(url: widget.message.media!.url)
+                      : videoContentType.contains(widget.message.media!.contentType) ? VideoCard(url: widget.message.media!.url) : Container(),
                 ),
 
                 isSender ? Positioned(

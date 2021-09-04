@@ -4,7 +4,7 @@ import 'package:messenger_ui/widgets/icon_without_background.dart';
 import 'package:image_picker/image_picker.dart';
 
 class GalleryIcon extends StatefulWidget {
-  final Function(List<XFile>? files) solvePicked;
+  final Function(List<XFile>? files, String type) solvePicked;
 
   GalleryIcon({required this.solvePicked});
 
@@ -83,16 +83,30 @@ class _GalleryIconState extends State<GalleryIcon> {
 
   void _getFromSource(ImageSource source, String type) async {
     List<XFile>? files;
+    XFile? file;
     if (type == "image") {
-      files = await _picker.pickMultiImage();
-    }
-    else if (type == "video") {
+      if (source == ImageSource.gallery){
+        files = await _picker.pickMultiImage();
+      }
       if (source == ImageSource.camera) {
-
+        file = await _picker.pickImage(source: source);
+        if (file != null) {
+          files = [file];
+        }
       }
     }
+    else
+      if (type == "video") {
+        file = await _picker.pickVideo(source: source);
+    }
     if (files != null) {
-      widget.solvePicked(files);
+      widget.solvePicked(files, "image");
+    }
+    else {
+      if (file != null) {
+        files = [file];
+        widget.solvePicked(files, "video");
+      }
     }
   }
 }

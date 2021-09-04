@@ -10,7 +10,8 @@ import 'package:messenger_ui/widgets/gallery_icon.dart';
 import 'package:messenger_ui/widgets/icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 class MessageForm extends StatefulWidget {
   final ChatBox chatBox;
 
@@ -90,8 +91,8 @@ class _MessageFormState extends State<MessageForm> {
                     width: 8,
                   ),
                   GalleryIcon(
-                    solvePicked: (files) {
-                      _previewPicked(title: '${files!.length} image selected', files: files);
+                    solvePicked: (files, type) {
+                      _previewPicked(title: '${files!.length} $type selected', files: files, type: type);
                     },
                   ),
                   const SizedBox(
@@ -135,7 +136,7 @@ class _MessageFormState extends State<MessageForm> {
     );
   }
 
-  void _previewPicked({required String title, required List<XFile> files}) async{
+  void _previewPicked({required String title, required List<XFile> files, required String type}) async{
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -144,12 +145,34 @@ class _MessageFormState extends State<MessageForm> {
             borderRadius: BorderRadius.circular(18.0),
           ),
           content: Container(
-            height: 250,
-            width: 300,
+            height: 300,
+            width: 350,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               key: UniqueKey(),
               itemBuilder: (context, index) {
+                Widget body = Image.file(File(files[index].path));
+                if (type == "video") {
+                  VideoPlayerController _controller = VideoPlayerController.file(File(files[index].path));
+                  _controller.initialize();
+                  ChewieController chewieController = ChewieController(
+                    videoPlayerController: _controller,
+                    aspectRatio: _controller.value.aspectRatio,
+                    placeholder: Image.asset("assets/images/loading.gif"),
+                    autoPlay: true,
+                    looping: true,
+                    startAt: Duration(milliseconds: 500),
+                  );
+                  // chewieController.setVolume(0.0);
+                      body = Center(
+                        child: AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: Chewie(
+                            controller: chewieController,
+                          ),
+                        ),
+                      );
+                }
                 return Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
@@ -159,7 +182,7 @@ class _MessageFormState extends State<MessageForm> {
                             bottomRight: Radius.circular(10))),
                     padding: EdgeInsets.only(
                         left: 10, right: 10, bottom: 6, top: 6),
-                    child: Image.file(File(files[index].path))
+                    child: body,
                 );
               },
               itemCount: files.length,
