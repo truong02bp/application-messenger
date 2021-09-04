@@ -6,6 +6,7 @@ import 'package:messenger_ui/model/dto/message_dto.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/screens/chat_box/components/chat_bubble_triangle.dart';
+import 'package:messenger_ui/screens/chat_box/components/image_card.dart';
 import 'package:messenger_ui/screens/chat_box/components/reaction_bar.dart';
 import 'package:messenger_ui/screens/chat_box/components/reaction_status.dart';
 import 'package:messenger_ui/screens/chat_box/components/seen_info.dart';
@@ -114,7 +115,7 @@ class _MessageCardState extends State<MessageCard> {
 
                 Padding(
                   padding: reactionDetails.isNotEmpty ? EdgeInsets.only(left: 8, right: 8, bottom: 7) : EdgeInsets.only(left: 8, right: 8),
-                  child: TextCard(text: widget.message.content, color: color,)
+                  child: widget.message.media == null ? TextCard(text: widget.message.content, color: color,) : ImageCard(url: widget.message.media!.url),
                 ),
 
                 isSender ? Positioned(

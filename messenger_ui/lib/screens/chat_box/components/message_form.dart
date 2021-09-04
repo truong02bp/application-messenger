@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:messenger_ui/model/dto/message_dto.dart';
 import 'package:messenger_ui/widgets/gallery_icon.dart';
 import 'package:messenger_ui/widgets/icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MessageForm extends StatefulWidget {
   final ChatBox chatBox;
@@ -133,7 +135,7 @@ class _MessageFormState extends State<MessageForm> {
     );
   }
 
-  void _previewPicked({required String title, dynamic files}){
+  void _previewPicked({required String title, required List<XFile> files}) async{
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -171,14 +173,17 @@ class _MessageFormState extends State<MessageForm> {
                 child: Text('Cancel')),
             TextButton(
                 onPressed: () {
-                  // _chatBoxBloc.add(SendMessageEvent(
-                  //     messageDto: MessageDto(
-                  //         chatBoxId: widget.chatBox.id,
-                  //         isMedia: true,
-                  //         messengerId: widget.sender.id,
-                  //         bytes: base64Encode(bytes),
-                  //         name: _file.path.substring(
-                  //             _file.path.lastIndexOf("/") + 1))));
+                  files.forEach((file) async {
+                    List<int> bytes = await file.readAsBytes();
+                    _messageBloc.add(SendMessage(
+                        messageDto: MessageDto(
+                            chatBoxId: widget.chatBox.id,
+                            isMedia: true,
+                            messengerId: widget.chatBox.currentUser.id,
+                            bytes: base64Encode(bytes),
+                            name: file.path.substring(
+                                file.path.lastIndexOf("/") + 1))));
+                  });
                   Navigator.of(context).pop();
                 },
                 child: Text('Send'))
