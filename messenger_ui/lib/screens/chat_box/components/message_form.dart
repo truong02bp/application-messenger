@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/message_bloc.dart';
 import 'package:messenger_ui/bloc_event/message_event.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/dto/message_dto.dart';
+import 'package:messenger_ui/widgets/gallery_icon.dart';
 import 'package:messenger_ui/widgets/icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class MessageForm extends StatefulWidget {
   final ChatBox chatBox;
 
@@ -52,7 +56,8 @@ class _MessageFormState extends State<MessageForm> {
               },
               decoration: InputDecoration(
                   hintText: 'Type message',
-                  contentPadding: const EdgeInsets.only(left: 15, bottom: 5, top: 15),
+                  contentPadding:
+                      const EdgeInsets.only(left: 15, bottom: 5, top: 15),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
@@ -82,11 +87,10 @@ class _MessageFormState extends State<MessageForm> {
                   const SizedBox(
                     width: 8,
                   ),
-                  IconWithoutBackground(
-                    image: "assets/images/gallery.png",
-                    width: 40,
-                    height: 40,
-                    onTap: () {},
+                  GalleryIcon(
+                    solvePicked: (files) {
+                      _previewPicked(title: '${files!.length} image selected', files: files);
+                    },
                   ),
                   const SizedBox(
                     width: 8,
@@ -127,6 +131,59 @@ class _MessageFormState extends State<MessageForm> {
               ),
       ],
     );
+  }
+
+  void _previewPicked({required String title, dynamic files}){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Center(child: Text(title)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18.0),
+          ),
+          content: Container(
+            height: 250,
+            width: 300,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              key: UniqueKey(),
+              itemBuilder: (context, index) {
+                return Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10))),
+                    padding: EdgeInsets.only(
+                        left: 10, right: 10, bottom: 6, top: 6),
+                    child: Image.file(File(files[index].path))
+                );
+              },
+              itemCount: files.length,
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+            TextButton(
+                onPressed: () {
+                  // _chatBoxBloc.add(SendMessageEvent(
+                  //     messageDto: MessageDto(
+                  //         chatBoxId: widget.chatBox.id,
+                  //         isMedia: true,
+                  //         messengerId: widget.sender.id,
+                  //         bytes: base64Encode(bytes),
+                  //         name: _file.path.substring(
+                  //             _file.path.lastIndexOf("/") + 1))));
+                  Navigator.of(context).pop();
+                },
+                child: Text('Send'))
+          ],
+        ));
   }
 
 }

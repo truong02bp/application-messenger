@@ -8,6 +8,7 @@ import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/screens/chat_box/components/chat_bubble_triangle.dart';
 import 'package:messenger_ui/screens/chat_box/components/reaction_bar.dart';
 import 'package:messenger_ui/screens/chat_box/components/reaction_status.dart';
+import 'package:messenger_ui/screens/chat_box/components/seen_info.dart';
 import 'package:messenger_ui/screens/chat_box/components/text_card.dart';
 import 'package:messenger_ui/ultils/time_ultil.dart';
 import 'package:messenger_ui/ultils/ultil.dart';
@@ -92,6 +93,7 @@ class _MessageCardState extends State<MessageCard> {
                     ))
                 : Container(height: 35, width: 40,),
             InkWell(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               onLongPress: (){
                 showReactionBar();
               },
@@ -112,15 +114,7 @@ class _MessageCardState extends State<MessageCard> {
 
                 Padding(
                   padding: reactionDetails.isNotEmpty ? EdgeInsets.only(left: 8, right: 8, bottom: 7) : EdgeInsets.only(left: 8, right: 8),
-                  child: Container(
-                    constraints: new BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 2 / 3),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-                        color: color),
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 6, top: 6),
-                    child: TextCard(text: widget.message.content,),
-                  ),
+                  child: TextCard(text: widget.message.content, color: color,)
                 ),
 
                 isSender ? Positioned(
@@ -136,32 +130,16 @@ class _MessageCardState extends State<MessageCard> {
             ),
           ],
         ),
-        widget.needMessageStatus
-            ? MessageStatus(
+        widget.needMessageStatus ? MessageStatus(
           currentUser: widget.chatBox.currentUser,
           message: widget.message,
           color: widget.chatBox.color,
-        )
-            : Container(),
-        showDetail
-            ? Padding(
-          padding: const EdgeInsets.only(right: 20, left: 20),
-          child: Row(
-            mainAxisAlignment: widget.message.sender.id == widget.chatBox.currentUser.id
-                ? MainAxisAlignment.end
-                : MainAxisAlignment.start,
-            children: [
-              guestMessageDetail != null
-                  ? Text(
-                  'Seen at ${formatDate(time: guestMessageDetail!.createdDate)}')
-                  : Text('Sent'),
-            ],
-          ),
-        )
-            : Container()
+        ) : Container(),
+        showDetail ? SeenInfo(isSender: isSender, detail: guestMessageDetail,) : Container()
       ],
     );
   }
+
   void showReactionBar() {
     showDialog(
         builder: (context) => Hero(
