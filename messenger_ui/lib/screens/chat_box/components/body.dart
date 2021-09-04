@@ -24,8 +24,9 @@ class _BodyState extends State<Body> {
   late ChatBoxBloc _chatBoxBloc;
   late MessageBloc _messageBloc;
   List<Message> messages = [];
-  int size = 20;
+  int size = 18;
   int page = 0;
+  int updateIndex = -1;
   ScrollController _scrollController = ScrollController(keepScrollOffset: true);
   Set<int> idsNeedAvatar = Set();
 
@@ -107,12 +108,26 @@ class _BodyState extends State<Body> {
               if (state.messages.isNotEmpty &&
                   state.messages[0].sender.id == chatBox.currentUser.id) {
                 setState(() {
-                  // idsNeedBuild.clear();
                   messages.replaceRange(
                       0, state.messages.length, state.messages);
                 });
               }
             }
+
+            if (state is UpdateMessageReactionSuccess && state.chatBoxId == widget.chatBox.id) {
+              updateIndex = -1;
+              for (int i=0;i<messages.length;i++) {
+                if (messages[i].id == state.message.id) {
+                  updateIndex = i;
+                  break;
+                }
+              }
+              if (updateIndex != -1)
+                setState(() {
+                  messages.replaceRange(updateIndex, updateIndex+1, [state.message]);
+                });
+            }
+
           },
           child: Expanded(
             child: ListView.builder(
@@ -120,7 +135,9 @@ class _BodyState extends State<Body> {
               scrollDirection: Axis.vertical,
               reverse: true,
               itemCount: messages.length,
+                addAutomaticKeepAlives: true,
               itemBuilder: (context, index) {
+                print('Build ${messages[index].content}');
                 bool showDate = false;
                 Message message = messages[index];
                 if (index == messages.length - 1)
@@ -158,7 +175,20 @@ class _BodyState extends State<Body> {
                 }
                 bool needMessageStatus = idsNeedBuild.contains(message.id);
                 bool needAvatar = idsNeedAvatar.contains(message.id);
-                Widget card = Padding(
+                if (updateIndex == index) {
+                  return Padding(
+                    key: UniqueKey(),
+                    padding: const EdgeInsets.only(bottom: 7),
+                    child: MessageCard(
+                      message: message,
+                      chatBox: chatBox,
+                      needMessageStatus: needMessageStatus,
+                      showDate: showDate,
+                      needAvatar: needAvatar,
+                    ),
+                  );
+                }
+                return Padding(
                   padding: const EdgeInsets.only(bottom: 7),
                   child: MessageCard(
                     message: message,
@@ -168,7 +198,6 @@ class _BodyState extends State<Body> {
                     needAvatar: needAvatar,
                   ),
                 );
-                return card;
               },
             ),
           ),
