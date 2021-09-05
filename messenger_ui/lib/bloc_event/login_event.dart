@@ -9,3 +9,11 @@ class SubmitLogin extends LoginEvent {
 
   SubmitLogin({required this.username, required this.password});
 }
+
+class UpdateOnlineEvent extends LoginEvent {
+
+}
+
+class UpdateOfflineEvent extends LoginEvent {
+
+}

@@ -6,6 +6,7 @@ import 'package:messenger_ui/bloc/message_bloc.dart';
 import 'package:messenger_ui/bloc_event/message_event.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/dto/message_dto.dart';
+import 'package:messenger_ui/widgets/camera_icon.dart';
 import 'package:messenger_ui/widgets/gallery_icon.dart';
 import 'package:messenger_ui/widgets/icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,12 +82,9 @@ class _MessageFormState extends State<MessageForm> {
         isTyping == false
             ? Row(
                 children: [
-                  IconWithoutBackground(
-                    image: "assets/images/camera.png",
-                    width: 40,
-                    height: 40,
-                    onTap: () {},
-                  ),
+                  CameraIcon(solvePicked: (files, type){
+                    _previewPicked(title: '${files!.length} $type created', files: files, type: type);
+                  },),
                   const SizedBox(
                     width: 8,
                   ),
@@ -163,7 +161,7 @@ class _MessageFormState extends State<MessageForm> {
                     looping: true,
                     startAt: Duration(milliseconds: 500),
                   );
-                  // chewieController.setVolume(0.0);
+                  chewieController.setVolume(0.0);
                       body = Center(
                         child: AspectRatio(
                           aspectRatio: _controller.value.aspectRatio,

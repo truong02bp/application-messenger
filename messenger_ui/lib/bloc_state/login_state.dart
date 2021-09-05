@@ -20,3 +20,8 @@ class LoginFailure extends LoginState {
 
   LoginFailure({required this.errors});
 }
+
+class UpdateOnlineSuccess extends LoginState {
+  final User user;
+  UpdateOnlineSuccess({required this.user});
+}

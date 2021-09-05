@@ -4,10 +4,7 @@ import 'package:messenger_ui/host_api.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoCard extends StatefulWidget {
-
   final String url;
-
-
   VideoCard({required this.url});
 
   @override
@@ -22,26 +19,17 @@ class _VideoCardState extends State<VideoCard> {
     // TODO: implement initState
     super.initState();
     _controller = VideoPlayerController.network(minioUrl + widget.url)
-      ..addListener(() => setState(() {}))
       ..setLooping(true)
       ..initialize();
     chewieController = ChewieController(
       videoPlayerController: _controller,
       aspectRatio: _controller.value.aspectRatio,
       placeholder: Center(child: Image.asset("assets/images/loading.gif", height: 100, width: 100,)),
-      autoPlay: true,
+      // autoPlay: true,
       looping: true,
       startAt: Duration(milliseconds: 500),
     );
     chewieController.setVolume(5.0);
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    chewieController.dispose();
-    _controller.dispose();
   }
 
   @override

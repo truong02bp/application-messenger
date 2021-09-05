@@ -135,7 +135,8 @@ class _BodyState extends State<Body> {
               scrollDirection: Axis.vertical,
               reverse: true,
               itemCount: messages.length,
-                addAutomaticKeepAlives: true,
+              addAutomaticKeepAlives: true,
+              shrinkWrap: true,
               itemBuilder: (context, index) {
                 bool showDate = false;
                 Message message = messages[index];

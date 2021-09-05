@@ -32,4 +32,17 @@ class UserRepository {
     return null;
   }
 
+  Future<User> updateOnline({required int id, required bool online}) async {
+    ApiModel apiModel = new ApiModel(
+        url: baseUrl + "/update-online",
+        params: {"id" : "$id", "online" : "$online"},
+        parse: (json) {
+          return User.fromJson(json);
+        }
+    );
+    User user = await apiRepository.post(apiModel);
+    return user;
+  }
+
+
 }

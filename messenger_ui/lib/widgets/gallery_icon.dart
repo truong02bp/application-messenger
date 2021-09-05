@@ -10,6 +10,7 @@ class GalleryIcon extends StatefulWidget {
 
   @override
   _GalleryIconState createState() => _GalleryIconState();
+
 }
 
 class _GalleryIconState extends State<GalleryIcon> {
@@ -41,7 +42,7 @@ class _GalleryIconState extends State<GalleryIcon> {
                     children: [
                       FloatingActionButton(
                           onPressed: () {
-                            _getFromSource(ImageSource.gallery, "image");
+                            getFromSource(ImageSource.gallery, "image");
                             Navigator.pop(context);
                           },
                           child: Icon(Icons.image)),
@@ -61,7 +62,7 @@ class _GalleryIconState extends State<GalleryIcon> {
                     children: [
                       FloatingActionButton(
                         onPressed: () {
-                          _getFromSource(ImageSource.gallery, "video");
+                          getFromSource(ImageSource.gallery, "video");
                           Navigator.pop(context);
                         },
                         child: Icon(Icons.photo_camera_front),
@@ -81,7 +82,7 @@ class _GalleryIconState extends State<GalleryIcon> {
             ));
   }
 
-  void _getFromSource(ImageSource source, String type) async {
+  void getFromSource(ImageSource source, String type) async {
     List<XFile>? files;
     XFile? file;
     if (type == "image") {
@@ -96,8 +97,8 @@ class _GalleryIconState extends State<GalleryIcon> {
       }
     }
     else
-      if (type == "video") {
-        file = await _picker.pickVideo(source: source);
+    if (type == "video") {
+      file = await _picker.pickVideo(source: source);
     }
     if (files != null) {
       widget.solvePicked(files, "image");
