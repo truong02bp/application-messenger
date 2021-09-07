@@ -26,7 +26,12 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         yield Loading();
         event as SendMessage;
         if (event.messageDto.isMedia!) {
-          Media image = await mediaRepository.upload(mediaDto: MediaDto(name: event.messageDto.name!, bytes: event.messageDto.bytes!));
+          MediaDto mediaDto;
+          if (event.messageDto.name == "sticker")
+            mediaDto = new MediaDto(name: event.messageDto.name!, url: event.messageDto.content);
+          else
+            mediaDto = new MediaDto(name: event.messageDto.name!, bytes: event.messageDto.bytes!);
+          Media image = await mediaRepository.upload(mediaDto: mediaDto);
           event.messageDto.mediaId = image.id;
           event.messageDto.bytes = null;
         }

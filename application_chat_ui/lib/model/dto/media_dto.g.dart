@@ -11,7 +11,7 @@ MediaDto _$MediaDtoFromJson(Map<String, dynamic> json) {
     name: json['name'] as String,
     contentType: json['contentType'] as String?,
     url: json['url'] as String?,
-    bytes: json['bytes'] as String,
+    bytes: json['bytes'] as String?,
   );
 }
 

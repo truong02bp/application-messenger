@@ -12,8 +12,7 @@ class Message {
   Media? media;
   List<MessageDetail> details;
   DateTime createdDate;
-  bool? isSticker;
-  Message({required this.id, this.content, required this.sender, this.media, required this.details, required this.createdDate, this.isSticker});
+  Message({required this.id, this.content, required this.sender, this.media, required this.details, required this.createdDate});
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
 

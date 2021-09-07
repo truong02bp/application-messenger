@@ -10,7 +10,7 @@ MessageDto _$MessageDtoFromJson(Map<String, dynamic> json) {
   return MessageDto(
     chatBoxId: json['chatBoxId'] as int,
     content: json['content'] as String?,
-    isMedia: json['isMedia'] as bool,
+    isMedia: json['isMedia'] as bool?,
     messageId: json['messageId'] as int?,
     messengerId: json['messengerId'] as int,
     reaction: json['reaction'] as String?,

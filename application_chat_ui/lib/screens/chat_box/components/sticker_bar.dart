@@ -5,12 +5,17 @@ import 'package:messenger_ui/bloc_event/message_event.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/dto/message_dto.dart';
 
-class StickerBar extends StatelessWidget {
+class StickerBar extends StatefulWidget {
   final ChatBox chatBox;
   final MessageBloc messageBloc;
 
   StickerBar({required this.chatBox, required this.messageBloc});
 
+  @override
+  _StickerBarState createState() => _StickerBarState();
+}
+
+class _StickerBarState extends State<StickerBar> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -162,13 +167,14 @@ class StickerBar extends StatelessWidget {
       flex: 3,
       child: InkWell(
         onTap: (){
-          messageBloc.add(SendMessage(
+          widget.messageBloc.add(SendMessage(
               messageDto: MessageDto(
-                  isMedia: false,
-                  isSticker: true,
+                  isMedia: true,
+                  name: "sticker",
                   content: image,
-                  messengerId: chatBox.currentUser.id,
-                  chatBoxId: chatBox.id)));
+                  messengerId: widget.chatBox.currentUser.id,
+                  chatBoxId: widget.chatBox.id)));
+            Navigator.pop(context);
         },
         child: FittedBox(
           fit: BoxFit.cover,

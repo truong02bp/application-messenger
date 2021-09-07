@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/host_api.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 class ImageCard extends StatefulWidget {
   
   final String url;
-  final String option;
-  ImageCard({required this.url, required this.option});
+  ImageCard({required this.url});
 
   @override
   _ImageCardState createState() => _ImageCardState();
@@ -24,10 +24,11 @@ class _ImageCardState extends State<ImageCard> {
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: widget.option == "network" ? FadeInImage(
-              placeholder: AssetImage("assets/images/loading.gif"),
-              image: NetworkImage(minioUrl + widget.url),
-            ) : Image.asset(widget.url),
+            child: CachedNetworkImage(imageUrl: minioUrl + widget.url,
+              placeholder: (context, url) {
+                return Image.asset('assets/images/loading.gif');
+              },
+            )
           ),
         ),
     );

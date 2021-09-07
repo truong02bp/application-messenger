@@ -6,9 +6,9 @@ class MediaDto {
   String name;
   String? contentType;
   String? url;
-  String bytes;
+  String? bytes;
 
-  MediaDto({required this.name, this.contentType, this.url, required this.bytes});
+  MediaDto({required this.name, this.contentType, this.url, this.bytes});
 
   factory MediaDto.fromJson(Map<String, dynamic> json) => _$MediaDtoFromJson(json);
 
