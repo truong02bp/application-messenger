@@ -22,15 +22,25 @@ public class MediaServiceImpl implements MediaService {
 
     private ObjectMapper objectMapper;
 
-    private MediaRepository imageRepository;
+    private MediaRepository mediaRepository;
 
     @Override
     public MediaEntity create(MediaDto mediaDto) {
-        minioService.upload(FolderConstants.IMAGES_FOLDER, mediaDto.getName(), new ByteArrayInputStream(mediaDto.getBytes()));
-        MediaEntity image = objectMapper.convertValue(mediaDto,MediaEntity.class);
-        String contentType = mediaDto.getName().substring(mediaDto.getName().lastIndexOf(".")+1);
-        image.setContentType(contentType);
-        image.setUrl(FolderConstants.IMAGES_FOLDER + mediaDto.getName());
-        return imageRepository.save(image);
+        MediaEntity media = objectMapper.convertValue(mediaDto,MediaEntity.class);
+        String contentType;
+        if (mediaDto.getBytes() != null) {
+            minioService.upload(FolderConstants.IMAGES_FOLDER, mediaDto.getName(), new ByteArrayInputStream(mediaDto.getBytes()));
+            media.setUrl(FolderConstants.IMAGES_FOLDER + mediaDto.getName());
+            contentType = mediaDto.getName().substring(mediaDto.getName().lastIndexOf(".")+1);
+        }
+        else {
+            contentType = "sticker";
+            media.setUrl(mediaDto.getUrl());
+            MediaEntity sticker = mediaRepository.findByUrl(media.getUrl());
+            if (sticker != null)
+                return sticker;
+        }
+        media.setContentType(contentType);
+        return mediaRepository.save(media);
     }
 }
