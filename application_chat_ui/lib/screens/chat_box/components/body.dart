@@ -43,7 +43,9 @@ class _BodyState extends State<Body> {
           _scrollController.position.maxScrollExtent) {
         _chatBoxBloc.add(GetMessage(
             page: page + 1, size: size, chatBoxId: widget.chatBox.id));
+        setState(() {
           page = page + 1;
+        });
       }
     });
   }

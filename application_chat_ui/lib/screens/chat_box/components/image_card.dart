@@ -4,8 +4,8 @@ import 'package:photo_view/photo_view.dart';
 class ImageCard extends StatefulWidget {
   
   final String url;
-  
-  ImageCard({required this.url});
+  final String option;
+  ImageCard({required this.url, required this.option});
 
   @override
   _ImageCardState createState() => _ImageCardState();
@@ -23,11 +23,11 @@ class _ImageCardState extends State<ImageCard> {
             Navigator.pushNamed(context, FullScreenImage.routeName, arguments: {"url" : "${widget.url}"});
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: FadeInImage(
+            borderRadius: BorderRadius.circular(10),
+            child: widget.option == "network" ? FadeInImage(
               placeholder: AssetImage("assets/images/loading.gif"),
               image: NetworkImage(minioUrl + widget.url),
-            ),
+            ) : Image.asset(widget.url),
           ),
         ),
     );

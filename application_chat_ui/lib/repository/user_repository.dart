@@ -34,7 +34,7 @@ class UserRepository {
 
   Future<User> updateOnline({required int id, required bool online}) async {
     ApiModel apiModel = new ApiModel(
-        url: baseUrl + "/update-online",
+        url: userUrl + "/update-online",
         params: {"id" : "$id", "online" : "$online"},
         parse: (json) {
           return User.fromJson(json);

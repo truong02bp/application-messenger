@@ -9,7 +9,7 @@ class TimeBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 5),
+        padding: const EdgeInsets.only(bottom: 10, top: 10),
         child: Center(
           child: Text(formatDate(time: time)),
         ),

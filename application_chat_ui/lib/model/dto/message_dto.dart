@@ -6,13 +6,14 @@ class MessageDto {
   final int chatBoxId;
   final String? content;
   final bool? isMedia;
+  final bool? isSticker;
   final int? messageId;
   int? mediaId;
   final int messengerId;
   final String? reaction;
   String? bytes;
   final String? name;
-  MessageDto({required this.chatBoxId, this.content, this.isMedia, this.messageId, required this.messengerId,this.reaction, this.bytes, this.name, this.mediaId});
+  MessageDto({required this.chatBoxId, this.content, this.isMedia, this.messageId, required this.messengerId,this.reaction, this.bytes, this.name, this.mediaId, this.isSticker});
 
   factory MessageDto.fromJson(Map<String, dynamic> json) => _$MessageDtoFromJson(json);
 

@@ -108,8 +108,8 @@ class _MessageCardState extends State<MessageCard> {
               child: Stack(children: [
 
                 !isSender && widget.needAvatar ? Positioned(
-                    bottom: reactionDetails.isNotEmpty ? 4 : 2,
-                    left: 9,
+                    bottom: reactionDetails.isNotEmpty ? 4 : -3,
+                    left: 8,
                     child: CustomPaint(
                       painter: ChatBubbleTriangle(isSender: isSender, color: color),
                     )
@@ -117,14 +117,14 @@ class _MessageCardState extends State<MessageCard> {
 
                 Padding(
                   padding: reactionDetails.isNotEmpty ? EdgeInsets.only(left: 8, right: 8, bottom: 7) : EdgeInsets.only(left: 8, right: 8),
-                  child: widget.message.media == null ? TextCard(text: widget.message.content, color: color,)
-                      : imageContentType.contains(widget.message.media!.contentType) ? ImageCard(url: widget.message.media!.url)
+                  child: widget.message.media == null ? widget.message.isSticker != null ? ImageCard(url: widget.message.content!, option: "assets",) : TextCard(text: widget.message.content, color: color,)
+                      : imageContentType.contains(widget.message.media!.contentType) ? ImageCard(url: widget.message.media!.url, option: "network",)
                       : videoContentType.contains(widget.message.media!.contentType) ? VideoCard(url: widget.message.media!.url) : Container(),
                 ),
 
                 isSender ? Positioned(
-                    bottom: reactionDetails.isNotEmpty ? 4 : 2,
-                    right: 9,
+                    bottom: reactionDetails.isNotEmpty ? 4 : -3,
+                    right: 8,
                     child: CustomPaint(
                       painter: ChatBubbleTriangle(isSender: isSender, color: color),
                     )
