@@ -95,10 +95,8 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
                       '${chatBox.name != null ? chatBox.name : guest.nickName !=
                           null ? guest.nickName : guest.user.name}',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontWeight:
-                          isSeen ? FontWeight.normal : FontWeight.bold),
+                          color: isSeen ? Colors.grey : Colors.white,
+                          fontSize: 18),
                     ),
                     SizedBox(
                       height: 10,
@@ -146,8 +144,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
         Text(
           content.toString(),
           style: TextStyle(
-              color: Colors.black,
-              fontWeight: isSeen ? FontWeight.normal : FontWeight.bold),
+              color: isSeen ? Colors.grey : Colors.white,),
         ),
         MessageStatus(message: message, currentUser: chatBox.currentUser, color: chatBox.color,)
       ],

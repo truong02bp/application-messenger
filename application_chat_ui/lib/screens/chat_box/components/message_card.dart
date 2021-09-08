@@ -131,7 +131,7 @@ class _MessageCardState extends State<MessageCard> {
                     )
                 ) : Container(),
 
-                reactionDetails.isNotEmpty ? Positioned(bottom: -2, right: 15, child: ReactionStatus(reactionDetails)) : Container(),
+                reactionDetails.isNotEmpty ? Positioned(bottom: -1, right: 15, child: ReactionStatus(reactionDetails)) : Container(),
               ]),
             ),
           ],

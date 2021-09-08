@@ -31,7 +31,7 @@ class ActiveBar extends StatelessWidget {
                     child: Icon(Icons.add),
                   ),
                   SizedBox(height: 2,),
-                  Text('Your story')
+                  Text('Your story', style: TextStyle(color: Colors.grey),)
                 ],
               ),
               Row(

@@ -23,7 +23,7 @@ class Header extends StatelessWidget {
           'Chats',
           style: TextStyle(
               fontSize: 25,
-              color: Colors.black,
+              color: Colors.white,
               fontWeight: FontWeight.bold),
         ),
         Spacer(),

@@ -16,7 +16,7 @@ class CustomIcon extends StatelessWidget {
             width: width == null ? 40 : width,
             height: height == null ? 40 : height,
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.1),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(height == null ? 20 : height!/2),
             ),
             child: Padding(

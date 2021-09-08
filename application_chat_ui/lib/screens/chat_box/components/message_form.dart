@@ -62,13 +62,9 @@ class _MessageFormState extends State<MessageForm> {
                 });
               },
               decoration: InputDecoration(
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: StickerBar(chatBox: widget.chatBox, messageBloc: _messageBloc,),
-                ),
                 hintText: 'Type message',
                 contentPadding:
-                    const EdgeInsets.only(left: 15, bottom: 5, top: 15),
+                    const EdgeInsets.only(left: 20),
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -78,52 +74,64 @@ class _MessageFormState extends State<MessageForm> {
           ),
         ),
         SizedBox(
-          width: 7,
+          width: 10,
+        ),
+        StickerBar(
+          chatBox: widget.chatBox,
+          messageBloc: _messageBloc,
+        ),
+        SizedBox(
+          width: 10,
         ),
         PopupMenuButton(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           itemBuilder: (BuildContext context) {
             return [
-              PopupMenuItem(child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CameraIcon(
-                    solvePicked: (files, type) {
-                      _previewPicked(
-                          title: '${files!.length} $type created',
-                          files: files,
-                          type: type);
-                    },
-                  ),
-                  SizedBox(width: 2,),
-                  GalleryIcon(
-                    solvePicked: (files, type) {
-                      _previewPicked(
-                          title: '${files!.length} $type selected',
-                          files: files,
-                          type: type);
-                    },
-                  ),
-                ],
-              ),)
+              PopupMenuItem(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CameraIcon(
+                      solvePicked: (files, type) {
+                        _previewPicked(
+                            title: '${files!.length} $type created',
+                            files: files,
+                            type: type);
+                      },
+                    ),
+                    SizedBox(
+                      width: 2,
+                    ),
+                    GalleryIcon(
+                      solvePicked: (files, type) {
+                        _previewPicked(
+                            title: '${files!.length} $type selected',
+                            files: files,
+                            type: type);
+                      },
+                    ),
+                  ],
+                ),
+              )
             ];
           },
-          child: Icon(Icons.attach_file),
+          child: Icon(
+            Icons.attach_file,
+            color: Colors.white,
+          ),
         ),
         SizedBox(
-          width: 7,
+          width: 10,
         ),
         isTyping
             ? Row(
                 children: [
-                  const SizedBox(
-                    width: 8,
-                  ),
                   IconWithoutBackground(
                     image: "assets/images/send.png",
-                    width: 30,
-                    height: 30,
+                    color: Colors.white,
+                    width: 25,
+                    height: 25,
                     onTap: () {
                       _messageBloc.add(SendMessage(
                           messageDto: MessageDto(
@@ -140,6 +148,7 @@ class _MessageFormState extends State<MessageForm> {
               )
             : IconWithoutBackground(
                 image: "assets/images/mic.png",
+                color: Colors.white,
                 width: 25,
                 height: 25,
                 onTap: () {},

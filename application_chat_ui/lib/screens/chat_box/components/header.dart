@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/messenger.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
+import 'package:messenger_ui/screens/video_call/video_call_screen.dart';
 import 'package:messenger_ui/ultils/time_ultil.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
 
@@ -71,7 +72,6 @@ class _HeaderState extends State<Header> {
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black,
                   )),
               SizedBox(
                 height: 5,
@@ -93,29 +93,31 @@ class _HeaderState extends State<Header> {
                     value: 'call',
                     icon: Icon(
                       Icons.phone,
+                      color: Colors.black,
                     )),
                 buildItem(
                     text: 'Video call',
                     value: 'video_call',
-                    icon: Icon(Icons.video_call)),
+                    icon: Icon(Icons.videocam_rounded, color: Colors.black,)),
                 buildItem(
-                    text: 'Search', value: 'search', icon: Icon(Icons.search)),
+                    text: 'Search', value: 'search', icon: Icon(Icons.search, color: Colors.black)),
                 buildItem(
                     text: 'Clear history',
                     value: 'clear_history',
-                    icon: Icon(Icons.cleaning_services_outlined)),
+                    icon: Icon(Icons.cleaning_services_outlined, color: Colors.black)),
                 buildItem(
                     text: 'Mute notifications',
                     value: 'mute_notification',
-                    icon: Icon(Icons.volume_mute)),
+                    icon: Icon(Icons.volume_mute, color: Colors.black)),
                 buildItem(
                     text: 'Delete chat',
                     value: 'delete_chat',
-                    icon: Icon(Icons.delete)),
+                    icon: Icon(Icons.delete, color: Colors.black)),
               ];
             },
             onSelected: (value) {
-
+              if (value == "video_call")
+                Navigator.of(context).pushNamed(VideoCallScreen.routeName, arguments: {"chatBox" : chatBox});
             },
           )
         ],

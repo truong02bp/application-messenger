@@ -42,13 +42,13 @@ class _CameraIconState extends State<CameraIcon> {
                         getFromSource(ImageSource.camera, "image");
                         Navigator.pop(context);
                       },
-                      child: Icon(Icons.image)),
+                      child: Icon(Icons.image, color: Colors.white)),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
                     'Take image',
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12, color: Colors.black),
                   )
                 ],
               ),
@@ -62,14 +62,14 @@ class _CameraIconState extends State<CameraIcon> {
                       getFromSource(ImageSource.camera, "video");
                       Navigator.pop(context);
                     },
-                    child: Icon(Icons.photo_camera_front),
+                    child: Icon(Icons.camera_alt_sharp, color: Colors.white,),
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   Text(
                     'Take video',
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 12, color: Colors.black),
                   )
                 ],
               ),

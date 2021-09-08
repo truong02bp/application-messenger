@@ -29,57 +29,59 @@ class _GalleryIconState extends State<GalleryIcon> {
   void showPickOption() {
     showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              ),
-              backgroundColor: Colors.white.withOpacity(0.9),
-              title: Row(
-                children: [
-                  Spacer(),
-                  Column(
-                    children: [
-                      FloatingActionButton(
-                          onPressed: () {
-                            getFromSource(ImageSource.gallery, "image");
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.image)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Pick your image',
-                        style: TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
-                  Spacer(
-                    flex: 2,
-                  ),
-                  Column(
-                    children: [
-                      FloatingActionButton(
+        builder: (context){
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+            backgroundColor: Colors.white.withOpacity(0.9),
+            title: Row(
+              children: [
+                Spacer(),
+                Column(
+                  children: [
+                    FloatingActionButton(
                         onPressed: () {
-                          getFromSource(ImageSource.gallery, "video");
+                          getFromSource(ImageSource.gallery, "image");
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.photo_camera_front),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Pick your video',
-                        style: TextStyle(fontSize: 12),
-                      )
-                    ],
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ));
+                        child: Icon(Icons.image, color: Colors.white)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Pick your image',
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+                Spacer(
+                  flex: 2,
+                ),
+                Column(
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        getFromSource(ImageSource.gallery, "video");
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.camera_alt_sharp, color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      'Pick your video',
+                      style: TextStyle(fontSize: 12, color: Colors.black),
+                    )
+                  ],
+                ),
+                Spacer(),
+              ],
+            ),
+          );
+        }
+    );
   }
 
   void getFromSource(ImageSource source, String type) async {

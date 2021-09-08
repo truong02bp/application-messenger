@@ -157,7 +157,7 @@ class _StickerBarState extends State<StickerBar> {
             });
       },
       child: Container(
-          height: 20, width: 20, child: Image.asset("assets/images/face.png")),
+          height: 25, width: 25, child: Icon(Icons.tag_faces)),
     );
     // );
   }

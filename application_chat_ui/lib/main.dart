@@ -17,16 +17,22 @@ class MyApp extends StatelessWidget {
       providers: blocs,
       child: MaterialApp(
         theme: ThemeData(primarySwatch: Colors.pink, brightness: Brightness.light),
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.dark,
         darkTheme: ThemeData(
-          // brightness: Brightness.dark,
-          primaryColor: Color(0x02596be),
-          accentColor: Colors.blueAccent,
-          backgroundColor: Color(0x02596be),
+          brightness: Brightness.dark,
+          primaryColor: Color(0xff263238),
+          accentColor: Color(0xfff78379).withOpacity(0.75),
+          backgroundColor: Color(0xff263238),
+          popupMenuTheme: PopupMenuThemeData(
+            color: Colors.white,
+            textStyle: TextStyle(color: Colors.black),
+          ),
+          scaffoldBackgroundColor: Color(0xff263238),
+          primaryColorDark: Color(0xff263238),
           hintColor: Colors.deepOrangeAccent,
-          bottomAppBarColor: Colors.grey,
+          bottomAppBarColor: Color(0xff263238),
           textTheme: TextTheme(
-            title: TextStyle(
+            headline6: TextStyle(
               color: Colors.white,
             ),
           ),
