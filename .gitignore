@@ -1,0 +1,5 @@
+target/
+*.apk
+*.jar
+*.properties
+android/app/build/
