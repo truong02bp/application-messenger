@@ -191,7 +191,7 @@ class _MessageFormState extends State<MessageForm> {
                       chewieController.setVolume(0.0);
                       body = Center(
                         child: AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
+                          aspectRatio: 1.1,
                           child: Chewie(
                             controller: chewieController,
                           ),
@@ -206,7 +206,7 @@ class _MessageFormState extends State<MessageForm> {
                               bottomLeft: Radius.circular(10),
                               bottomRight: Radius.circular(10))),
                       padding: EdgeInsets.only(
-                          left: 10, right: 10, bottom: 6, top: 6),
+                          left: 10, right: 5, bottom: 6, top: 6),
                       child: body,
                     );
                   },

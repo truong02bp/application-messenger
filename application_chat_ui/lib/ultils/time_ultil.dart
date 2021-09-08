@@ -25,7 +25,7 @@ String getTimeOnlineString({DateTime? time}) {
     }
     return "$hours hour ago";
   }
-  return "$minute minutes ago";
+  return "$minute minute ago";
 }
 
 String formatDate({required DateTime time}) {

@@ -9,12 +9,13 @@ class AvatarChatBox extends StatelessWidget {
   double? height;
   double? width;
   bool buildDot;
-  AvatarChatBox({required this.chatBox, this.height=50, this.width=50, this.buildDot = true});
+  bool buildTime;
+  AvatarChatBox({required this.chatBox, this.height=50, this.width=50, this.buildDot = true, this.buildTime = true});
 
   @override
   Widget build(BuildContext context) {
     String url;
-    int minuteLeave = 0;
+    String timeOffline = "";
     bool isActive = chatBox.isGroup ? true : chatBox.guestUser.first.user.online;
     if (chatBox.isGroup && chatBox.image != null) {
       url = chatBox.image!.url;
@@ -22,7 +23,8 @@ class AvatarChatBox extends StatelessWidget {
     else
       url = chatBox.guestUser.first.user.avatar.url;
     if (!isActive){
-      minuteLeave = getTimeOnline(time : chatBox.guestUser.first.user.lastOnline);
+      timeOffline = getTimeOnlineString(time : chatBox.guestUser.first.user.lastOnline);
+      timeOffline = timeOffline.substring(0, timeOffline.lastIndexOf(" "));
     }
     ClipRRect image = ClipRRect(
       borderRadius: BorderRadius.circular(height!/2),
@@ -45,15 +47,15 @@ class AvatarChatBox extends StatelessWidget {
           right: height!/20,
           bottom: 0,
           child: Container(
-            width: height!/5 + 2,
+            width: isActive ? height!/5 + 2 : height!/2 + 10,
             height: width!/5 +2,
             decoration: BoxDecoration(
                 color: isActive ? Colors.green.withOpacity(0.95): Colors.white70,
                 borderRadius: BorderRadius.circular(height!/10+1)),
-            child: minuteLeave != 0 ? Center(
+            child: timeOffline != "" && !timeOffline.contains("day") && buildTime ? Center(
                 child: Text(
-                  '$minuteLeave\'',
-                  style: TextStyle(fontSize: 3, fontWeight: FontWeight.bold),
+                  '$timeOffline',
+                  style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold),
                 ))
                 : Container(),
           ),

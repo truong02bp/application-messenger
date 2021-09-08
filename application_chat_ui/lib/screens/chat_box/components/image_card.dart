@@ -18,6 +18,7 @@ class _ImageCardState extends State<ImageCard> {
     return Container(
         constraints: new BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 4 / 7),
+        padding: EdgeInsets.only(top: 10,),
         child: InkWell(
           onTap: (){
             Navigator.pushNamed(context, FullScreenImage.routeName, arguments: {"url" : "${widget.url}"});

@@ -81,7 +81,6 @@ class _BodyState extends State<Body> {
                 _messageBloc.add(
                     UpdateMessageEvent(messageDto: messageDto, option: "seen"));
               }
-
             }
 
             if (state is NewMessageState && state.chatBoxId == chatBox.id) {
@@ -114,9 +113,10 @@ class _BodyState extends State<Body> {
               }
             }
 
-            if (state is UpdateMessageReactionSuccess && state.chatBoxId == widget.chatBox.id) {
+            if (state is UpdateMessageReactionSuccess &&
+                state.chatBoxId == widget.chatBox.id) {
               updateIndex = -1;
-              for (int i=0;i<messages.length;i++) {
+              for (int i = 0; i < messages.length; i++) {
                 if (messages[i].id == state.message.id) {
                   updateIndex = i;
                   break;
@@ -124,10 +124,10 @@ class _BodyState extends State<Body> {
               }
               if (updateIndex != -1)
                 setState(() {
-                  messages.replaceRange(updateIndex, updateIndex+1, [state.message]);
+                  messages.replaceRange(
+                      updateIndex, updateIndex + 1, [state.message]);
                 });
             }
-
           },
           child: Expanded(
             child: ListView.builder(

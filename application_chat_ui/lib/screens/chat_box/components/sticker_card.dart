@@ -11,6 +11,7 @@ class StickerCard extends StatelessWidget {
     return Container(
       constraints: new BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 1 / 3),
+      padding: EdgeInsets.only(top: 10,),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Image.asset(url),

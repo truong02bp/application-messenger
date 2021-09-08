@@ -31,9 +31,13 @@ class MyApp extends StatelessWidget {
           primaryColorDark: Color(0xff263238),
           hintColor: Colors.deepOrangeAccent,
           bottomAppBarColor: Color(0xff263238),
+          canvasColor: Color(0xff263238) ,
           textTheme: TextTheme(
+            bodyText1: TextStyle(
+              color: Colors.white70,
+            ),
             headline6: TextStyle(
-              color: Colors.white,
+              color: Colors.white70,
             ),
           ),
         ),

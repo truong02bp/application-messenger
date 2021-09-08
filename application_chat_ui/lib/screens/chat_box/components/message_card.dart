@@ -86,6 +86,7 @@ class _MessageCardState extends State<MessageCard> {
         Row(
           mainAxisAlignment:
               isSender ? MainAxisAlignment.end : MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             !isSender && widget.needAvatar
                 ? Container(
@@ -94,6 +95,7 @@ class _MessageCardState extends State<MessageCard> {
                       chatBox: widget.chatBox,
                       height: 35,
                       width: 35,
+                      buildTime: false,
                     ))
                 : Container(height: 35, width: 40,),
             InkWell(
