@@ -8,6 +8,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // body: SafeArea(child: Body()),
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
