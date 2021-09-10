@@ -5,6 +5,17 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Flexible(
+          child: Text(
+            'Sign up',
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
+          ),
+          flex: 3,
+        ),
+      ],
+    );
   }
 }
