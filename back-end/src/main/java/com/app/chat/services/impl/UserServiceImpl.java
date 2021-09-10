@@ -45,6 +45,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> validate(String username, String email) {
+        List<String> errors = new ArrayList<>();
+        if (userRepository.findByUsername(username) != null) {
+            errors.add("Username: " + username + " is existed");
+        }
+        if (userRepository.findByEmail(username) != null) {
+            errors.add("Email: " + email + " is existed");
+        }
+        return errors;
+    }
+
+    @Override
     @Transactional
     public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);

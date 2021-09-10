@@ -25,11 +25,14 @@ public class UserEntity extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "address")
     private  String address;
@@ -52,6 +55,13 @@ public class UserEntity extends BaseEntity {
     @ManyToOne
     private MediaEntity avatar;
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public boolean isActive() {
         return active;

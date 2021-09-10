@@ -18,8 +18,8 @@ class ChatBoxController {
     public ResponseEntity<Object> getChatBoxByUserId(@RequestParam("userId") Long userId){
         return ResponseEntity.ok(chatBoxService.findAllByUserId(userId));
     }
-    @PostMapping("/chat-box")
-    public ResponseEnitity<Object> create() {
-        return null;
-    }
+//    @PostMapping("/chat-box")
+//    public ResponseEnitity<Object> create() {
+//        return null;
+//    }
 }
