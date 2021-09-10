@@ -11,6 +11,7 @@ class User {
   String username;
   String password;
   String address;
+  String email;
   List<Role> roles;
   Media avatar;
   bool active;
@@ -18,7 +19,7 @@ class User {
   DateTime? lastOnline;
   User({required this.id, required this.name, required this.username,
     required this.password, required this.address, required this.roles,
-    required this.avatar, required this.active, this.lastOnline, required this.online});
+    required this.avatar, required this.active, this.lastOnline, required this.online, required this.email});
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

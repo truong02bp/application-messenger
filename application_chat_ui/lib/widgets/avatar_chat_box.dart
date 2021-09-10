@@ -9,7 +9,7 @@ class AvatarChatBox extends StatelessWidget {
   double? height;
   double? width;
   bool buildDot;
-  bool buildTime;
+  final bool buildTime;
   AvatarChatBox({required this.chatBox, this.height=50, this.width=50, this.buildDot = true, this.buildTime = true});
 
   @override
@@ -46,19 +46,25 @@ class AvatarChatBox extends StatelessWidget {
         Positioned(
           right: height!/20,
           bottom: 0,
-          child: Container(
-            width: isActive ? height!/5 + 2 : height!/2 + 10,
+          child: isActive ? Container(
+            width: height!/5 + 2,
             height: width!/5 +2,
             decoration: BoxDecoration(
-                color: isActive ? Colors.green.withOpacity(0.95): Colors.white70,
+                color: Colors.green.withOpacity(0.95),
                 borderRadius: BorderRadius.circular(height!/10+1)),
-            child: timeOffline != "" && !timeOffline.contains("day") && buildTime ? Center(
-                child: Text(
-                  '$timeOffline',
-                  style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold),
-                ))
-                : Container(),
-          ),
+          ) : buildTime ?  Container(
+            width: height!/2 + 10,
+            height: width!/5 +2,
+              decoration: BoxDecoration(
+                  color: Colors.white70,
+                  borderRadius: BorderRadius.circular(height!/10+1)),
+              child: timeOffline != "" && !timeOffline.contains("day")? Center(
+              child: Text(
+                '$timeOffline',
+                style: TextStyle(fontSize: 7, fontWeight: FontWeight.bold),
+              ))
+              : Container()
+          ) : Container(),
         )
     ]
     );

@@ -22,6 +22,7 @@ User _$UserFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['lastOnline'] as String),
     online: json['online'] as bool,
+    email: json['email'] as String,
   );
 }
 
@@ -31,6 +32,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'username': instance.username,
       'password': instance.password,
       'address': instance.address,
+      'email': instance.email,
       'roles': instance.roles.map((e) => e.toJson()).toList(),
       'avatar': instance.avatar.toJson(),
       'active': instance.active,

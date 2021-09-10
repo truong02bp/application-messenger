@@ -14,10 +14,8 @@ import 'package:messenger_ui/screens/chat_box/components/seen_info.dart';
 import 'package:messenger_ui/screens/chat_box/components/sticker_card.dart';
 import 'package:messenger_ui/screens/chat_box/components/text_card.dart';
 import 'package:messenger_ui/screens/chat_box/components/video_card.dart';
-import 'package:messenger_ui/ultils/time_ultil.dart';
 import 'package:messenger_ui/ultils/ultil.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
-import 'package:messenger_ui/widgets/custom_icon.dart';
 import 'package:messenger_ui/widgets/message_status.dart';
 import 'package:messenger_ui/widgets/time_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,7 +46,7 @@ class _MessageCardState extends State<MessageCard> {
     // TODO: implement initState
     _messageBloc = BlocProvider.of<MessageBloc>(context);
     for (MessageDetail detail in widget.message.details) {
-      if (detail.seenBy.id != widget.chatBox.id) {
+      if (detail.seenBy.id != widget.chatBox.currentUser.id) {
         guestMessageDetail = detail;
       }
       if (detail.reaction != null) {

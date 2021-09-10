@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:messenger_ui/bloc/login_bloc.dart';
+import 'package:messenger_ui/bloc_event/login_event.dart';
 import 'package:messenger_ui/host_api.dart';
 import 'package:messenger_ui/model/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:messenger_ui/screens/login/login_screen.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeDrawer extends StatelessWidget {
   final User user;
 
@@ -11,6 +13,7 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LoginBloc _loginBloc = BlocProvider.of<LoginBloc>(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       DrawerHeader(
           child: Column(
@@ -24,10 +27,10 @@ class HomeDrawer extends StatelessWidget {
                 ],
               ),
               ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(35),
                   child: CachedNetworkImage(
-                    height: 50,
-                    width: 50,
+                    height: 70,
+                    width: 70,
                     fit: BoxFit.cover,
                     placeholder: (context, url) {
                       return Image.asset('assets/images/loading.gif');
@@ -48,6 +51,7 @@ class HomeDrawer extends StatelessWidget {
       buildItem(icon: Icon(Icons.settings), title: 'Settings', onTap: (){}),
       buildItem(icon: Icon(Icons.share), title: 'Invite Friends', onTap: (){}),
       buildItem(icon: Icon(Icons.logout), title: 'Log out', onTap: (){
+        _loginBloc.add(UpdateOfflineEvent());
         Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (r) => false);
       }),
     ]);

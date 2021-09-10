@@ -115,27 +115,27 @@ class _BodyState extends State<Body> {
 
             if (state is UpdateMessageReactionSuccess &&
                 state.chatBoxId == widget.chatBox.id) {
-              updateIndex = -1;
+              updateIndex = state.message.id;
               for (int i = 0; i < messages.length; i++) {
                 if (messages[i].id == state.message.id) {
-                  updateIndex = i;
+                  setState(() {
+                    messages.replaceRange(
+                        i, i + 1, [state.message]);
+                  });
                   break;
                 }
               }
-              if (updateIndex != -1)
-                setState(() {
-                  messages.replaceRange(
-                      updateIndex, updateIndex + 1, [state.message]);
-                });
             }
           },
           child: Expanded(
             child: ListView.builder(
+              // key: UniqueKey(),
               controller: _scrollController,
               scrollDirection: Axis.vertical,
               reverse: true,
               itemCount: messages.length,
-              addAutomaticKeepAlives: true,
+              addAutomaticKeepAlives: false,
+              // cacheExtent: 1000,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 bool showDate = false;
@@ -175,7 +175,7 @@ class _BodyState extends State<Body> {
                 }
                 bool needMessageStatus = idsNeedBuild.contains(message.id);
                 bool needAvatar = idsNeedAvatar.contains(message.id);
-                if (updateIndex == index) {
+                if (updateIndex == message.id) {
                   return Padding(
                     key: UniqueKey(),
                     padding: const EdgeInsets.only(bottom: 7),
@@ -189,6 +189,7 @@ class _BodyState extends State<Body> {
                   );
                 }
                 return Padding(
+                  key: ValueKey(message.id),
                   padding: const EdgeInsets.only(bottom: 7),
                   child: MessageCard(
                     message: message,

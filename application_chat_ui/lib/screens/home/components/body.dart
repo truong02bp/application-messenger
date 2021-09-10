@@ -33,6 +33,7 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
     _loginBloc = BlocProvider.of<LoginBloc>(context);
     _chatBoxBloc.add(GetAllChatBox(userId: widget.user.id));
+    _loginBloc.add(UpdateOnlineEvent());
     WidgetsBinding.instance!.addObserver(this);
   }
 

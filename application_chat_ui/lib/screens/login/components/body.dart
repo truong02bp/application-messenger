@@ -6,14 +6,13 @@ import 'package:messenger_ui/bloc_state/login_state.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
 
 import '../login_screen_model.dart';
-class LoginScreenBody extends StatefulWidget {
 
+class LoginScreenBody extends StatefulWidget {
   @override
   _LoginScreenBodyState createState() => _LoginScreenBodyState();
 }
 
 class _LoginScreenBodyState extends State<LoginScreenBody> {
-
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   late LoginBloc _loginBloc;
@@ -32,7 +31,8 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           handleValidateInfoLoginFailure(state);
         }
         if (state is LoginSuccess) {
-          Navigator.popAndPushNamed(context, HomeScreen.routeName, arguments: {"user" : state.user});
+          Navigator.popAndPushNamed(context, HomeScreen.routeName,
+              arguments: {"user": state.user});
         }
       },
       child: Column(
@@ -87,40 +87,66 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           BlocBuilder(
             bloc: _loginBloc,
             builder: (context, state) {
-              if (state is Loading){
+              if (state is Loading) {
                 return Flexible(
                   flex: 3,
                   child: Container(
                     height: 70,
                     width: 70,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/loading.gif"),
-                          fit: BoxFit.cover
-                      )
-                    ),
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/loading.gif"),
+                            fit: BoxFit.cover)),
                   ),
                 );
               }
-              return const Spacer(flex: 1,);
+              return const Spacer(
+                flex: 1,
+              );
             },
           ),
           InkWell(
-            onTap: (){
-                _loginBloc.add(SubmitLogin(username: _usernameController.text, password: _passwordController.text));
+            onTap: () {
+              _loginBloc.add(SubmitLogin(
+                  username: _usernameController.text,
+                  password: _passwordController.text));
             },
             child: Container(
               height: 50,
               width: 100,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.red
-              ),
-              child: Center(child: Text('Login', style: TextStyle(fontSize: 18, color: Colors.black),)),
+                  borderRadius: BorderRadius.circular(20), color: Colors.red),
+              child: Center(
+                  child: Text(
+                'Login',
+                style: TextStyle(fontSize: 18, color: Colors.black),
+              )),
             ),
           ),
           const Spacer(
-            flex: 6,
+            flex: 5,
+          ),
+          Row(
+            children: [
+              Spacer(
+                flex: 1,
+              ),
+              Flexible(
+                  flex: 2,
+                  child: InkWell(onTap: () {}, child: Text('Forgot password'))),
+              Spacer(
+                flex: 2,
+              ),
+              Flexible(
+                  flex: 1,
+                  child: InkWell(onTap: () {}, child: Text('Sign up'))),
+              Spacer(
+                flex: 1,
+              ),
+            ],
+          ),
+          const Spacer(
+            flex: 1,
           ),
         ],
       ),
@@ -128,25 +154,29 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
   }
 
   void handleValidateInfoLoginFailure(LoginFailure state) {
-    showDialog(context: context, builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      title: Text('Login failure'),
-      content: Container(
-        height: 40,
-        width: 200,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: state.errors.map((error) => Text('$error')).toList(),
-        ),
-      ),
-      actions: [
-        TextButton(onPressed: (){
-          Navigator.of(context).pop();
-        }, child: Text('OK'))
-      ],
-    ));
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              title: Text('Login failure'),
+              content: Container(
+                height: 40,
+                width: 200,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:
+                      state.errors.map((error) => Text('$error')).toList(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'))
+              ],
+            ));
   }
-
 }
