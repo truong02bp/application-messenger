@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger_ui/bloc/login_bloc.dart';
 import 'package:messenger_ui/bloc_event/login_event.dart';
 import 'package:messenger_ui/bloc_state/login_state.dart';
+import 'package:messenger_ui/screens/forgot_password/forgot_password_screen.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
+import 'package:messenger_ui/screens/sign_up/sign_up_screen.dart';
 
 import '../login_screen_model.dart';
 
@@ -133,13 +135,17 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
               ),
               Flexible(
                   flex: 2,
-                  child: InkWell(onTap: () {}, child: Text('Forgot password'))),
+                  child: InkWell(onTap: () {
+                    Navigator.of(context).pushNamed(ForgotPasswordScreen.routeName);
+                  }, child: Text('Forgot password'))),
               Spacer(
                 flex: 2,
               ),
               Flexible(
                   flex: 1,
-                  child: InkWell(onTap: () {}, child: Text('Sign up'))),
+                  child: InkWell(onTap: () {
+                    Navigator.of(context).pushNamed(SignUpScreen.routeName);
+                  }, child: Text('Sign up'))),
               Spacer(
                 flex: 1,
               ),
