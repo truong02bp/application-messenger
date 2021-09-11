@@ -6,6 +6,7 @@ import com.app.chat.data.entities.UserEntity;
 import com.app.chat.services.MailService;
 import com.app.chat.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +30,11 @@ class UserController {
     public ResponseEntity<Object> getCurrentUser() {
         MyUserDetails user = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(user.getUserEntity());
+    }
+    @GetMapping("/user/key")
+    public ResponseEntity<Object> getUserByName(@RequestParam(name = "name") String name, Pageable pageable) {
+        List<UserEntity> users = userService.findByName(name, pageable);
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/user")

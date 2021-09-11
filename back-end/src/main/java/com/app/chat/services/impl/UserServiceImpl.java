@@ -12,6 +12,7 @@ import com.app.chat.data.entities.UserEntity;
 import com.app.chat.data.repository.UserRepository;
 import com.app.chat.services.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -75,6 +76,11 @@ public class UserServiceImpl implements UserService {
             errors.add("Email: " + email + " is existed");
         }
         return errors;
+    }
+
+    @Override
+    public List<UserEntity> findByName(String name, Pageable pageable) {
+        return userRepository.findAllByName(name, pageable);
     }
 
     @Override
