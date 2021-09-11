@@ -1,5 +1,6 @@
 import 'package:messenger_ui/injection.dart';
 import 'package:messenger_ui/model/authentication_request.dart';
+import 'package:messenger_ui/model/dto/user_contact.dart';
 import 'package:messenger_ui/model/dto/user_dto.dart';
 import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/repository/api_model.dart';
@@ -77,16 +78,16 @@ class UserRepository {
     return null;
   }
 
-  Future<List<User>> findByName({required String name, required int page, required int size}) async {
+  Future<List<UserContact>> findUserContact({required String name,required int userId, required int page, required int size}) async {
     ApiModel model = new ApiModel(url: userUrl + "/key",
-      params: {"name" : "$name", "page" : "$page", "size" : "$size"},
+      params: {"name" : "$name", "page" : "$page", "size" : "$size", "userId" : "$userId"},
       parse: (data) {
-        return data.map<User>((json) => User.fromJson(json)).toList();
+        return data.map<UserContact>((json) => UserContact.fromJson(json)).toList();
       }
     );
-    final users = await apiRepository.get(model);
-    if (users != null)
-      return users;
+    final userContacts = await apiRepository.get(model);
+    if (userContacts != null)
+      return userContacts;
     return [];
   }
 

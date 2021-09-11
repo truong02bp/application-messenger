@@ -10,7 +10,7 @@ Color getColor(String? color) {
     case "PINK":
       return Colors.pinkAccent.withOpacity(0.6);
     default:
-      return Colors.blue.withOpacity(0.8);
+      return Color(0xfff78379).withOpacity(0.8);
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:messenger_ui/model/dto/user_contact.dart';
 import 'package:messenger_ui/model/user.dart';
 
 class UserState {}
@@ -22,8 +23,8 @@ class UpdateOnlineSuccess extends UserState {
   UpdateOnlineSuccess({required this.user});
 }
 
-class GetUserByNameSuccess extends UserState {
-  List<User> users;
+class GetUserContactSuccess extends UserState {
+  List<UserContact> userContacts;
 
-  GetUserByNameSuccess({required this.users});
+  GetUserContactSuccess({required this.userContacts});
 }

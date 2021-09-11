@@ -11,10 +11,10 @@ class UpdateOnlineEvent extends UserEvent {}
 
 class UpdateOfflineEvent extends UserEvent {}
 
-class GetUserByName extends UserEvent {
+class GetUserContact extends UserEvent {
   String name;
   int page;
   int size;
 
-  GetUserByName({required this.name, required this.page, required this.size});
+  GetUserContact({required this.name, required this.page, required this.size});
 }
