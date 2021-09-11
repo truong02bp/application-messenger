@@ -1,10 +1,3 @@
+class MessageState {}
 
-
-class MessageState {
-
-}
-
-class Loading extends MessageState {
-
-}
-
+class Loading extends MessageState {}

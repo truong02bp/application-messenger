@@ -1,13 +1,8 @@
-
 import 'package:messenger_ui/model/user.dart';
 
-class LoginState {
+class LoginState {}
 
-}
-
-class Loading extends LoginState {
-
-}
+class Loading extends LoginState {}
 
 class LoginSuccess extends LoginState {
   final User user;
@@ -23,5 +18,6 @@ class LoginFailure extends LoginState {
 
 class UpdateOnlineSuccess extends LoginState {
   final User user;
+
   UpdateOnlineSuccess({required this.user});
 }

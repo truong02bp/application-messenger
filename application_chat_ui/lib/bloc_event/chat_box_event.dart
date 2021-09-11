@@ -1,9 +1,6 @@
-
 import 'package:messenger_ui/model/message.dart';
 
-class ChatBoxEvent {
-
-}
+class ChatBoxEvent {}
 
 class GetAllChatBox extends ChatBoxEvent {
   int userId;
@@ -17,7 +14,6 @@ class GetMessage extends ChatBoxEvent {
   final int page;
 
   GetMessage({required this.chatBoxId, required this.size, required this.page});
-
 }
 
 class NewMessageEvent extends ChatBoxEvent {

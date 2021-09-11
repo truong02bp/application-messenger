@@ -1,10 +1,7 @@
-
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/message.dart';
 
-class ChatBoxState {
-
-}
+class ChatBoxState {}
 
 class GetAllChatBoxSuccess extends ChatBoxState {
   List<ChatBox> chatBoxes;
@@ -12,9 +9,7 @@ class GetAllChatBoxSuccess extends ChatBoxState {
   GetAllChatBoxSuccess({required this.chatBoxes});
 }
 
-class GetAllChatBoxFailure extends ChatBoxState {
-
-}
+class GetAllChatBoxFailure extends ChatBoxState {}
 
 class GetMessageSuccess extends ChatBoxState {
   final List<Message> messages;
@@ -38,13 +33,14 @@ class UpdateMessageSuccess extends ChatBoxState {
 class UpdateMessageSeenSuccess extends ChatBoxState {
   final List<Message> messages;
   final int chatBoxId;
-  UpdateMessageSeenSuccess({required this.messages, required this.chatBoxId});
 
+  UpdateMessageSeenSuccess({required this.messages, required this.chatBoxId});
 }
 
 class UpdateMessageReactionSuccess extends ChatBoxState {
   final Message message;
   final int chatBoxId;
-  UpdateMessageReactionSuccess({required this.message, required this.chatBoxId});
 
+  UpdateMessageReactionSuccess(
+      {required this.message, required this.chatBoxId});
 }

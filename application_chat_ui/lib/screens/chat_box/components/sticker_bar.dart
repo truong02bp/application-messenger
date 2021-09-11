@@ -22,6 +22,7 @@ class _StickerBarState extends State<StickerBar> {
       onTap: () {
         showModalBottomSheet(
             context: context,
+            backgroundColor: Colors.white,
             builder: (context) {
               return Column(
                 children: [

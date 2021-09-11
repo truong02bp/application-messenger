@@ -6,6 +6,7 @@ import 'package:messenger_ui/bloc_state/login_state.dart';
 import 'package:messenger_ui/screens/forgot_password/forgot_password_screen.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
 import 'package:messenger_ui/screens/sign_up/sign_up_screen.dart';
+import 'package:messenger_ui/ultils/ultil.dart';
 import '../login_screen_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -30,7 +31,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
       bloc: _loginBloc,
       listener: (context, state) {
         if (state is LoginFailure) {
-          handleValidateInfoLoginFailure(state);
+          showDialogErrors(context: context, errors: state.errors, title: 'Login failure');
         }
         if (state is LoginSuccess) {
           Navigator.popAndPushNamed(context, HomeScreen.routeName,
@@ -169,32 +170,5 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
         ],
       ),
     );
-  }
-
-  void handleValidateInfoLoginFailure(LoginFailure state) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              title: Text('Login failure'),
-              content: Container(
-                height: 40,
-                width: 200,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children:
-                      state.errors.map((error) => Text('$error')).toList(),
-                ),
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('OK'))
-              ],
-            ));
   }
 }
