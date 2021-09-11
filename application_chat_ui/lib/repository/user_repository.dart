@@ -68,13 +68,26 @@ class UserRepository {
 
   Future<User?> create({required UserDto userDto}) async {
     ApiModel model = new ApiModel(url: userUrl,
-      body: userDto,
-      parse: (json) => User.fromJson(json)
+        body: userDto,
+        parse: (json) => User.fromJson(json)
     );
     final user = await apiRepository.post(model);
     if (user != null)
       return user;
     return null;
+  }
+
+  Future<List<User>> findByName({required String name, required int page, required int size}) async {
+    ApiModel model = new ApiModel(url: userUrl + "/key",
+      params: {"name" : "$name", "page" : "$page", "size" : "$size"},
+      parse: (data) {
+        return data.map<User>((json) => User.fromJson(json)).toList();
+      }
+    );
+    final users = await apiRepository.get(model);
+    if (users != null)
+      return users;
+    return [];
   }
 
 }

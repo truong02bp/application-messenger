@@ -3,7 +3,7 @@ import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/screens/home/components/body.dart';
 import 'package:messenger_ui/screens/home/components/home_drawer.dart';
 import 'package:messenger_ui/screens/home/components/search_bar.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 class HomeScreen extends StatelessWidget {
   static final String routeName = "/home";
 
@@ -15,7 +15,17 @@ class HomeScreen extends StatelessWidget {
     User user = args["user"];
     return Scaffold(
       appBar: AppBar(
-        title: Text('Người trồng cà chua'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Người trồng cà chua', style: TextStyle(color: Colors.deepOrangeAccent),),
+            SvgPicture.asset(
+              "assets/svg/sign_in.svg",
+              height: 40,
+              width: 40,
+            ),
+          ],
+        ),
       ),
       body: SafeArea(
         child: Padding(

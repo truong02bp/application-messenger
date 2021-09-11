@@ -1,19 +1,19 @@
 
 import 'dart:developer';
 
-import 'package:messenger_ui/bloc_event/login_event.dart';
-import 'package:messenger_ui/bloc_state/login_state.dart';
+import 'package:messenger_ui/bloc_event/user_event.dart';
+import 'package:messenger_ui/bloc_state/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger_ui/injection.dart';
 import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/repository/user_repository.dart';
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class UserBloc extends Bloc<UserEvent, UserState> {
   UserRepository userRepository = getIt<UserRepository>();
   User? currentUser;
-  LoginBloc() : super(LoginState());
+  UserBloc() : super(UserState());
 
   @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
+  Stream<UserState> mapEventToState(UserEvent event) async* {
     // TODO: implement mapEventToState
     switch (event.runtimeType) {
       case SubmitLogin:
@@ -44,15 +44,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         User user = await userRepository.updateOnline(id: currentUser!.id, online: false);
         yield UpdateOnlineSuccess(user: user);
         break;
+      case GetUserByName:
+        event as GetUserByName;
+        if (event.page == 0) {
+          yield Loading();
+        }
+        List<User> users = await userRepository.findByName(name: event.name, page: event.page, size: event.size);
+        yield GetUserByNameSuccess(users: users);
+        break;
     }
-    if (event is UpdateOnlineEvent) {
-
-    }
-    if (event is UpdateOfflineEvent) {
-
-    }
-    else
-      yield LoginState();
   }
 
 

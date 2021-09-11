@@ -135,7 +135,6 @@ class _BodyState extends State<Body> {
               reverse: true,
               itemCount: messages.length,
               addAutomaticKeepAlives: false,
-              // cacheExtent: 1000,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 bool showDate = false;

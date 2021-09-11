@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger_ui/bloc/chat_box_bloc.dart';
-import 'package:messenger_ui/bloc/login_bloc.dart';
+import 'package:messenger_ui/bloc/user_bloc.dart';
 import 'package:messenger_ui/bloc_event/chat_box_event.dart';
-import 'package:messenger_ui/bloc_event/login_event.dart';
+import 'package:messenger_ui/bloc_event/user_event.dart';
 import 'package:messenger_ui/bloc_state/chat_box_state.dart';
 import 'package:messenger_ui/model/chat_box.dart';
 import 'package:messenger_ui/model/user.dart';
@@ -24,26 +24,26 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
 
   List<ChatBox> chatBoxes = [];
   late ChatBoxBloc _chatBoxBloc;
-  late LoginBloc _loginBloc;
+  late UserBloc _userBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
-    _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _userBloc = BlocProvider.of<UserBloc>(context);
     _chatBoxBloc.add(GetAllChatBox(userId: widget.user.id));
-    _loginBloc.add(UpdateOnlineEvent());
+    _userBloc.add(UpdateOnlineEvent());
     WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _loginBloc.add(UpdateOnlineEvent());
+      _userBloc.add(UpdateOnlineEvent());
     }
     else
-      _loginBloc.add(UpdateOfflineEvent());
+      _userBloc.add(UpdateOfflineEvent());
   }
 
   @override

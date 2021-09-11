@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:messenger_ui/bloc/login_bloc.dart';
-import 'package:messenger_ui/bloc_event/login_event.dart';
-import 'package:messenger_ui/bloc_state/login_state.dart';
+import 'package:messenger_ui/bloc/user_bloc.dart';
+import 'package:messenger_ui/bloc_event/user_event.dart';
+import 'package:messenger_ui/bloc_state/user_state.dart';
 import 'package:messenger_ui/screens/forgot_password/forgot_password_screen.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
 import 'package:messenger_ui/screens/sign_up/sign_up_screen.dart';
 import 'package:messenger_ui/ultils/ultil.dart';
 import '../login_screen_model.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginScreenBody extends StatefulWidget {
   @override
@@ -18,17 +17,17 @@ class LoginScreenBody extends StatefulWidget {
 class _LoginScreenBodyState extends State<LoginScreenBody> {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  late LoginBloc _loginBloc;
+  late UserBloc _userBloc;
 
   @override
   void initState() {
-    _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _userBloc = BlocProvider.of<UserBloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      bloc: _loginBloc,
+      bloc: _userBloc,
       listener: (context, state) {
         if (state is LoginFailure) {
           showDialogErrors(context: context, errors: state.errors, title: 'Login failure');
@@ -43,13 +42,6 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           const Spacer(
             flex: 5,
           ),
-          Flexible(
-            flex: 5,
-            child: SvgPicture.asset(
-              "assets/svg/sign_in.svg",
-            ),
-          ),
-          SizedBox(height: 5,),
           const Flexible(
             child: Text(
               'Welcome back',
@@ -95,7 +87,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
             ],
           ),
           BlocBuilder(
-            bloc: _loginBloc,
+            bloc: _userBloc,
             builder: (context, state) {
               if (state is Loading) {
                 return Flexible(
@@ -117,7 +109,7 @@ class _LoginScreenBodyState extends State<LoginScreenBody> {
           ),
           InkWell(
             onTap: () {
-              _loginBloc.add(SubmitLogin(
+              _userBloc.add(SubmitLogin(
                   username: _usernameController.text,
                   password: _passwordController.text));
             },
