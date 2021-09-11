@@ -1,6 +1,7 @@
 package com.app.chat.controllers;
 
 import com.app.chat.data.dto.MyUserDetails;
+import com.app.chat.data.dto.UserDto;
 import com.app.chat.data.entities.UserEntity;
 import com.app.chat.services.MailService;
 import com.app.chat.services.UserService;
@@ -31,9 +32,9 @@ class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<Object> create(@RequestBody UserEntity userEntity) {
-        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
-        return ResponseEntity.ok(userService.create(userEntity));
+    public ResponseEntity<Object> create(@RequestBody UserDto userDto) {
+        userDto.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        return ResponseEntity.ok(userService.create(userDto));
     }
 
     @PostMapping("/user/update-online")

@@ -1,5 +1,10 @@
 package com.app.chat.services.impl;
 
+import com.app.chat.data.dto.UserDto;
+import com.app.chat.data.entities.MediaEntity;
+import com.app.chat.data.entities.RoleEntity;
+import com.app.chat.data.repository.MediaRepository;
+import com.app.chat.data.repository.RoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.app.chat.common.exceptions.ApiException;
 import com.app.chat.data.dto.MyUserDetails;
@@ -25,11 +30,27 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    private ObjectMapper mapper;
+    private MediaRepository mediaRepository;
+
+    private RoleRepository roleRepository;
 
     @Override
-    public UserEntity create(UserEntity userEntity) {
-        return userRepository.save(userEntity);
+    public UserEntity create(UserDto userDto) {
+        List<RoleEntity> roles = new ArrayList<>();
+        roles.add(roleRepository.findById((long) 2).get()); // 2 is id of user role
+        UserEntity user = UserEntity.builder()
+                .email(userDto.getEmail())
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .name(userDto.getName())
+                .active(true)
+                .address("")
+                .online(false)
+                .roles(roles)
+                .avatar(mediaRepository.findById((long) 73).get()) // 73 is id of anonymous image
+                .build();
+        user = userRepository.save(user);
+        return user;
     }
 
     @Override

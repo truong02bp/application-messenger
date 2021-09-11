@@ -1,5 +1,6 @@
 package com.app.chat.data.entities;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;

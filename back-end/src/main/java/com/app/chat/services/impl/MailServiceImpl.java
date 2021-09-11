@@ -19,9 +19,9 @@ public class MailServiceImpl implements MailService {
         SimpleMailMessage message = new SimpleMailMessage();
         Random random = new Random();
         String otp = String.valueOf(random.nextInt(8999) + 1000);
-        message.setFrom("Người trồng cà chua");
+        message.setFrom("nguoi_trong_ca_chua@gmail.com");
         message.setTo(email);
-        message.setSubject("Hi " + name + ", you have notification");
+        message.setSubject("Hi " + name + ", you have message from Người trồng cà chua");
         String content = "Hi " + name + "\n" + "Your otp code is : " + otp;
         message.setText(content);
         javaMailSender.send(message);
