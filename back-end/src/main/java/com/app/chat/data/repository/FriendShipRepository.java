@@ -8,4 +8,5 @@ public interface FriendShipRepository extends JpaRepository<FriendShipEntity, Lo
 
     @Query(value = "select friendShip from FriendShipEntity friendShip where (friendShip.user.id =?1 and friendShip.friend.id=?2) or (friendShip.user.id=?2 and friendShip.friend.id = ?1)")
     FriendShipEntity findFriendShip(Long userId, Long userId2);
+
 }

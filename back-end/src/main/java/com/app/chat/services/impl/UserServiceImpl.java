@@ -40,6 +40,14 @@ public class UserServiceImpl implements UserService {
     private FriendShipService friendShipService;
 
     @Override
+    public UserEntity findById(Long id) {
+        UserEntity user = userRepository.findById(id).orElse(null);
+        if (user == null)
+            throw new ApiException().httpStatus(HttpStatus.NOT_FOUND).message("User with id: " + id + " not found");
+        return user;
+    }
+
+    @Override
     public UserEntity create(UserDto userDto) {
         List<RoleEntity> roles = new ArrayList<>();
         roles.add(roleRepository.findById((long) 2).get()); // 2 is id of user role

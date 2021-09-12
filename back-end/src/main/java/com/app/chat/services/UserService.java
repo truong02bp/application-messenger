@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
+    UserEntity findById(Long id);
     UserEntity create(UserDto userDto);
     UserEntity updateOnline(Long id, boolean online);
     List<String> validate(String username, String email);
