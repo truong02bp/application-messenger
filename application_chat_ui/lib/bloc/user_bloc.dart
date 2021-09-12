@@ -18,6 +18,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserState> mapEventToState(UserEvent event) async* {
     // TODO: implement mapEventToState
     switch (event.runtimeType) {
+      case CheckSaveUserEvent:
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        String? token = preferences.getString("token");
+        if (token != null) {
+          userId = preferences.getInt("userId")!;
+          User user = await userRepository.getByToken();
+          yield UserSavedState(user: user);
+        }
+        break;
       case SubmitLogin:
         event as SubmitLogin;
         yield Loading();

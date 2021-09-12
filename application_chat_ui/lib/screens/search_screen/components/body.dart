@@ -107,7 +107,6 @@ class _BodyState extends State<Body> {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return ListTile(
-                        onTap: () {},
                         title: Row(
                           children: [
                             Text(
@@ -194,7 +193,7 @@ class _BodyState extends State<Body> {
                                   }
                                 }
                               },
-                            )
+                            ),
                           ],
                         ),
                         leading: ClipRRect(
@@ -209,7 +208,16 @@ class _BodyState extends State<Body> {
                             imageUrl:
                                 minioUrl + userContacts[index].user.avatar.url,
                           ),
-                        ));
+                        ),
+                      onTap: (){
+                          if (userContacts[index].friendShip != null && userContacts[index].friendShip!.accepted) {
+                            // solve here
+                          }
+                          else {
+                            // solve here
+                          }
+                      },
+                    );
                   },
                 ),
               ),

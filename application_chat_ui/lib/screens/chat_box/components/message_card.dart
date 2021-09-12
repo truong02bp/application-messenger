@@ -40,7 +40,7 @@ class _MessageCardState extends State<MessageCard> {
   late MessageBloc _messageBloc;
   Map<String, List<String>> reactionDetails = Map();
   MessageDetail? guestMessageDetail;
-
+  late Color color;
   @override
   void initState() {
     // TODO: implement initState
@@ -59,6 +59,7 @@ class _MessageCardState extends State<MessageCard> {
         reactionDetails[detail.reaction!.code]!.add(name);
       }
     }
+    color = getColor(widget.chatBox.color);
   }
   @override
   void dispose() {
@@ -69,12 +70,7 @@ class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
     bool isSender = widget.message.sender.id == widget.chatBox.currentUser.id;
-    Color color;
-    if (widget.chatBox.color == null){
-      color = Colors.grey.withOpacity(0.12);
-    }
-    else
-      color = getColor(widget.chatBox.color);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [

@@ -24,14 +24,20 @@ class UserRepository {
     final token = await apiRepository.post(model);
     if (token != null) {
       preferences.setString("token", token);
-      model = new ApiModel(url: userUrl, parse: (json) {
-        return User.fromJson(json);
-      });
-      User user = await apiRepository.get(model);
-      preferences.setInt("userId", user.id);
+      User user = await getByToken();
       return user;
     }
     return null;
+  }
+
+  Future<User> getByToken() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    ApiModel model = new ApiModel(url: userUrl, parse: (json) {
+      return User.fromJson(json);
+    });
+    User user = await apiRepository.get(model);
+    preferences.setInt("userId", user.id);
+    return user;
   }
 
   Future<User> updateOnline({required int id, required bool online}) async {

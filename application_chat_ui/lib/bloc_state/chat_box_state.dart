@@ -9,6 +9,12 @@ class GetAllChatBoxSuccess extends ChatBoxState {
   GetAllChatBoxSuccess({required this.chatBoxes});
 }
 
+class GetAllOldChatBoxSuccess extends ChatBoxState {
+  List<ChatBox> chatBoxes;
+
+  GetAllOldChatBoxSuccess({required this.chatBoxes});
+}
+
 class GetAllChatBoxFailure extends ChatBoxState {}
 
 class GetMessageSuccess extends ChatBoxState {

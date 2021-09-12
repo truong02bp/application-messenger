@@ -23,7 +23,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
 
   late ChatBox chatBox;
   late Messenger guest;
-  late Message lastMessage;
+  late Message? lastMessage;
   bool isSeen = false;
   late List<MessageDetail> details = [];
   late ChatBoxBloc _chatBoxBloc;
@@ -34,10 +34,10 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
     chatBox = widget.chatBox;
     guest = chatBox.guestUser.first;
-    lastMessage = chatBox.lastMessage;
-    details.addAll(lastMessage.details);
-    details.removeWhere((detail) => detail.seenBy.id == lastMessage.sender.id);
-    if (lastMessage.sender.id == chatBox.currentUser.id){
+    lastMessage = chatBox.lastMessage!;
+    details.addAll(lastMessage!.details);
+    details.removeWhere((detail) => detail.seenBy.id == lastMessage!.sender.id);
+    if (lastMessage!.sender.id == chatBox.currentUser.id){
       isSeen = true;
     }
     if (details.isNotEmpty){
@@ -112,9 +112,9 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
     );
   }
 
-  Row buildLastMessage({required Message message}) {
+  Row buildLastMessage({required Message? message}) {
     StringBuffer content = new StringBuffer();
-    if (message.sender.id != chatBox.currentUser.id) {
+    if (message!.sender.id != chatBox.currentUser.id) {
       String name = message.sender.user.name;
       if (name.indexOf(" ") != -1) name = name.substring(0, name.indexOf(" "));
       content.write("$name: ");

@@ -11,20 +11,16 @@ class ChatBox {
   String? color;
   String? name;
   bool isGroup;
-  bool isNew;
   Media? image;
   Messenger currentUser;
   List<Messenger> guestUser;
-  Message lastMessage;
+  Message? lastMessage;
 
   ChatBox(
       {required this.id, this.color, this.name,
-      required this.isGroup,
-      required this.isNew,
-        this.image,
+      required this.isGroup, this.image,
       required this.currentUser,
-      required this.guestUser,
-      required this.lastMessage});
+      required this.guestUser, this.lastMessage});
 
   factory ChatBox.fromJson(Map<String, dynamic> json) => _$ChatBoxFromJson(json);
 

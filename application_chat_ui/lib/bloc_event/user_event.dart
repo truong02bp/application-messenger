@@ -20,3 +20,7 @@ class GetUserContact extends UserEvent {
 
   GetUserContact({required this.name, required this.page, required this.size});
 }
+
+class CheckSaveUserEvent extends UserEvent {
+
+}
