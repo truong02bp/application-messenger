@@ -1,4 +1,5 @@
 import 'package:messenger_ui/model/dto/user_contact.dart';
+import 'package:messenger_ui/model/friend_ship.dart';
 import 'package:messenger_ui/model/user.dart';
 
 class UserState {}
@@ -27,4 +28,10 @@ class GetUserContactSuccess extends UserState {
   List<UserContact> userContacts;
 
   GetUserContactSuccess({required this.userContacts});
+}
+
+class SendAddFriendSuccess extends UserState {
+  FriendShip friendShip;
+
+  SendAddFriendSuccess({required this.friendShip});
 }

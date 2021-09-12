@@ -110,26 +110,55 @@ class _BodyState extends State<Body> {
                                   color: Colors.white.withOpacity(0.9)),
                             ),
                             userContacts[index].friendShip == null ||
-                                    userContacts[index].friendShip!.isAccept ==
+                                    userContacts[index].friendShip!.accepted ==
                                         false
                                 ? Spacer()
                                 : Container(),
                             userContacts[index].friendShip == null
-                                ? InkWell(
-                                    onTap: () {},
-                                    child: Container(
-                                        height: 25,
-                                        width: 25,
-                                        child: Image.asset(
-                                          "assets/images/add_friend.png",
-                                          color: Colors.white,
-                                        )))
-                                : userContacts[index].friendShip!.isAccept ==
+                                ? BlocBuilder(
+                                    bloc: _userBloc,
+                                    builder: (context, state) {
+                                      if (state is SendAddFriendSuccess &&
+                                          state.friendShip.friend.id ==
+                                              userContacts[index].user.id) {
+                                        return InkWell(
+                                          key: UniqueKey(),
+                                          onTap: () {},
+                                          child: Text('Cancel'),
+                                        );
+                                      }
+                                      return InkWell(
+                                          key: ValueKey(
+                                              userContacts[index].user.id),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          onTap: () {
+                                            _userBloc.add(AddFriendEvent(
+                                                friend:
+                                                    userContacts[index].user));
+                                          },
+                                          child: Container(
+                                              height: 40,
+                                              width: 40,
+                                              padding: EdgeInsets.all(10),
+                                              child: Image.asset(
+                                                "assets/images/add_friend.png",
+                                                color: Colors.white,
+                                              )));
+                                    },
+                                  )
+                                : userContacts[index].friendShip!.accepted ==
                                         false
-                                    ? InkWell(
-                                        onTap: () {},
-                                        child: Text('Cancel'),
-                                      )
+                                    ? userContacts[index].friendShip!.user.id ==
+                                            userContacts[index].user.id
+                                        ? InkWell(
+                                            onTap: () {},
+                                            child: Text('Đồng ý'),
+                                          )
+                                        : InkWell(
+                                            onTap: () {},
+                                            child: Text('Cancel'),
+                                          )
                                     : Container(),
                           ],
                         ),

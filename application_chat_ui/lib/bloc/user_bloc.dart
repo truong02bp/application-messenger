@@ -6,11 +6,14 @@ import 'package:messenger_ui/bloc_state/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger_ui/injection.dart';
 import 'package:messenger_ui/model/dto/user_contact.dart';
+import 'package:messenger_ui/model/friend_ship.dart';
 import 'package:messenger_ui/model/user.dart';
+import 'package:messenger_ui/repository/friend_ship_repository.dart';
 import 'package:messenger_ui/repository/user_repository.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserRepository userRepository = getIt<UserRepository>();
-  User? currentUser;
+  FriendShipRepository friendShipRepository = getIt<FriendShipRepository>();
+  late User currentUser;
   UserBloc() : super(UserState());
 
   @override
@@ -35,24 +38,32 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           yield LoginFailure(errors: errors);
         }
         break;
+
       case UpdateOnlineEvent:
         log("online");
         User user = await userRepository.updateOnline(id: currentUser!.id, online: true);
         yield UpdateOnlineSuccess(user: user);
         break;
+
       case UpdateOfflineEvent:
         log("offline");
         User user = await userRepository.updateOnline(id: currentUser!.id, online: false);
         yield UpdateOnlineSuccess(user: user);
         break;
+
       case GetUserContact:
         event as GetUserContact;
         if (event.page == 0) {
           yield Loading();
         }
-        List<UserContact> usersContacts = await userRepository.findUserContact(name: event.name, userId: currentUser!.id, page: event.page, size: event.size);
+        List<UserContact> usersContacts = await userRepository.findUserContact(name: event.name, userId: currentUser.id, page: event.page, size: event.size);
         yield GetUserContactSuccess(userContacts: usersContacts);
         break;
+
+      case AddFriendEvent:
+        event as AddFriendEvent;
+        final friendShip = await friendShipRepository.create(friendShip: new FriendShip(user: currentUser, friend: event.friend, accepted: false));
+        yield SendAddFriendSuccess(friendShip: friendShip);
     }
   }
 

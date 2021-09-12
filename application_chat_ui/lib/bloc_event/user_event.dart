@@ -1,3 +1,5 @@
+import 'package:messenger_ui/model/user.dart';
+
 class UserEvent {}
 
 class SubmitLogin extends UserEvent {
@@ -17,4 +19,10 @@ class GetUserContact extends UserEvent {
   int size;
 
   GetUserContact({required this.name, required this.page, required this.size});
+}
+
+class AddFriendEvent extends UserEvent {
+  User friend;
+
+  AddFriendEvent({required this.friend});
 }

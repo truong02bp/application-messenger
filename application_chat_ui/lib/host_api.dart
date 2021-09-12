@@ -6,3 +6,4 @@ final userUrl = baseUrl + "/api/user";
 final chatBoxUrl = baseUrl + "/api/chat-box";
 final messageUrl = baseUrl + "/api/message";
 final mediaUrl = baseUrl + "/api/media";
+final friendShipUrl = baseUrl + "/api/friend-ship";
