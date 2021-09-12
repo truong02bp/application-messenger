@@ -9,13 +9,31 @@ class FriendShipRepository {
 
   ApiRepository apiRepository = getIt<ApiRepository>();
 
-  Future<FriendShip> create({required FriendShip friendShip}) async {
+  Future<FriendShip> create({required int userId, required int friendId}) async {
     ApiModel model = new ApiModel(
         url: friendShipUrl,
-        body: friendShip,
+        params: {"userId" : "$userId", "friendId" : "$friendId"},
         parse: (json) => FriendShip.fromJson(json)
     );
     final result = await apiRepository.post(model);
     return result;
+  }
+  
+  Future<FriendShip> confirmFriendShip({required int id}) async {
+    ApiModel model = new ApiModel(
+        url: friendShipUrl + "/confirm",
+        params: {"id" : "$id"},
+        parse: (json) => FriendShip.fromJson(json)
+    );
+    final friendShip = await apiRepository.put(model);
+    return friendShip;
+  }
+
+  void delete({required int id}) async {
+    ApiModel model = new ApiModel(
+        url: friendShipUrl,
+        params: {"id" : "$id"},
+    );
+    await apiRepository.delete(model);
   }
 }

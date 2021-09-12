@@ -6,14 +6,12 @@ import 'package:messenger_ui/bloc_state/user_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:messenger_ui/injection.dart';
 import 'package:messenger_ui/model/dto/user_contact.dart';
-import 'package:messenger_ui/model/friend_ship.dart';
 import 'package:messenger_ui/model/user.dart';
-import 'package:messenger_ui/repository/friend_ship_repository.dart';
 import 'package:messenger_ui/repository/user_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserRepository userRepository = getIt<UserRepository>();
-  FriendShipRepository friendShipRepository = getIt<FriendShipRepository>();
-  late User currentUser;
+  late int userId;
   UserBloc() : super(UserState());
 
   @override
@@ -27,7 +25,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (errors.isEmpty) {
           final user = await userRepository.login(event.username, event.password);
           if (user != null) {
-            currentUser = user;
+            SharedPreferences preferences = await SharedPreferences.getInstance();
+            userId = preferences.getInt("userId")!;
             yield LoginSuccess(user: user);
           } else {
             errors.add("Username, password incorrect");
@@ -41,13 +40,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
       case UpdateOnlineEvent:
         log("online");
-        User user = await userRepository.updateOnline(id: currentUser!.id, online: true);
+        User user = await userRepository.updateOnline(id: userId, online: true);
         yield UpdateOnlineSuccess(user: user);
         break;
 
       case UpdateOfflineEvent:
         log("offline");
-        User user = await userRepository.updateOnline(id: currentUser!.id, online: false);
+        User user = await userRepository.updateOnline(id: userId, online: false);
         yield UpdateOnlineSuccess(user: user);
         break;
 
@@ -56,14 +55,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (event.page == 0) {
           yield Loading();
         }
-        List<UserContact> usersContacts = await userRepository.findUserContact(name: event.name, userId: currentUser.id, page: event.page, size: event.size);
+        List<UserContact> usersContacts = await userRepository.findUserContact(name: event.name, userId: userId, page: event.page, size: event.size);
         yield GetUserContactSuccess(userContacts: usersContacts);
         break;
 
-      case AddFriendEvent:
-        event as AddFriendEvent;
-        final friendShip = await friendShipRepository.create(friendShip: new FriendShip(user: currentUser, friend: event.friend, accepted: false));
-        yield SendAddFriendSuccess(friendShip: friendShip);
     }
   }
 

@@ -30,8 +30,3 @@ class GetUserContactSuccess extends UserState {
   GetUserContactSuccess({required this.userContacts});
 }
 
-class SendAddFriendSuccess extends UserState {
-  FriendShip friendShip;
-
-  SendAddFriendSuccess({required this.friendShip});
-}

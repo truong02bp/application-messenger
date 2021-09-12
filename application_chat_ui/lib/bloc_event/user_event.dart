@@ -20,9 +20,3 @@ class GetUserContact extends UserEvent {
 
   GetUserContact({required this.name, required this.page, required this.size});
 }
-
-class AddFriendEvent extends UserEvent {
-  User friend;
-
-  AddFriendEvent({required this.friend});
-}
