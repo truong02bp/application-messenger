@@ -1,11 +1,12 @@
 package com.app.chat.services.impl;
 
+import com.app.chat.data.dto.UserContact;
 import com.app.chat.data.dto.UserDto;
-import com.app.chat.data.entities.MediaEntity;
+import com.app.chat.data.entities.FriendShipEntity;
 import com.app.chat.data.entities.RoleEntity;
 import com.app.chat.data.repository.MediaRepository;
 import com.app.chat.data.repository.RoleRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.app.chat.services.FriendShipService;
 import com.app.chat.common.exceptions.ApiException;
 import com.app.chat.data.dto.MyUserDetails;
 import com.app.chat.data.entities.UserEntity;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
     private MediaRepository mediaRepository;
 
     private RoleRepository roleRepository;
+
+    private FriendShipService friendShipService;
 
     @Override
     public UserEntity create(UserDto userDto) {
@@ -79,8 +83,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> findByName(String name, Pageable pageable) {
-        return userRepository.findAllByName(name, pageable);
+    public List<UserContact> findUserContact(String name, Long userId, Pageable pageable) {
+        List<UserContact> contacts = new ArrayList<>();
+        List<UserEntity> users = userRepository.findAllByName(name, pageable);
+        for (UserEntity user : users) {
+            UserContact userContact = new UserContact();
+            FriendShipEntity friendShip = friendShipService.findFriendShip(userId, user.getId());
+            userContact.setFriendShip(friendShip);
+            userContact.setUser(user);
+            contacts.add(userContact);
+        }
+        return contacts;
     }
 
     @Override

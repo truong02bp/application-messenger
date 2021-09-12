@@ -1,5 +1,6 @@
 package com.app.chat.services;
 
+import com.app.chat.data.dto.UserContact;
 import com.app.chat.data.dto.UserDto;
 import com.app.chat.data.entities.UserEntity;
 import org.springframework.data.domain.Pageable;
@@ -11,5 +12,5 @@ public interface UserService extends UserDetailsService {
     UserEntity create(UserDto userDto);
     UserEntity updateOnline(Long id, boolean online);
     List<String> validate(String username, String email);
-    List<UserEntity> findByName(String name, Pageable pageable);
+    List<UserContact> findUserContact(String name, Long userId, Pageable pageable);
 }

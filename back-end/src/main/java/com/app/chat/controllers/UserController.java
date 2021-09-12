@@ -1,6 +1,7 @@
 package com.app.chat.controllers;
 
 import com.app.chat.data.dto.MyUserDetails;
+import com.app.chat.data.dto.UserContact;
 import com.app.chat.data.dto.UserDto;
 import com.app.chat.data.entities.UserEntity;
 import com.app.chat.services.MailService;
@@ -32,8 +33,8 @@ class UserController {
         return ResponseEntity.ok(user.getUserEntity());
     }
     @GetMapping("/user/key")
-    public ResponseEntity<Object> getUserByName(@RequestParam(name = "name") String name, Pageable pageable) {
-        List<UserEntity> users = userService.findByName(name, pageable);
+    public ResponseEntity<Object> findUserContact(@RequestParam(name = "name") String name,@RequestParam("userId") Long userId, Pageable pageable) {
+        List<UserContact> users = userService.findUserContact(name, userId, pageable);
         return ResponseEntity.ok(users);
     }
 
