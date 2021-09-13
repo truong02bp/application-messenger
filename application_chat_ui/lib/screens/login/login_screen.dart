@@ -4,7 +4,6 @@ import 'package:messenger_ui/bloc_event/user_event.dart';
 import 'package:messenger_ui/bloc_state/user_state.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
 import 'package:messenger_ui/screens/login/components/body.dart';
-import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
