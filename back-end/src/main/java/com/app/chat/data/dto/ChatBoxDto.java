@@ -15,8 +15,7 @@ import java.util.List;
 public class ChatBoxDto extends BaseDto {
     private String color;
     private String name;
-    private boolean isGroup = false;
-    private boolean isNew = false;
+    private Boolean isGroup;
     private MediaEntity image;
     private MessengerEntity currentUser;
     private List<MessengerEntity> guestUser;
@@ -38,20 +37,12 @@ public class ChatBoxDto extends BaseDto {
         this.name = name;
     }
 
-    public boolean getIsGroup() {
+    public Boolean getIsGroup() {
         return isGroup;
     }
 
-    public void setIsGroup(boolean isGroup) {
-        isGroup = isGroup;
-    }
-
-    public boolean getIsNew() {
-        return isNew;
-    }
-
-    public void setIsNew(boolean isNew) {
-        isNew = isNew;
+    public void setGroup(Boolean group) {
+        isGroup = group;
     }
 
     public MediaEntity getImage() {

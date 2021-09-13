@@ -1,11 +1,13 @@
 package com.app.chat.services.impl;
 
+import com.app.chat.common.exceptions.ApiException;
 import com.app.chat.data.entities.*;
 import com.app.chat.data.repository.*;
 import com.app.chat.data.dto.MessageDto;
 import com.app.chat.services.MessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,13 +51,8 @@ public class MessageServiceImpl implements MessageService {
             message.setContent(messageDto.getContent());
         }
         MessengerEntity messenger = messengerRepository.findById(messageDto.getMessengerId()).orElse(null);
-        if (messenger != null) {
-            ChatBoxEntity chatBox = chatBoxRepository.findById(messenger.getChatBoxId()).orElse(null);
-            if (chatBox != null && chatBox.getIsNew()) {
-                chatBox.setNew(false);
-                chatBoxRepository.save(chatBox);
-            }
-        }
+        if (messenger == null)
+            throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("Messenger not found");
         message.setSender(messenger);
         List<MessageDetailEntity> details = new ArrayList<>();
         MessageDetailEntity detail = new MessageDetailEntity();

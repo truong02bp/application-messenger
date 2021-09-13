@@ -23,10 +23,7 @@ public class ChatBoxEntity extends BaseEntity {
     private String name;
 
     @Column(name = "is_group")
-    private boolean isGroup = false;
-
-    @Column(name = "is_new")
-    private boolean isNew = false;
+    private Boolean isGroup = false;
 
     @ManyToOne
     @JoinColumn(name = "image_id")
@@ -53,20 +50,12 @@ public class ChatBoxEntity extends BaseEntity {
         this.name = name;
     }
 
-    public boolean getIsGroup() {
+    public Boolean getIsGroup() {
         return isGroup;
     }
 
-    public void setGroup(boolean group) {
+    public void setGroup(Boolean group) {
         isGroup = group;
-    }
-
-    public boolean getIsNew() {
-        return isNew;
-    }
-
-    public void setNew(boolean aNew) {
-        isNew = aNew;
     }
 
     public MediaEntity getImage() {
