@@ -3,8 +3,11 @@ package com.app.chat.controllers;
 import com.app.chat.data.entities.FriendShipEntity;
 import com.app.chat.services.FriendShipService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/friend-ship")
@@ -13,6 +16,14 @@ public class FriendShipController {
 
     private FriendShipService friendShipService;
 
+    @GetMapping
+    public ResponseEntity<List<FriendShipEntity>> getFriendShipByUserIdAndName(@RequestParam("userId") Long userId,
+                                                                               @RequestParam("name") String name,
+                                                                               Pageable pageable) {
+        List<FriendShipEntity> friendShips = friendShipService.findFriendShipByUserIdAndName(userId, name, pageable);
+        return ResponseEntity.ok(friendShips);
+    }
+
     @PostMapping
     public ResponseEntity<FriendShipEntity> create(@RequestParam(name = "userId") Long userId, @RequestParam(name = "friendId") Long friendId) {
         FriendShipEntity friendShip = friendShipService.create(userId, friendId);
@@ -20,7 +31,7 @@ public class FriendShipController {
     }
 
     @DeleteMapping
-    public void deleteFriendShip(@RequestParam("id") Long id){
+    public void deleteFriendShip(@RequestParam("id") Long id) {
         friendShipService.delete(id);
     }
 
