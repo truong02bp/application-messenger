@@ -62,7 +62,7 @@ class _MessageFormState extends State<MessageForm> {
                 });
               },
               decoration: InputDecoration(
-                hintText: 'Type message',
+                hintText: 'Enter message',
                 contentPadding:
                     const EdgeInsets.only(left: 20),
                 border: InputBorder.none,
@@ -118,7 +118,7 @@ class _MessageFormState extends State<MessageForm> {
           },
           child: Icon(
             Icons.attach_file,
-            color: Colors.white,
+            color: Color(0xfff78379).withOpacity(0.8)
           ),
         ),
         SizedBox(
@@ -129,7 +129,7 @@ class _MessageFormState extends State<MessageForm> {
                 children: [
                   IconWithoutBackground(
                     image: "assets/images/send.png",
-                    color: Colors.white,
+                    color: Color(0xfff78379).withOpacity(0.8),
                     width: 25,
                     height: 25,
                     onTap: () {
@@ -148,7 +148,7 @@ class _MessageFormState extends State<MessageForm> {
               )
             : IconWithoutBackground(
                 image: "assets/images/mic.png",
-                color: Colors.white,
+                color: Color(0xfff78379).withOpacity(0.8),
                 width: 25,
                 height: 25,
                 onTap: () {},

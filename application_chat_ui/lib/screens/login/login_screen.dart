@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
       bloc: _userBloc,
       listener: (context, state) {
         if (state is UserSavedState)
-          Navigator.of(context).popAndPushNamed(HomeScreen.routeName, arguments: {"user" : state.user});
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routeName, arguments: {"user" : state.user});
       },
       child: Scaffold(
         body: Container(

@@ -101,14 +101,14 @@ flutter:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/angry.png"
+  image_path: "assets/images/tomato_tree.png"
 flutter_native_splash:
-#  color: "#FF99CC"
-  image: assets/images/angry.png
+  color: "#e5634d"
+  image: assets/images/tomato_tree.png
 #  background_image: "assets/images/angry.png"
 #  color_dark: "#042a49"
 #  background_image_dark: "assets/images/angry.png"
 #  image_dark: "assets/images/angry.png"
   android: true
-  #ios: false
-  #web: false
+  ios: true
+  web: true

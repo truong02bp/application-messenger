@@ -22,3 +22,9 @@ class DeleteFriendShipSuccess extends FriendShipState {
 
   DeleteFriendShipSuccess({required this.friendShipId});
 }
+
+class GetFriendShipSuccess extends FriendShipState {
+  List<FriendShip> friendShips;
+
+  GetFriendShipSuccess({required this.friendShips});
+}

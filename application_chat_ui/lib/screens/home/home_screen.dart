@@ -19,11 +19,11 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Người trồng cà chua', style: TextStyle(color: Colors.deepOrangeAccent),),
-            SvgPicture.asset(
-              "assets/svg/sign_in.svg",
+            Container(
               height: 40,
               width: 40,
-            ),
+              child: Image.asset("assets/images/tomato_tree.png"),
+            )
           ],
         ),
       ),

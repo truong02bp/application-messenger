@@ -4,6 +4,7 @@ import 'package:messenger_ui/bloc_event/user_event.dart';
 import 'package:messenger_ui/host_api.dart';
 import 'package:messenger_ui/model/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:messenger_ui/screens/group/group_screen.dart';
 import 'package:messenger_ui/screens/login/login_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 class HomeDrawer extends StatelessWidget {
@@ -43,14 +44,15 @@ class HomeDrawer extends StatelessWidget {
               )
             ],
           )),
-      buildItem(icon: Icon(Icons.group), title: 'New group', onTap: (){}),
-      buildItem(icon: Icon(Icons.location_history_rounded), title: 'Contacts', onTap: (){}),
-      buildItem(icon: Icon(Icons.phone), title: 'Calls', onTap: (){}),
-      buildItem(icon: Icon(Icons.location_on), title: 'People Nearby', onTap: (){}),
-      buildItem(icon: Icon(Icons.save_rounded), title: 'Saved Messages', onTap: (){}),
-      buildItem(icon: Icon(Icons.settings), title: 'Settings', onTap: (){}),
-      buildItem(icon: Icon(Icons.share), title: 'Invite Friends', onTap: (){}),
-      buildItem(icon: Icon(Icons.logout), title: 'Log out', onTap: (){
+      buildItem(icon: Icon(Icons.group, color: Color(0xfff78379).withOpacity(0.8)), title: 'New group', onTap: (){
+        Navigator.pushNamed(context, GroupScreen.routeName);
+      }),
+      buildItem(icon: Icon(Icons.location_history_rounded, color: Color(0xfff78379).withOpacity(0.8)), title: 'Contacts', onTap: (){}),
+      buildItem(icon: Icon(Icons.location_on, color: Color(0xfff78379).withOpacity(0.8)), title: 'People Nearby', onTap: (){}),
+      buildItem(icon: Icon(Icons.save_rounded, color: Color(0xfff78379).withOpacity(0.8)), title: 'Saved Messages', onTap: (){}),
+      buildItem(icon: Icon(Icons.settings, color: Color(0xfff78379).withOpacity(0.8)), title: 'Settings', onTap: (){}),
+      buildItem(icon: Icon(Icons.share, color: Color(0xfff78379).withOpacity(0.8)), title: 'Invite Friends', onTap: (){}),
+      buildItem(icon: Icon(Icons.logout, color: Color(0xfff78379).withOpacity(0.8)), title: 'Log out', onTap: (){
         _userBloc.add(UpdateOfflineEvent());
         Navigator.pushNamedAndRemoveUntil(context, LoginScreen.routeName, (r) => false);
       }),

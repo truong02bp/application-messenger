@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:messenger_ui/screens/chat_box/chat_box_screen.dart';
 import 'package:messenger_ui/screens/chat_box/components/image_card.dart';
 import 'package:messenger_ui/screens/forgot_password/forgot_password_screen.dart';
+import 'package:messenger_ui/screens/group/group_screen.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
 import 'package:messenger_ui/screens/login/login_screen.dart';
 import 'package:messenger_ui/screens/search_screen/search_screen.dart';
@@ -18,4 +19,5 @@ final Map<String, WidgetBuilder> routes = {
   SignUpScreen.routeName : (context) => SignUpScreen(),
   ForgotPasswordScreen.routeName : (context) => ForgotPasswordScreen(),
   SearchScreen.routeName : (context) => SearchScreen(),
+  GroupScreen.routeName : (context) => GroupScreen(),
 };

@@ -9,6 +9,20 @@ class FriendShipRepository {
 
   ApiRepository apiRepository = getIt<ApiRepository>();
 
+  Future<List<FriendShip>> findByUserIdAndName({required int userId, required String name, required int page, required int size}) async {
+    ApiModel model = new ApiModel(
+        url: friendShipUrl,
+        params: {"userId" : "$userId", "page" : "$page", "size" : "$size" , "name" : "$name"},
+        parse: (data){
+          return data.map<FriendShip>((json) => FriendShip.fromJson(json));
+        }
+    );
+    final friendShips = await apiRepository.get(model);
+    if (friendShips != null)
+      return friendShips;
+    return [];
+  }
+
   Future<FriendShip> create({required int userId, required int friendId}) async {
     ApiModel model = new ApiModel(
         url: friendShipUrl,
