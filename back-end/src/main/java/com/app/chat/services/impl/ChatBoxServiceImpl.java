@@ -36,22 +36,20 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     private MessageService messageService;
 
     @Override
-    public ChatBoxEntity create(List<Long> userIds) {
+    public void create(List<Long> userIds) {
         ChatBoxEntity chatBox = new ChatBoxEntity();
-        chatBox.setGroup(false);
         chatBox = chatBoxRepository.save(chatBox);
+        List<UserEntity> users = userRepository.findByUserIds(userIds);
+        chatBox.setGroup(users.size() > 2);
         List<MessengerEntity> messengers = new ArrayList<>();
-        for (Long userId : userIds) {
-            UserEntity user = userRepository.findById(userId).orElse(null);
-            if (user == null)
-                throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("No found the user with id: " + userId);
+        for (UserEntity user : users) {
             MessengerEntity messenger = new MessengerEntity();
             messenger.setUser(user);
             messenger.setChatBoxId(chatBox.getId());
             messengers.add(messengerRepository.save(messenger));
         }
         chatBox.setMessengers(messengers);
-        return chatBox;
+        chatBoxRepository.save(chatBox);
     }
 
     @Override

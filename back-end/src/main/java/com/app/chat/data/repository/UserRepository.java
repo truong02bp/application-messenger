@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
@@ -15,4 +16,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
 
     @Query(value = "select user from UserEntity user where user.name like %:name%")
     List<UserEntity> findAllByName(@Param("name") String name, Pageable pageable);
+
+    @Query(value = "select user from UserEntity user where user.id in ?1")
+    List<UserEntity> findByUserIds(List<Long> ids);
 }
