@@ -12,17 +12,11 @@ class FriendShipBloc extends Bloc<FriendShipEvent, FriendShipState> {
   late int userId;
   @override
   Stream<FriendShipState> mapEventToState(FriendShipEvent event) async* {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    userId = preferences.getInt("userId")!;
     switch (event.runtimeType) {
-      case GetFriendShipEvent:
-        event as GetFriendShipEvent;
-        final friendShips = await friendShipRepository.findByUserIdAndName(userId: userId, name: event.name, page: event.page, size: event.size);
-        yield GetFriendShipSuccess(friendShips: friendShips);
-        break;
-        
       case AddFriendEvent:
         event as AddFriendEvent;
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        userId = preferences.getInt("userId")!;
         final friendShip = await friendShipRepository.create(userId: userId, friendId: event.friend.id);
         yield SendAddFriendSuccess(friendShip: friendShip);
         break;

@@ -40,7 +40,6 @@ class _BodyState extends State<Body> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print('${page + 1}');
         _userBloc.add(
             GetUserContact(page: page + 1, size: size, name: widget.keySearch));
         setState(() {

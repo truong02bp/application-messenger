@@ -23,11 +23,4 @@ class ConfirmFriendShipEvent extends FriendShipEvent {
   ConfirmFriendShipEvent({required this.friendShipId});
 }
 
-class GetFriendShipEvent extends FriendShipEvent {
-  int page;
-  int size;
-  String name;
-
-  GetFriendShipEvent({required this.page, required this.size, required this.name});
-}
 

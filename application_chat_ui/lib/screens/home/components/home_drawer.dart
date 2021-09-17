@@ -45,7 +45,7 @@ class HomeDrawer extends StatelessWidget {
             ],
           )),
       buildItem(icon: Icon(Icons.group, color: Color(0xfff78379).withOpacity(0.8)), title: 'New group', onTap: (){
-        Navigator.pushNamed(context, GroupScreen.routeName);
+        Navigator.pushNamed(context, GroupScreen.routeName, arguments: {"user" : user});
       }),
       buildItem(icon: Icon(Icons.location_history_rounded, color: Color(0xfff78379).withOpacity(0.8)), title: 'Contacts', onTap: (){}),
       buildItem(icon: Icon(Icons.location_on, color: Color(0xfff78379).withOpacity(0.8)), title: 'People Nearby', onTap: (){}),

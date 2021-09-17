@@ -3,7 +3,6 @@ import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/screens/home/components/body.dart';
 import 'package:messenger_ui/screens/home/components/home_drawer.dart';
 import 'package:messenger_ui/screens/home/components/search_bar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 class HomeScreen extends StatelessWidget {
   static final String routeName = "/home";
 

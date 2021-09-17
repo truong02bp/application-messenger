@@ -14,7 +14,7 @@ class FriendShipRepository {
         url: friendShipUrl,
         params: {"userId" : "$userId", "page" : "$page", "size" : "$size" , "name" : "$name"},
         parse: (data){
-          return data.map<FriendShip>((json) => FriendShip.fromJson(json));
+          return data.map<FriendShip>((json) => FriendShip.fromJson(json)).toList();
         }
     );
     final friendShips = await apiRepository.get(model);
