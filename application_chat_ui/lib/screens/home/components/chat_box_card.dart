@@ -34,14 +34,16 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
     chatBox = widget.chatBox;
     guest = chatBox.guestUser.first;
-    lastMessage = chatBox.lastMessage!;
-    details.addAll(lastMessage!.details);
-    details.removeWhere((detail) => detail.seenBy.id == lastMessage!.sender.id);
-    if (lastMessage!.sender.id == chatBox.currentUser.id){
-      isSeen = true;
-    }
-    if (details.isNotEmpty){
-      isSeen = true;
+    lastMessage = chatBox.lastMessage;
+    if (lastMessage != null) {
+      details.addAll(lastMessage!.details);
+      details.removeWhere((detail) => detail.seenBy.id == lastMessage!.sender.id);
+      if (lastMessage != null && lastMessage!.sender.id == chatBox.currentUser.id){
+        isSeen = true;
+      }
+      if (details.isNotEmpty){
+        isSeen = true;
+      }
     }
   }
 
@@ -101,7 +103,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
                     SizedBox(
                       height: 10,
                     ),
-                    buildLastMessage(message: lastMessage),
+                    lastMessage != null ? buildLastMessage(message: lastMessage) : Container(),
                   ],
                 ),
               )

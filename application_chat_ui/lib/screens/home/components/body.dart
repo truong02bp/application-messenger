@@ -65,14 +65,13 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
             if (state is GetAllChatBoxSuccess) {
               List<ChatBox> chatBoxes = [];
               chatBoxes.addAll(state.chatBoxes);
-              chatBoxes.removeWhere((element) => element.lastMessage == null);
+              chatBoxes.removeWhere((element) => element.lastMessage == null && !element.isGroup);
               return Column(
                 children: List.generate(chatBoxes.length, (index) {
                   return ChatBoxCard(chatBox: chatBoxes[index]);
                 }),
               );
             }
-
             return Container();
           },
         )

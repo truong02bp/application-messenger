@@ -6,6 +6,10 @@ class GroupState {
 
 }
 
+class Loading extends GroupState {
+
+}
+
 class AddMemberSuccess extends GroupState {
   User user;
   AddMemberSuccess({required this.user});

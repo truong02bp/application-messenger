@@ -18,6 +18,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         SharedPreferences preferences = await SharedPreferences.getInstance();
         int userId = preferences.getInt("userId")!;
         event as GetFriendShipEvent;
+        if (event.page == 0)
+          yield Loading();
         final friendShips = await friendShipRepository.findByUserIdAndName(userId: userId, name: event.name, page: event.page, size: event.size);
         yield GetFriendShipSuccess(friendShips: friendShips);
         break;
@@ -33,7 +35,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
 
       case CreateGroupEvent:
         event as CreateGroupEvent;
-        chatBoxRepository.createGroup(userIds: event.userIds);
+        yield Loading();
+        await chatBoxRepository.createGroup(userIds: event.userIds);
         yield CreateGroupSuccess();
     }
   }

@@ -54,7 +54,6 @@ class _BodyState extends State<Body> {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
     if (widget.keySearch != oldWidget.keySearch) {
-      print('${widget.keySearch} ${oldWidget.keySearch} update');
       setState(() {
         page = 0;
         _userBloc

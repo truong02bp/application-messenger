@@ -56,6 +56,7 @@ class _BodyState extends State<Body> {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     User user = arguments["user"];
+    selectedIds.add(user.id);
     final border = UnderlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide:
@@ -114,6 +115,25 @@ class _BodyState extends State<Body> {
         SizedBox(
           height: 10,
         ),
+        BlocBuilder(
+          bloc: _groupBloc,
+          builder: (context, state) {
+            if (state is Loading) {
+              return Flexible(
+                flex: 2,
+                child: Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/loading.gif"),
+                          fit: BoxFit.cover)),
+                ),
+              );
+            }
+            return Container();
+          },
+        ),
         Flexible(
           flex: 1,
           child: BlocConsumer(
@@ -125,9 +145,6 @@ class _BodyState extends State<Body> {
               if (state is RemoveMemberSuccess) {
                 usersSelected.remove(state.user);
                 selectedIds.remove(state.user.id);
-              }
-              if (state is CreateGroupSuccess) {
-                Navigator.pushReplacementNamed(context, HomeScreen.routeName, arguments: {"user" : user});
               }
             },
             builder: (context, state) {
@@ -200,6 +217,9 @@ class _BodyState extends State<Body> {
               if (state is AddMemberSuccess) {
                 selectedIds.add(state.user.id);
               }
+              if (state is CreateGroupSuccess) {
+                Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (route) => false, arguments: {"user" : user});
+              }
             },
             builder: (context, state) {
               return ListView.builder(
@@ -209,7 +229,6 @@ class _BodyState extends State<Body> {
                       ? friendShip.friend
                       : friendShip.user;
                   if (selectedIds.contains(friend.id)) {
-                    print('${friend.id}');
                     return Container();
                   }
                   return ListTile(

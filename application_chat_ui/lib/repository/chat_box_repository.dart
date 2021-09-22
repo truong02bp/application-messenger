@@ -23,7 +23,7 @@ class ChatBoxRepository {
     return [];
   }
 
-  void createGroup({required Set<int> userIds}) async {
+  Future<void> createGroup({required Set<int> userIds}) async {
     String ids = "";
     userIds.forEach((element) {
       ids = ids + "$element,";
