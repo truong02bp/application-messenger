@@ -35,26 +35,34 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
         } else
           yield GetAllChatBoxFailure();
         break;
+
       case GetMessage:
         event as GetMessage;
         final messages = await messageRepository.getMessageByChatBoxId(
             chatBoxId: event.chatBoxId, size: event.size, page: event.page);
-
         yield GetMessageSuccess(messages: messages);
         break;
+
       case NewMessageEvent:
         event as NewMessageEvent;
         yield NewMessageState(
             chatBoxId: event.chatBoxId, message: event.message);
         break;
+
       case UpdateMessageSeenEvent:
         event as UpdateMessageSeenEvent;
         yield UpdateMessageSeenSuccess(messages: event.messages, chatBoxId: MessageBloc.chatBoxIdUpdate);
         break;
+
       case UpdateMessageReactionEvent:
         event as UpdateMessageReactionEvent;
         yield UpdateMessageReactionSuccess(message: event.message, chatBoxId: MessageBloc.chatBoxIdUpdate);
         break;
+
+      case GetChatBox:
+        event as GetChatBox;
+        final chatBox = await chatBoxRepository.getChatBoxById(id: event.id, userId: event.userId);
+        yield GetChatBoxSuccess(chatBox: chatBox);
     }
   }
 

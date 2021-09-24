@@ -26,7 +26,7 @@ class _BodyState extends State<Body> {
   List<Message> messages = [];
   int size = 18;
   int page = 0;
-  int updateIndex = -1;
+  int messageUpdateId = -1;
   ScrollController _scrollController = ScrollController(keepScrollOffset: true);
   Set<int> idsNeedAvatar = Set();
 
@@ -115,7 +115,7 @@ class _BodyState extends State<Body> {
 
             if (state is UpdateMessageReactionSuccess &&
                 state.chatBoxId == widget.chatBox.id) {
-              updateIndex = state.message.id;
+              messageUpdateId = state.message.id;
               for (int i = 0; i < messages.length; i++) {
                 if (messages[i].id == state.message.id) {
                   setState(() {
@@ -174,7 +174,7 @@ class _BodyState extends State<Body> {
                 }
                 bool needMessageStatus = idsNeedBuild.contains(message.id);
                 bool needAvatar = idsNeedAvatar.contains(message.id);
-                if (updateIndex == message.id) {
+                if (messageUpdateId == message.id) {
                   return Padding(
                     key: UniqueKey(),
                     padding: const EdgeInsets.only(bottom: 7),

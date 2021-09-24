@@ -54,14 +54,9 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
+      key: ValueKey(widget.chatBox.id),
       bloc: _chatBoxBloc,
       listener: (context, state) {
-        if (state is NewMessageState && state.chatBoxId == widget.chatBox.id) {
-          setState(() {
-            lastMessage = state.message;
-            isSeen = false;
-          });
-        }
         if (state is UpdateMessageSeenSuccess &&
             state.chatBoxId == widget.chatBox.id &&
             state.messages.isNotEmpty) {

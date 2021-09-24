@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:messenger_ui/host_api.dart';
 import 'package:messenger_ui/injection.dart';
@@ -15,12 +16,20 @@ class ChatBoxRepository {
         params: {"userId": "$userId"},
         parse: (data) {
           return data.map<ChatBox>((json) => ChatBox.fromJson(json)).toList();
-        }
+        });
+    final res = await apiRepository.get(model);
+    if (res != null) return res;
+    return [];
+  }
+
+  Future<ChatBox> getChatBoxById({required int id, @required userId}) async {
+    ApiModel model = ApiModel(
+      url: chatBoxUrl + "/$id",
+      params: {"userId" : "$userId"},
+      parse: (json) => ChatBox.fromJson(json),
     );
     final res = await apiRepository.get(model);
-    if (res != null)
-      return res;
-    return [];
+    return res;
   }
 
   Future<void> createGroup({required Set<int> userIds}) async {
@@ -28,7 +37,7 @@ class ChatBoxRepository {
     userIds.forEach((element) {
       ids = ids + "$element,";
     });
-    ids = ids.substring(0, ids.length-1);
+    ids = ids.substring(0, ids.length - 1);
     ApiModel model = new ApiModel(
       url: chatBoxUrl,
       params: {"userIds": "${userIds.join(",")}"},

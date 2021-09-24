@@ -50,31 +50,37 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
         BlocBuilder(
           bloc: _chatBoxBloc,
           builder: (context, state) {
-            if (state is GetAllChatBoxSuccess) {
-              return ActiveBar(chatBoxes: state.chatBoxes);
-            }
-            return Container();
+              return ActiveBar(chatBoxes: chatBoxes);
           },
         ),
         SizedBox(
           height: 20,
         ),
-        BlocBuilder(
+        BlocConsumer(
           bloc: _chatBoxBloc,
-          builder: (context, state) {
+          listener: (context, state) {
+            if (state is NewMessageState) {
+              _chatBoxBloc.add(GetChatBox(id: state.chatBoxId, userId: widget.user.id));
+            }
+
             if (state is GetAllChatBoxSuccess) {
-              List<ChatBox> chatBoxes = [];
               chatBoxes.addAll(state.chatBoxes);
               chatBoxes.removeWhere((element) => element.lastMessage == null && !element.isGroup);
+            }
+            if (state is GetChatBoxSuccess) {
+              chatBoxes.removeWhere((element) => element.id == state.chatBox.id);
+              chatBoxes.insert(0, state.chatBox);
+            }
+          },
+          builder: (context, state) {
               return Column(
+                key: UniqueKey(),
                 children: List.generate(chatBoxes.length, (index) {
-                  return ChatBoxCard(chatBox: chatBoxes[index]);
+                return ChatBoxCard(chatBox: chatBoxes[index]);
                 }),
               );
-            }
-            return Container();
           },
-        )
+        ),
       ],
     );
   }

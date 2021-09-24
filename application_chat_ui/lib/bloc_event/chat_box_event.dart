@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:messenger_ui/model/message.dart';
 
 class ChatBoxEvent {}
@@ -33,4 +34,10 @@ class UpdateMessageReactionEvent extends ChatBoxEvent {
   final Message message;
 
   UpdateMessageReactionEvent({required this.message});
+}
+
+class GetChatBox extends ChatBoxEvent {
+  int id;
+  int userId;
+  GetChatBox({required this.id, required this.userId});
 }

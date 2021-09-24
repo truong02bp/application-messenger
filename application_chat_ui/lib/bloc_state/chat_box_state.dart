@@ -50,3 +50,9 @@ class UpdateMessageReactionSuccess extends ChatBoxState {
   UpdateMessageReactionSuccess(
       {required this.message, required this.chatBoxId});
 }
+
+class GetChatBoxSuccess extends ChatBoxState {
+  ChatBox chatBox;
+
+  GetChatBoxSuccess({required this.chatBox});
+}
