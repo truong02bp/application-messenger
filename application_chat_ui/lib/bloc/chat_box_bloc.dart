@@ -28,10 +28,21 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
       case GetAllChatBox:
         event as GetAllChatBox;
         final chatBoxes =
-            await chatBoxRepository.getAllChatBoxByUserId(userId: event.userId);
+            await chatBoxRepository.getAllChatBoxByUserId(userId: event.userId, page: event.page, size: event.size);
         if (chatBoxes.isNotEmpty) {
           connect(chatBoxes);
           yield GetAllChatBoxSuccess(chatBoxes: chatBoxes);
+        } else
+          yield GetAllChatBoxFailure();
+        break;
+
+      case GetChatBoxMostMessage:
+        event as GetChatBoxMostMessage;
+        final chatBoxes =
+        await chatBoxRepository.getChatBoxMostMessage(userId: event.userId, page: event.page, size: event.size);
+        if (chatBoxes.isNotEmpty) {
+          connect(chatBoxes);
+          yield GetChatBoxMostMessageSuccess(chatBoxes: chatBoxes);
         } else
           yield GetAllChatBoxFailure();
         break;

@@ -14,8 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatBoxCard extends StatefulWidget {
   final ChatBox chatBox;
-
-  ChatBoxCard({required this.chatBox});
+  final Key key;
+  ChatBoxCard({required this.key, required this.chatBox});
 
   @override
   _ChatBoxCardState createState() => _ChatBoxCardState();
@@ -54,7 +54,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      key: ValueKey(widget.chatBox.id),
+      key: widget.key,
       bloc: _chatBoxBloc,
       listener: (context, state) {
         if (state is UpdateMessageSeenSuccess &&

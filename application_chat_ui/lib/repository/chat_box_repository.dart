@@ -10,10 +10,22 @@ import 'package:messenger_ui/repository/api_repository.dart';
 class ChatBoxRepository {
   ApiRepository apiRepository = getIt<ApiRepository>();
 
-  Future<List<ChatBox>> getAllChatBoxByUserId({required int userId}) async {
+  Future<List<ChatBox>> getAllChatBoxByUserId({required int userId, required int page, required int size}) async {
     ApiModel model = ApiModel(
         url: chatBoxUrl,
-        params: {"userId": "$userId"},
+        params: {"userId": "$userId", "page" : "$page", "size" : "$size"},
+        parse: (data) {
+          return data.map<ChatBox>((json) => ChatBox.fromJson(json)).toList();
+        });
+    final res = await apiRepository.get(model);
+    if (res != null) return res;
+    return [];
+  }
+
+  Future<List<ChatBox>> getChatBoxMostMessage({required int userId, required int page, required int size}) async {
+    ApiModel model = ApiModel(
+        url: chatBoxUrl + "/most-message",
+        params: {"userId": "$userId", "page" : "$page", "size" : "$size"},
         parse: (data) {
           return data.map<ChatBox>((json) => ChatBox.fromJson(json)).toList();
         });

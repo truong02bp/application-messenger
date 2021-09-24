@@ -23,16 +23,27 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
   List<ChatBox> chatBoxes = [];
   late ChatBoxBloc _chatBoxBloc;
   late UserBloc _userBloc;
-
+  ScrollController _scrollController = ScrollController();
+  int page = 0;
+  int size = 15;
+  int chatBoxUpdateId = -1;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
-    _chatBoxBloc.add(GetAllChatBox(userId: widget.user.id));
+    _chatBoxBloc.add(GetAllChatBox(userId: widget.user.id, page: page, size: size));
     _userBloc.add(UpdateOnlineEvent());
     WidgetsBinding.instance!.addObserver(this);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _chatBoxBloc.add(
+            GetAllChatBox(userId: widget.user.id, page: page + 1, size: size));
+        page += 1;
+      }
+    });
   }
 
   @override
@@ -47,20 +58,17 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BlocBuilder(
-          bloc: _chatBoxBloc,
-          builder: (context, state) {
-              return ActiveBar(chatBoxes: chatBoxes);
-          },
+        Container(
+          height: 80,
+            child: ActiveBar(user: widget.user)
         ),
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 10,),
         BlocConsumer(
           bloc: _chatBoxBloc,
           listener: (context, state) {
             if (state is NewMessageState) {
-              _chatBoxBloc.add(GetChatBox(id: state.chatBoxId, userId: widget.user.id));
+              _chatBoxBloc
+                  .add(GetChatBox(id: state.chatBoxId, userId: widget.user.id));
             }
 
             if (state is GetAllChatBoxSuccess) {
@@ -70,15 +78,20 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
             if (state is GetChatBoxSuccess) {
               chatBoxes.removeWhere((element) => element.id == state.chatBox.id);
               chatBoxes.insert(0, state.chatBox);
+              chatBoxUpdateId = state.chatBox.id;
             }
           },
           builder: (context, state) {
-              return Column(
-                key: UniqueKey(),
-                children: List.generate(chatBoxes.length, (index) {
-                return ChatBoxCard(chatBox: chatBoxes[index]);
-                }),
-              );
+            return Expanded(
+              child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: chatBoxes.length,
+                  itemBuilder: (context, index) {
+                    if (chatBoxUpdateId == chatBoxes[index].id)
+                      return ChatBoxCard(chatBox: chatBoxes[index], key: UniqueKey());
+                    return ChatBoxCard(chatBox: chatBoxes[index], key: ValueKey(chatBoxes[index].id),);
+                  }),
+            );
           },
         ),
       ],

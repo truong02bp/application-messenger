@@ -5,8 +5,16 @@ class ChatBoxEvent {}
 
 class GetAllChatBox extends ChatBoxEvent {
   int userId;
+  final int size;
+  final int page;
+  GetAllChatBox({required this.userId, required this.size, required this.page});
+}
 
-  GetAllChatBox({required this.userId});
+class GetChatBoxMostMessage extends ChatBoxEvent {
+  int userId;
+  final int size;
+  final int page;
+  GetChatBoxMostMessage({required this.userId, required this.size, required this.page});
 }
 
 class GetMessage extends ChatBoxEvent {

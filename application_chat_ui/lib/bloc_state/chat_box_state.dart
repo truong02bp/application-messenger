@@ -9,10 +9,10 @@ class GetAllChatBoxSuccess extends ChatBoxState {
   GetAllChatBoxSuccess({required this.chatBoxes});
 }
 
-class GetAllOldChatBoxSuccess extends ChatBoxState {
+class GetChatBoxMostMessageSuccess extends ChatBoxState {
   List<ChatBox> chatBoxes;
 
-  GetAllOldChatBoxSuccess({required this.chatBoxes});
+  GetChatBoxMostMessageSuccess({required this.chatBoxes});
 }
 
 class GetAllChatBoxFailure extends ChatBoxState {}
