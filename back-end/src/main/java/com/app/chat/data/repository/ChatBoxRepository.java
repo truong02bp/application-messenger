@@ -10,7 +10,7 @@ import java.util.List;
 public interface ChatBoxRepository extends JpaRepository<ChatBoxEntity, Long> {
 
     @Query(value = "select chatbox from ChatBoxEntity chatbox " +
-            "join MessengerEntity messenger on messenger.chatBoxId = chatbox.id and messenger.user.id = ?1")
+            "join MessengerEntity messenger on messenger.chatBoxId = chatbox.id and messenger.user.id = ?1 order by chatbox.createdDate desc ")
     List<ChatBoxEntity> findByUserId(@Param("userId") Long userId);
 
 }

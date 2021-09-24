@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity updateOnline(Long id, boolean online) {
-        System.out.println(id + " " + online);
         UserEntity user = userRepository.findById(id).orElse(null);
         if (user == null)
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("No found the user");

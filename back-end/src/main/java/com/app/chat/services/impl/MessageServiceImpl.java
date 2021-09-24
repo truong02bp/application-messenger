@@ -60,6 +60,11 @@ public class MessageServiceImpl implements MessageService {
         details.add(detail);
         message.setDetails(details);
         message = messageRepository.save(message);
+        ChatBoxEntity chatBox = chatBoxRepository.findById(messageDto.getChatBoxId()).orElse(null);
+        if (chatBox == null)
+            throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("Chat box not found");
+        chatBox.setLastMessageId(message.getId());
+        chatBoxRepository.save(chatBox);
         return message;
     }
 

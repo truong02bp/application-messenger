@@ -34,6 +34,16 @@ public class ChatBoxEntity extends BaseEntity {
     @JoinColumn(name = "chat_box_id")
     private List<MessengerEntity> messengers;
 
+    private Long lastMessageId;
+
+    public Long getLastMessageId() {
+        return lastMessageId;
+    }
+
+    public void setLastMessageId(Long lastMessageId) {
+        this.lastMessageId = lastMessageId;
+    }
+
     public String getColor() {
         return color;
     }
