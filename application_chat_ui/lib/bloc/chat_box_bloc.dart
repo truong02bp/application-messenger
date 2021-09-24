@@ -62,12 +62,14 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
 
       case UpdateMessageSeenEvent:
         event as UpdateMessageSeenEvent;
-        yield UpdateMessageSeenSuccess(messages: event.messages, chatBoxId: MessageBloc.chatBoxIdUpdate);
+        if (event.messages.length > 0) {
+          yield UpdateMessageSeenSuccess(messages: event.messages, chatBoxId: event.messages[0].sender.chatBoxId);
+        }
         break;
 
       case UpdateMessageReactionEvent:
         event as UpdateMessageReactionEvent;
-        yield UpdateMessageReactionSuccess(message: event.message, chatBoxId: MessageBloc.chatBoxIdUpdate);
+        yield UpdateMessageReactionSuccess(message: event.message, chatBoxId: event.message.sender.chatBoxId);
         break;
 
       case GetChatBox:

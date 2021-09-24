@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/chat_box_bloc.dart';
+import 'package:messenger_ui/bloc/message_bloc.dart';
+import 'package:messenger_ui/bloc_event/chat_box_event.dart';
+import 'package:messenger_ui/bloc_event/message_event.dart';
 import 'package:messenger_ui/bloc_state/chat_box_state.dart';
 import 'package:messenger_ui/content_type.dart';
 import 'package:messenger_ui/model/chat_box.dart';
+import 'package:messenger_ui/model/dto/message_dto.dart';
 import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/model/messenger.dart';
@@ -28,12 +32,14 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
   bool isSeen = false;
   late List<MessageDetail> details = [];
   late ChatBoxBloc _chatBoxBloc;
+  late MessageBloc _messageBloc;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
+    _messageBloc = BlocProvider.of<MessageBloc>(context);
     chatBox = widget.chatBox;
     guest = chatBox.guestUser.first;
     lastMessage = chatBox.lastMessage;
@@ -72,6 +78,12 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
         borderRadius: BorderRadius.circular(25),
         splashColor: Colors.pink.withOpacity(0.2),
         onTap: () {
+          // if (chatBox.lastMessage != null && chatBox.lastMessage!.sender.id != chatBox.currentUser.id && isSeen == false) {
+          //   MessageDto messageDto = MessageDto(
+          //       messengerId: chatBox.currentUser.id,
+          //       chatBoxId: chatBox.id);
+          //   _messageBloc.add(UpdateMessageEvent(messageDto: messageDto, option: "seen"));
+          // }
           Navigator.popAndPushNamed(context, ChatBoxScreen.routeName,
               arguments: {"chatBox": chatBox});
         },

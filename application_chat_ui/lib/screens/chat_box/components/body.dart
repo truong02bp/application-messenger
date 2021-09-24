@@ -71,15 +71,9 @@ class _BodyState extends State<Body> {
                 messages.addAll(state.messages);
               });
               // if not the latest message is not of currentUser => update seen message not seen before
-              if (state.messages.isNotEmpty &&
-                  page == 0 &&
-                  state.messages[0].sender.id != chatBox.currentUser.id) {
-                MessageDto messageDto = MessageDto(
-                    messageId: messages[0].id,
-                    messengerId: chatBox.currentUser.id,
-                    chatBoxId: chatBox.id);
-                _messageBloc.add(
-                    UpdateMessageEvent(messageDto: messageDto, option: "seen"));
+              if (state.messages.isNotEmpty && page == 0 && state.messages[0].sender.id != chatBox.currentUser.id) {
+                MessageDto messageDto = MessageDto(messengerId: chatBox.currentUser.id, chatBoxId: chatBox.id);
+                _messageBloc.add(UpdateMessageEvent(messageDto: messageDto, option: "seen"));
               }
             }
 
@@ -94,16 +88,11 @@ class _BodyState extends State<Body> {
               // if not the latest message is not of currentUser => update seen new message
               if (state.message.sender.id != chatBox.currentUser.id) {
                 MessageDto messageDto = MessageDto(
-                    messageId: state.message.id,
-                    messengerId: chatBox.currentUser.id,
-                    chatBoxId: chatBox.id);
-                _messageBloc.add(
-                    UpdateMessageEvent(messageDto: messageDto, option: "seen"));
+                    messengerId: chatBox.currentUser.id, chatBoxId: chatBox.id);
+                _messageBloc.add(UpdateMessageEvent(messageDto: messageDto, option: "seen"));
               }
             }
-
-            if (state is UpdateMessageSeenSuccess &&
-                state.chatBoxId == widget.chatBox.id) {
+            if (state is UpdateMessageSeenSuccess && state.chatBoxId == widget.chatBox.id) {
               if (state.messages.isNotEmpty &&
                   state.messages[0].sender.id == chatBox.currentUser.id) {
                 setState(() {
@@ -119,8 +108,7 @@ class _BodyState extends State<Body> {
               for (int i = 0; i < messages.length; i++) {
                 if (messages[i].id == state.message.id) {
                   setState(() {
-                    messages.replaceRange(
-                        i, i + 1, [state.message]);
+                    messages.replaceRange(i, i + 1, [state.message]);
                   });
                   break;
                 }
