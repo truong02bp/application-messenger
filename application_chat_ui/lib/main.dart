@@ -5,6 +5,7 @@ import 'package:messenger_ui/routers.dart';
 import 'package:messenger_ui/screens/login/login_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
+
 void main() {
   configureDependencies();
   runApp(MyApp());

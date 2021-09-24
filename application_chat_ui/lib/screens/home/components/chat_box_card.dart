@@ -7,9 +7,11 @@ import 'package:messenger_ui/model/message.dart';
 import 'package:messenger_ui/model/message_detail.dart';
 import 'package:messenger_ui/model/messenger.dart';
 import 'package:messenger_ui/screens/chat_box/chat_box_screen.dart';
+import 'package:messenger_ui/ultils/time_ultil.dart';
 import 'package:messenger_ui/widgets/avatar_chat_box.dart';
 import 'package:messenger_ui/widgets/message_status.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class ChatBoxCard extends StatefulWidget {
   final ChatBox chatBox;
 
@@ -20,13 +22,13 @@ class ChatBoxCard extends StatefulWidget {
 }
 
 class _ChatBoxCardState extends State<ChatBoxCard> {
-
   late ChatBox chatBox;
   late Messenger guest;
   late Message? lastMessage;
   bool isSeen = false;
   late List<MessageDetail> details = [];
   late ChatBoxBloc _chatBoxBloc;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,11 +39,13 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
     lastMessage = chatBox.lastMessage;
     if (lastMessage != null) {
       details.addAll(lastMessage!.details);
-      details.removeWhere((detail) => detail.seenBy.id == lastMessage!.sender.id);
-      if (lastMessage != null && lastMessage!.sender.id == chatBox.currentUser.id){
+      details
+          .removeWhere((detail) => detail.seenBy.id == lastMessage!.sender.id);
+      if (lastMessage != null &&
+          lastMessage!.sender.id == chatBox.currentUser.id) {
         isSeen = true;
       }
-      if (details.isNotEmpty){
+      if (details.isNotEmpty) {
         isSeen = true;
       }
     }
@@ -72,14 +76,14 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
       child: InkWell(
         borderRadius: BorderRadius.circular(25),
         splashColor: Colors.pink.withOpacity(0.2),
-        onTap: (){
-          Navigator.popAndPushNamed(context, ChatBoxScreen.routeName, arguments: {"chatBox" : chatBox});
+        onTap: () {
+          Navigator.popAndPushNamed(context, ChatBoxScreen.routeName,
+              arguments: {"chatBox": chatBox});
         },
         child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
-              color: Colors.black.withOpacity(0.03)
-          ),
+              color: Colors.black.withOpacity(0.03)),
           height: 70,
           padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
           child: Row(
@@ -87,15 +91,16 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AvatarChatBox(chatBox: chatBox),
-              SizedBox(width: 20,),
+              SizedBox(
+                width: 20,
+              ),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${chatBox.name != null ? chatBox.name : guest.nickName !=
-                          null ? guest.nickName : guest.user.name}',
+                      '${chatBox.name != null ? chatBox.name : guest.nickName != null ? guest.nickName : guest.user.name}',
                       style: TextStyle(
                           color: isSeen ? Colors.grey : Colors.white,
                           fontSize: 18),
@@ -103,7 +108,9 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
                     SizedBox(
                       height: 10,
                     ),
-                    lastMessage != null ? buildLastMessage(message: lastMessage) : Container(),
+                    lastMessage != null
+                        ? buildLastMessage(message: lastMessage)
+                        : Container(),
                   ],
                 ),
               )
@@ -130,8 +137,7 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
         content.write("send a file");
       } else if (imageContentType.contains(message.media!.contentType)) {
         content.write("send a photo");
-      }
-      else {
+      } else {
         content.write("send a video");
       }
     } else {
@@ -146,14 +152,26 @@ class _ChatBoxCardState extends State<ChatBoxCard> {
         Text(
           content.toString(),
           style: TextStyle(
-              color: isSeen ? Colors.grey : Colors.white,),
+            color: isSeen ? Colors.grey : Colors.white,
+          ),
         ),
-        MessageStatus(message: message, currentUser: chatBox.currentUser, color: chatBox.color,)
+        SizedBox(
+          width: 15,
+        ),
+        Text(
+          '${formatDateWithoutHour(time: message.createdDate)}',
+          style: TextStyle(
+            color: isSeen ? Colors.grey : Colors.white,
+          ),
+        ),
+        Spacer(),
+        MessageStatus(
+          message: message,
+          currentUser: chatBox.currentUser,
+          color: chatBox.color,
+        )
       ],
     );
     return row;
   }
-
-
-
 }
