@@ -29,13 +29,15 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              SizedBox(height: 20,),
-              SearchBar(),
-              SizedBox(height: 20,),
-              Body(user: user),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 20,),
+                SearchBar(),
+                SizedBox(height: 20,),
+                Body(user: user),
+              ],
+            ),
           ),
         ),
       ),
