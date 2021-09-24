@@ -63,8 +63,7 @@ class _MessageFormState extends State<MessageForm> {
               },
               decoration: InputDecoration(
                 hintText: 'Enter message',
-                contentPadding:
-                    const EdgeInsets.only(left: 20),
+                contentPadding: const EdgeInsets.only(left: 20),
                 border: InputBorder.none,
                 focusedBorder: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -116,10 +115,8 @@ class _MessageFormState extends State<MessageForm> {
               )
             ];
           },
-          child: Icon(
-            Icons.attach_file,
-            color: Color(0xfff78379).withOpacity(0.8)
-          ),
+          child: Icon(Icons.attach_file,
+              color: Color(0xfff78379).withOpacity(0.8)),
         ),
         SizedBox(
           width: 10,
@@ -161,81 +158,72 @@ class _MessageFormState extends State<MessageForm> {
       {required String title,
       required List<XFile> files,
       required String type}) async {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-              title: Center(child: Text(title)),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+    if (files.length == 1 && type == "video") {
+      List<int> bytes = await files[0].readAsBytes();
+      _messageBloc.add(SendMessage(
+          messageDto: MessageDto(
+              chatBoxId: widget.chatBox.id,
+              isMedia: true,
+              messengerId: widget.chatBox.currentUser.id,
+              bytes: base64Encode(bytes),
+              name: files[0].path.substring(
+                  files[0].path.lastIndexOf("/") + 1))));
+    }
+    else {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Center(child: Text(title)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+            content: Container(
+              height: 300,
+              width: 350,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                key: UniqueKey(),
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 300,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    padding: EdgeInsets.only(
+                        left: 10, right: 5, bottom: 6, top: 6),
+                    child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Image.file(File(files[index].path))),
+                  );
+                },
+                itemCount: files.length,
               ),
-              content: Container(
-                height: 300,
-                width: 350,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  key: UniqueKey(),
-                  itemBuilder: (context, index) {
-                    Widget body = Image.file(File(files[index].path));
-                    if (type == "video") {
-                      VideoPlayerController _controller =
-                          VideoPlayerController.file(File(files[index].path));
-                      _controller.initialize();
-                      ChewieController chewieController = ChewieController(
-                        videoPlayerController: _controller,
-                        aspectRatio: _controller.value.aspectRatio,
-                        placeholder: Image.asset("assets/images/loading.gif"),
-                        autoPlay: true,
-                        looping: true,
-                        startAt: Duration(milliseconds: 500),
-                      );
-                      chewieController.setVolume(0.0);
-                      body = Center(
-                        child: AspectRatio(
-                          aspectRatio: 1.1,
-                          child: Chewie(
-                            controller: chewieController,
-                          ),
-                        ),
-                      );
-                    }
-                    return Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10),
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10))),
-                      padding: EdgeInsets.only(
-                          left: 10, right: 5, bottom: 6, top: 6),
-                      child: body,
-                    );
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
                   },
-                  itemCount: files.length,
-                ),
-              ),
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Cancel')),
-                TextButton(
-                    onPressed: () {
-                      files.forEach((file) async {
-                        List<int> bytes = await file.readAsBytes();
-                        _messageBloc.add(SendMessage(
-                            messageDto: MessageDto(
-                                chatBoxId: widget.chatBox.id,
-                                isMedia: true,
-                                messengerId: widget.chatBox.currentUser.id,
-                                bytes: base64Encode(bytes),
-                                name: file.path.substring(
-                                    file.path.lastIndexOf("/") + 1))));
-                      });
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Send'))
-              ],
-            ));
+                  child: Text('Cancel')),
+              TextButton(
+                  onPressed: () {
+                    files.forEach((file) async {
+                      List<int> bytes = await file.readAsBytes();
+                      _messageBloc.add(SendMessage(
+                          messageDto: MessageDto(
+                              chatBoxId: widget.chatBox.id,
+                              isMedia: true,
+                              messengerId: widget.chatBox.currentUser.id,
+                              bytes: base64Encode(bytes),
+                              name: file.path.substring(
+                                  file.path.lastIndexOf("/") + 1))));
+                    });
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Send'))
+            ],
+          ));
+    }
   }
 }

@@ -5,6 +5,7 @@ import 'package:video_player/video_player.dart';
 
 class VideoCard extends StatefulWidget {
   final String url;
+
   VideoCard({required this.url});
 
   @override
@@ -14,17 +15,27 @@ class VideoCard extends StatefulWidget {
 class _VideoCardState extends State<VideoCard> {
   late ChewieController chewieController;
   late VideoPlayerController _controller;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    initVideo();
+  }
+
+  Future<void> initVideo() async {
     _controller = VideoPlayerController.network(minioUrl + widget.url)
-      ..setLooping(true)
-      ..initialize();
+      ..setLooping(true);
+    await _controller.initialize();
     chewieController = ChewieController(
       videoPlayerController: _controller,
       aspectRatio: _controller.value.aspectRatio,
-      placeholder: Center(child: Image.asset("assets/images/loading.gif", height: 100, width: 100,)),
+      placeholder: Center(
+          child: Image.asset(
+        "assets/images/loading.gif",
+        height: 100,
+        width: 100,
+      )),
       showControls: true,
       allowPlaybackSpeedChanging: false,
       looping: true,
@@ -43,18 +54,31 @@ class _VideoCardState extends State<VideoCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: new BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 2/3),
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Chewie(
-            controller: chewieController,
+    return FutureBuilder(
+      future: initVideo(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Center(
+              child: Image.asset(
+            "assets/images/loading.gif",
+            height: 100,
+            width: 100,
+          ));
+        }
+        return Container(
+          constraints: new BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 2 / 3),
+          child: AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Chewie(
+                controller: chewieController,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
