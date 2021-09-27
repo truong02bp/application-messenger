@@ -39,7 +39,7 @@ class MessageController {
 
     @MessageMapping("/message/update/seen")
     public List<MessageEntity> updateSeen(@Payload MessageDto messageDto) {
-        List<MessageEntity> messages = messageService.updateSeen(messageDto);
+        List<MessageEntity> messages = messageService.updateSeen(messageDto.getMessengerId(), messageDto.getChatBoxId());
         this.template.convertAndSend("/topic/update/seen", messages);
         return messages;
     }

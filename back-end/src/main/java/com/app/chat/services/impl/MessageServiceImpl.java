@@ -37,11 +37,6 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageEntity findLastMessageByChatBoxId(Long chatBoxId) {
-        return messageRepository.findLastMessageByChatBoxId(chatBoxId);
-    }
-
-    @Override
     public MessageEntity create(MessageDto messageDto) {
         MessageEntity message = new MessageEntity();
         if (messageDto.getMediaId() != null) {
@@ -69,18 +64,18 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageEntity> updateSeen(MessageDto messageDto) {
+    public List<MessageEntity> updateSeen(Long messengerId, Long chatBoxId) {
         List<MessageEntity> messages = new ArrayList<>();
-        Long lastMessageId = messageRepository.findIdLastMessageBySenderId(messageDto.getMessengerId());
+        Long lastMessageId = messageRepository.findIdLastMessageBySenderId(messengerId);
         List<MessageEntity> messageNeedUpdate;
         if (lastMessageId == null)
-            messageNeedUpdate = messageRepository.findAllByChatBoxId(messageDto.getChatBoxId());
+            messageNeedUpdate = messageRepository.findAllByChatBoxId(chatBoxId);
         else
-            messageNeedUpdate = messageRepository.findMessageNeedUpdate(messageDto.getChatBoxId(), lastMessageId);
-        MessengerEntity seenBy = messengerRepository.findById(messageDto.getMessengerId()).orElse(null);
+            messageNeedUpdate = messageRepository.findMessageNeedUpdate(chatBoxId, lastMessageId);
+        MessengerEntity seenBy = messengerRepository.findById(messengerId).orElse(null);
         for (MessageEntity message : messageNeedUpdate) {
             List<MessageDetailEntity> details = message.getDetails().stream()
-                    .filter(messageDetailEntity -> messageDetailEntity.getSeenBy().getId().equals(messageDto.getMessengerId()))
+                    .filter(messageDetailEntity -> messageDetailEntity.getSeenBy().getId().equals(messengerId))
                     .collect(Collectors.toList());
 
             if (details.isEmpty()) {

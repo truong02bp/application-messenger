@@ -1,5 +1,6 @@
 package com.app.chat.services.impl;
 
+import com.app.chat.common.exceptions.ApiException;
 import com.app.chat.data.entities.UserEntity;
 import com.app.chat.data.repository.MessageRepository;
 import com.app.chat.data.repository.MessengerRepository;
@@ -11,6 +12,8 @@ import com.app.chat.data.entities.MessengerEntity;
 import com.app.chat.data.repository.ChatBoxRepository;
 import com.app.chat.services.ChatBoxService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,6 +37,15 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     private MessageRepository messageRepository;
 
     @Override
+    public ChatBoxDto findById(Long id, Long userId) {
+        ChatBoxEntity chatBox = chatBoxRepository.findById(id).orElse(null);
+        if (chatBox == null)
+            throw ApiException.builder().message("Chat box not found with id: " + id).httpStatus(HttpStatus.NOT_FOUND);
+        ChatBoxDto dto = toDto(chatBox, userId);
+        return dto;
+    }
+
+    @Override
     public void create(List<Long> userIds) {
         ChatBoxEntity chatBox = new ChatBoxEntity();
         chatBox = chatBoxRepository.save(chatBox);
@@ -54,42 +66,42 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     }
 
     @Override
-    public List<ChatBoxDto> findAllByUserId(Long userId) {
+    public List<ChatBoxDto> findAllByUserId(Long userId, Pageable pageable) {
         List<ChatBoxDto> rs = new ArrayList<>();
-        List<ChatBoxEntity> chatBoxEntities = chatBoxRepository.findByUserId(userId);
+        List<ChatBoxEntity> chatBoxEntities = chatBoxRepository.findByUserId(userId, pageable);
         for (ChatBoxEntity chatBoxEntity : chatBoxEntities) {
-            ChatBoxDto dto = mapper.convertValue(chatBoxEntity,ChatBoxDto.class);
-            if (chatBoxEntity.getLastMessageId() != null)
-                dto.setLastMessage(messageRepository.findById(chatBoxEntity.getLastMessageId()).orElse(null));
-            List<MessengerEntity> guestUser = new ArrayList<>();
-            for (MessengerEntity messenger : chatBoxEntity.getMessengers()) {
-                if (Objects.equals(messenger.getUser().getId(), userId)) {
-                    dto.setCurrentUser(messenger);
-                }
-                else
-                    guestUser.add(messenger);
-            }
-            dto.setGuestUser(guestUser);
+            ChatBoxDto dto = toDto(chatBoxEntity, userId);
             rs.add(dto);
         }
-        rs.sort((c1, c2) -> {
-            if (c1.getLastMessage() != null && c2.getLastMessage() != null) {
-                if (c1.getLastMessage().getCreatedDate().isAfter(c2.getLastMessage().getCreatedDate()))
-                    return -1;
-                return 1;
-            }
-            if (c1.getLastMessage() == null && c2.getLastMessage() != null) {
-                if (c1.getCreatedDate().isAfter(c2.getLastMessage().getCreatedDate()))
-                    return -1;
-                return 1;
-            }
-            if (c1.getLastMessage() != null && c2.getLastMessage() == null) {
-                if (c1.getLastMessage().getCreatedDate().isAfter(c2.getCreatedDate()))
-                    return -1;
-                return 1;
-            }
-            return 0;
-        });
         return rs;
     }
+
+    @Override
+    public List<ChatBoxDto> findMostMessage(Long userId, Pageable pageable) {
+        List<ChatBoxDto> rs = new ArrayList<>();
+        List<Long> ids = chatBoxRepository.findMostMessage(userId, pageable);
+        for (Long id : ids) {
+            ChatBoxEntity chatBox = chatBoxRepository.findById(id).orElse(null);
+            ChatBoxDto dto = toDto(chatBox, userId);
+            rs.add(dto);
+        }
+        return rs;
+    }
+
+    private ChatBoxDto toDto(ChatBoxEntity chatBoxEntity, Long userId) {
+        ChatBoxDto dto = mapper.convertValue(chatBoxEntity,ChatBoxDto.class);
+        if (chatBoxEntity.getLastMessageId() != null)
+            dto.setLastMessage(messageRepository.findById(chatBoxEntity.getLastMessageId()).orElse(null));
+        List<MessengerEntity> guestUser = new ArrayList<>();
+        for (MessengerEntity messenger : chatBoxEntity.getMessengers()) {
+            if (Objects.equals(messenger.getUser().getId(), userId)) {
+                dto.setCurrentUser(messenger);
+            }
+            else
+                guestUser.add(messenger);
+        }
+        dto.setGuestUser(guestUser);
+        return dto;
+    }
+
 }

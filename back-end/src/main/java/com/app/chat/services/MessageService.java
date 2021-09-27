@@ -10,11 +10,9 @@ public interface MessageService {
 
     List<MessageEntity> findAllByChatBoxId(Long chatBoxId, Pageable pageable);
 
-    MessageEntity findLastMessageByChatBoxId(Long chatBoxId);
-
     MessageEntity create(MessageDto messageDto);
 
-    List<MessageEntity> updateSeen(MessageDto messageDto);
+    List<MessageEntity> updateSeen(Long messengerId, Long chatBoxId);
 
     MessageEntity updateReaction(MessageDto messageDto);
 
