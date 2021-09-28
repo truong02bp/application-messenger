@@ -6,6 +6,7 @@ import 'package:messenger_ui/screens/forgot_password/forgot_password_screen.dart
 import 'package:messenger_ui/screens/group/group_screen.dart';
 import 'package:messenger_ui/screens/home/home_screen.dart';
 import 'package:messenger_ui/screens/login/login_screen.dart';
+import 'package:messenger_ui/screens/profile/profile_screen.dart';
 import 'package:messenger_ui/screens/search_screen/search_screen.dart';
 import 'package:messenger_ui/screens/sign_up/sign_up_screen.dart';
 import 'package:messenger_ui/screens/video_call/video_call_screen.dart';
@@ -20,4 +21,5 @@ final Map<String, WidgetBuilder> routes = {
   ForgotPasswordScreen.routeName : (context) => ForgotPasswordScreen(),
   SearchScreen.routeName : (context) => SearchScreen(),
   GroupScreen.routeName : (context) => GroupScreen(),
+  ProfileScreen.routeName : (context) => ProfileScreen(),
 };

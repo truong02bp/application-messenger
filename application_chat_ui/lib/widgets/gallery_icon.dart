@@ -4,9 +4,12 @@ import 'package:messenger_ui/widgets/icon_without_background.dart';
 import 'package:image_picker/image_picker.dart';
 
 class GalleryIcon extends StatefulWidget {
+  final double? height;
+  final double? width;
+  final Color? color;
   final Function(List<XFile>? files, String type) solvePicked;
 
-  GalleryIcon({required this.solvePicked});
+  GalleryIcon({required this.solvePicked, this.height, this.width, this.color});
 
   @override
   _GalleryIconState createState() => _GalleryIconState();
@@ -20,8 +23,9 @@ class _GalleryIconState extends State<GalleryIcon> {
   Widget build(BuildContext context) {
     return IconWithoutBackground(
       image: "assets/images/gallery.png",
-      width: 40,
-      height: 40,
+      width: widget.height != null ? widget.height! : 40,
+      height: widget.width != null ? widget.width! : 40,
+      color: widget.color != null ? widget.color! : Colors.black,
       onTap: showPickOption,
     );
   }

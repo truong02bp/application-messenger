@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:messenger_ui/screens/group/group_screen.dart';
 import 'package:messenger_ui/screens/login/login_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:messenger_ui/screens/profile/profile_screen.dart';
 class HomeDrawer extends StatelessWidget {
   final User user;
 
@@ -27,17 +28,23 @@ class HomeDrawer extends StatelessWidget {
                   Icon(Icons.wb_sunny)
                 ],
               ),
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(35),
-                  child: CachedNetworkImage(
-                    height: 70,
-                    width: 70,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) {
-                      return Image.asset('assets/images/loading.gif');
-                    },
-                    imageUrl: minioUrl + user.avatar.url,
-                  )),
+              InkWell(
+                borderRadius: BorderRadius.circular(35),
+                onTap: (){
+                  Navigator.pushNamed(context, ProfileScreen.routeName);
+                },
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(35),
+                    child: CachedNetworkImage(
+                      height: 70,
+                      width: 70,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) {
+                        return Image.asset('assets/images/loading.gif');
+                      },
+                      imageUrl: minioUrl + user.avatar.url,
+                    )),
+              ),
               Text(
                 '${user.name}',
                 style: TextStyle(color: Colors.white70, fontSize: 18),
