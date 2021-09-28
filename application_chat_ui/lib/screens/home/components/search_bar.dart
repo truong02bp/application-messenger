@@ -15,6 +15,7 @@ class SearchBar extends StatelessWidget {
         onTap: (){
           Navigator.of(context).pushNamed(SearchScreen.routeName);
         },
+        readOnly: true,
         decoration: InputDecoration(
             hintText: "Search",
             disabledBorder: InputBorder.none,
