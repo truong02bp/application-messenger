@@ -34,7 +34,7 @@ MERGED from [com.google.android.exoplayer:exoplayer-common:2.14.1] /home/truong/
 MERGED from [androidx.arch.core:core-runtime:2.0.0] /home/truong/.gradle/caches/transforms-2/files-2.1/5f606c30f064eed94124828de37fadc0/core-runtime-2.0.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/truong/.gradle/caches/transforms-2/files-2.1/96aee308bccd03bc62c306516c23a410/versionedparcelable-1.1.0/AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/truong/.gradle/caches/transforms-2/files-2.1/15792e6083b2b5b5a7ffa285d47daa24/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
-MERGED from [com.github.agorabuilder:native-full-sdk:3.4.6] /home/truong/.gradle/caches/transforms-2/files-2.1/8beb8115332bb93ed597eff3295c7707/jetified-native-full-sdk-3.4.6/AndroidManifest.xml:2:1-11:12
+MERGED from [com.github.agorabuilder:native-full-sdk:3.5.0.3] /home/truong/.gradle/caches/transforms-2/files-2.1/e0b165d1735c94614fb7ea33b470d8a6/jetified-native-full-sdk-3.5.0.3/AndroidManifest.xml:2:1-11:12
 INJECTED from /home/truong/Documents/application-messenger/application_chat_ui/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /home/truong/Documents/application-messenger/application_chat_ui/android/app/src/debug/AndroidManifest.xml:1:1-7:12
 INJECTED from /home/truong/Documents/application-messenger/application_chat_ui/android/app/src/debug/AndroidManifest.xml:1:1-7:12
@@ -180,8 +180,8 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/truon
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] /home/truong/.gradle/caches/transforms-2/files-2.1/96aee308bccd03bc62c306516c23a410/versionedparcelable-1.1.0/AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/truong/.gradle/caches/transforms-2/files-2.1/15792e6083b2b5b5a7ffa285d47daa24/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /home/truong/.gradle/caches/transforms-2/files-2.1/15792e6083b2b5b5a7ffa285d47daa24/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:20:5-44
-MERGED from [com.github.agorabuilder:native-full-sdk:3.4.6] /home/truong/.gradle/caches/transforms-2/files-2.1/8beb8115332bb93ed597eff3295c7707/jetified-native-full-sdk-3.4.6/AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.agorabuilder:native-full-sdk:3.4.6] /home/truong/.gradle/caches/transforms-2/files-2.1/8beb8115332bb93ed597eff3295c7707/jetified-native-full-sdk-3.4.6/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.agorabuilder:native-full-sdk:3.5.0.3] /home/truong/.gradle/caches/transforms-2/files-2.1/e0b165d1735c94614fb7ea33b470d8a6/jetified-native-full-sdk-3.5.0.3/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.agorabuilder:native-full-sdk:3.5.0.3] /home/truong/.gradle/caches/transforms-2/files-2.1/e0b165d1735c94614fb7ea33b470d8a6/jetified-native-full-sdk-3.5.0.3/AndroidManifest.xml:7:5-9:41
 INJECTED from /home/truong/Documents/application-messenger/application_chat_ui/android/app/src/debug/AndroidManifest.xml
 INJECTED from /home/truong/Documents/application-messenger/application_chat_ui/android/app/src/debug/AndroidManifest.xml
 	android:targetSdkVersion
