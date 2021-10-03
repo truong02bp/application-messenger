@@ -12,7 +12,6 @@ import 'icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Gallery extends StatefulWidget {
-
   final String type;
 
   Gallery({this.type = GalleryConstants.all});
@@ -24,7 +23,7 @@ class Gallery extends StatefulWidget {
 class _GalleryState extends State<Gallery> {
   late GalleryBloc _galleryBloc;
   List<File> medias = [];
-  List<String> sources = [];
+  Set<String> sources = Set();
   String sourceSelected = 'Recent';
   ScrollController _scrollController = ScrollController();
   int page = 0;
@@ -36,11 +35,16 @@ class _GalleryState extends State<Gallery> {
     super.initState();
     _galleryBloc = BlocProvider.of<GalleryBloc>(context);
     _galleryBloc.add(GalleryGetSources());
-    _galleryBloc.add(GalleryGetFromSource(page: 0, size: size, type: widget.type, source: sourceSelected));
+    _galleryBloc.add(GalleryGetFromSource(
+        page: 0, size: size, type: widget.type, source: sourceSelected));
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        _galleryBloc.add(GalleryGetFromSource(page: page + 1, size: size,type: widget.type, source: sourceSelected));
+        _galleryBloc.add(GalleryGetFromSource(
+            page: page + 1,
+            size: size,
+            type: widget.type,
+            source: sourceSelected));
         page += 1;
       }
     });
@@ -81,6 +85,7 @@ class _GalleryState extends State<Gallery> {
                 return BlocBuilder(
                   bloc: _galleryBloc,
                   builder: (context, state) {
+                    bool isLoading = state is Loading;
                     return SafeArea(
                       child: Column(
                         children: [
@@ -105,15 +110,19 @@ class _GalleryState extends State<Gallery> {
                                           sourceSelected = value as String;
                                           page = 0;
                                           medias.clear();
-                                          _galleryBloc.add(GalleryGetFromSource(page: 0, size: size, type: widget.type, source: sourceSelected));
+                                          _galleryBloc.add(GalleryGetFromSource(
+                                              page: 0,
+                                              size: size,
+                                              type: widget.type,
+                                              source: sourceSelected));
                                         });
                                       },
-                                      items: List.generate(
-                                          sources.length,
-                                          (index) => DropdownMenuItem(
-                                              value: sources[index],
-                                              child:
-                                                  Text('${sources[index]}'))))
+                                      items: sources
+                                          .map((source) => DropdownMenuItem(
+                                              value: source,
+                                              child: Text('$source')))
+                                          .toList(),
+                                    )
                                   : Container(),
                             ],
                           ),
@@ -131,6 +140,7 @@ class _GalleryState extends State<Gallery> {
                                   itemCount: medias.length,
                                   itemBuilder: (context, index) {
                                     return Container(
+                                      key: ValueKey(medias[index].path),
                                       margin:
                                           EdgeInsets.only(left: 3, bottom: 3),
                                       decoration: BoxDecoration(
@@ -141,6 +151,8 @@ class _GalleryState extends State<Gallery> {
                                   }),
                             ),
                           ),
+                          SizedBox(height: 5,),
+                          isLoading ? CircularProgressIndicator() : Container(),
                         ],
                       ),
                     );

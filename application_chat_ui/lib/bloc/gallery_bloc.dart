@@ -12,31 +12,33 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   Stream<GalleryState> mapEventToState(GalleryEvent event) async* {
     if (event is GalleryGetSources) {
       List<AssetPathEntity> paths =
-          await PhotoManager.getAssetPathList(type: RequestType.all);
+          await PhotoManager.getAssetPathList(type: RequestType.common);
       List<String> sources = paths.map((e) => e.name).toList();
       yield GalleryGetSourcesSuccess(sources: sources);
     }
     if (event is GalleryGetFromSource) {
       yield Loading();
       List<AssetPathEntity> paths = [];
+      print(event.type);
       switch (event.type) {
         case 'image':
           paths = await PhotoManager.getAssetPathList(
-              type: RequestType.image, onlyAll: true);
+              type: RequestType.image);
           break;
         case 'video':
           paths = await PhotoManager.getAssetPathList(
-              type: RequestType.video, onlyAll: true);
+              type: RequestType.video);
           break;
         case 'all':
           paths = await PhotoManager.getAssetPathList(
-              type: RequestType.video, onlyAll: true);
+              type: RequestType.video);
           break;
       }
+      print('${paths.toString()}');
       for (AssetPathEntity path in paths) {
+        print('${path.name} ${event.source}');
         if (path.name == event.source) {
-          List<AssetEntity> assets =
-          await path.getAssetListPaged(event.page, event.size);
+          List<AssetEntity> assets = await path.getAssetListPaged(event.page, event.size);
           print('Length : ${assets.length}');
           List<File> images = [];
           for (AssetEntity asset in assets) {
