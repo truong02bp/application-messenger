@@ -9,8 +9,14 @@ class Loading extends GalleryState {
 
 }
 
-class GalleryGetImageSuccess extends GalleryState {
-  List<File> images;
+class GalleryGetFromSourceSuccess extends GalleryState {
+  List<File> medias;
 
-  GalleryGetImageSuccess({required this.images});
+  GalleryGetFromSourceSuccess({required this.medias});
+}
+
+class GalleryGetSourcesSuccess extends GalleryState {
+  List<String> sources;
+
+  GalleryGetSourcesSuccess({required this.sources});
 }

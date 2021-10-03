@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/gallery_bloc.dart';
+import 'package:messenger_ui/contants/gallery_constants.dart';
 import 'package:messenger_ui/widgets/gallery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 class Body extends StatelessWidget {
@@ -38,7 +39,7 @@ class Body extends StatelessWidget {
               right: 10,
               child: BlocProvider(
                   create: (context) => GalleryBloc(),
-                  child: Gallery()
+                  child: Gallery(type: GalleryConstants.image,)
               ),
             ),
           ]),

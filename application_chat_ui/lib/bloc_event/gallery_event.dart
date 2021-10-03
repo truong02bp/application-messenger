@@ -3,9 +3,14 @@ class GalleryEvent {
 
 }
 
-class GalleryGetImage extends GalleryEvent {
+class GalleryGetFromSource extends GalleryEvent {
   int page;
   int size;
+  String source;
+  String type;
+  GalleryGetFromSource({required this.page, required this.size, required this.source, required this.type});
+}
 
-  GalleryGetImage({required this.page, required this.size});
+class GalleryGetSources extends GalleryEvent {
+
 }
