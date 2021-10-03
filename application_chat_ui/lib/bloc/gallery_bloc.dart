@@ -15,7 +15,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       yield Loading();
       List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(type: RequestType.image, onlyAll: true);
       AssetPathEntity path = paths[0];
-      List<AssetEntity> assets = await path.getAssetListPaged(event.page, 20);
+      List<AssetEntity> assets = await path.getAssetListPaged(event.page, event.size);
       print('Length : ${assets.length}');
       List<File> images = [];
       for (AssetEntity asset in assets) {
