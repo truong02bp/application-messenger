@@ -19,7 +19,6 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     if (event is GalleryGetFromSource) {
       yield Loading();
       List<AssetPathEntity> paths = [];
-      print(event.type);
       switch (event.type) {
         case 'image':
           paths = await PhotoManager.getAssetPathList(
@@ -34,12 +33,9 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
               type: RequestType.video);
           break;
       }
-      print('${paths.toString()}');
       for (AssetPathEntity path in paths) {
-        print('${path.name} ${event.source}');
         if (path.name == event.source) {
           List<AssetEntity> assets = await path.getAssetListPaged(event.page, event.size);
-          print('Length : ${assets.length}');
           List<File> images = [];
           for (AssetEntity asset in assets) {
             File? image = await asset.file;
@@ -47,7 +43,6 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
               images.add(image);
             }
           }
-          print(images.length);
           yield GalleryGetFromSourceSuccess(medias: images);
           break;
         }

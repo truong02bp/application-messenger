@@ -1,11 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/gallery_bloc.dart';
-import 'package:messenger_ui/contants/gallery_constants.dart';
+import 'package:messenger_ui/constants/gallery_constants.dart';
 import 'package:messenger_ui/widgets/gallery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-class Body extends StatelessWidget {
+
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
 
+  @override
+  _BodyState createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  File? image;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -17,8 +26,18 @@ class Body extends StatelessWidget {
               constraints: BoxConstraints.expand(),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/background3.jpg"),
+                      image: image != null ? FileImage(image!) : AssetImage("assets/images/background3.jpg") as ImageProvider,
                       fit: BoxFit.cover)),
+            ),
+            Positioned(
+                top: 35,
+                left: 30,
+                child: InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.arrow_back)
+                )
             ),
             Positioned(
                 bottom: 35,
@@ -39,8 +58,14 @@ class Body extends StatelessWidget {
               right: 10,
               child: BlocProvider(
                   create: (context) => GalleryBloc(),
-                  child: Gallery(type: GalleryConstants.image,)
-              ),
+                  child: Gallery(
+                    type: GalleryConstants.image,
+                    option: GalleryConstants.single,
+                    color: Colors.white,
+                    callBack: (files) {
+                      onSelectImage(files);
+                    },
+                  )),
             ),
           ]),
         ),
@@ -50,5 +75,12 @@ class Body extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void onSelectImage(List<File> files) {
+    setState(() {
+      image = files[0];
+    });
+    Navigator.of(context).pop();
   }
 }

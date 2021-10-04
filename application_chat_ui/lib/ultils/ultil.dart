@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:messenger_ui/contants/input_decorator_contants.dart';
+import 'package:messenger_ui/constants/input_decorator_constants.dart';
 
 Color getColor(String? color) {
   switch (color) {

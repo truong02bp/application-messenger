@@ -5,24 +5,34 @@ import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/gallery_bloc.dart';
 import 'package:messenger_ui/bloc_event/gallery_event.dart';
 import 'package:messenger_ui/bloc_state/gallery_state.dart';
-import 'package:messenger_ui/contants/color_constants.dart';
-import 'package:messenger_ui/contants/gallery_constants.dart';
+import 'package:messenger_ui/constants/color_constants.dart';
+import 'package:messenger_ui/constants/gallery_constants.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Gallery extends StatefulWidget {
   final String type;
+  final String option;
+  final Color color;
+  final Function(List<File> files) callBack;
 
-  Gallery({this.type = GalleryConstants.all});
+  Gallery(
+      {this.type = GalleryConstants.all,
+      this.option = GalleryConstants.single,
+      this.callBack = _defaultCallBack,
+      this.color = Colors.white});
 
   @override
   _GalleryState createState() => _GalleryState();
+
+  static void _defaultCallBack(List<File> files) {}
 }
 
 class _GalleryState extends State<Gallery> {
   late GalleryBloc _galleryBloc;
   List<File> medias = [];
+  List<File> mediasSelected = [];
   Set<String> sources = Set();
   String sourceSelected = 'Recent';
   ScrollController _scrollController = ScrollController();
@@ -73,7 +83,7 @@ class _GalleryState extends State<Gallery> {
         image: "assets/images/gallery.png",
         width: 50,
         height: 50,
-        color: Colors.white,
+        color: widget.color,
         onTap: () {
           showMaterialModalBottomSheet(
               context: context,
@@ -106,16 +116,14 @@ class _GalleryState extends State<Gallery> {
                                   ? DropdownButton(
                                       value: sourceSelected,
                                       onChanged: (value) {
-                                        setState(() {
-                                          sourceSelected = value as String;
-                                          page = 0;
-                                          medias.clear();
-                                          _galleryBloc.add(GalleryGetFromSource(
-                                              page: 0,
-                                              size: size,
-                                              type: widget.type,
-                                              source: sourceSelected));
-                                        });
+                                        sourceSelected = value as String;
+                                        page = 0;
+                                        medias.clear();
+                                        _galleryBloc.add(GalleryGetFromSource(
+                                            page: 0,
+                                            size: size,
+                                            type: widget.type,
+                                            source: sourceSelected));
                                       },
                                       items: sources
                                           .map((source) => DropdownMenuItem(
@@ -139,19 +147,26 @@ class _GalleryState extends State<Gallery> {
                                   shrinkWrap: true,
                                   itemCount: medias.length,
                                   itemBuilder: (context, index) {
-                                    return Container(
-                                      key: ValueKey(medias[index].path),
-                                      margin:
-                                          EdgeInsets.only(left: 3, bottom: 3),
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                              image: FileImage(medias[index]),
-                                              fit: BoxFit.cover)),
+                                    return InkWell(
+                                      onTap: () {
+                                        process(medias[index]);
+                                      },
+                                      child: Container(
+                                        key: ValueKey(medias[index].path),
+                                        margin:
+                                            EdgeInsets.only(left: 3, bottom: 3),
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: FileImage(medias[index]),
+                                                fit: BoxFit.cover)),
+                                      ),
                                     );
                                   }),
                             ),
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           isLoading ? CircularProgressIndicator() : Container(),
                         ],
                       ),
@@ -163,5 +178,12 @@ class _GalleryState extends State<Gallery> {
         },
       ),
     );
+  }
+
+  void process(File file) {
+    if (widget.option == 'single') {
+      mediasSelected = [file];
+      widget.callBack(mediasSelected);
+    } else if (widget.option == 'multi') {}
   }
 }
