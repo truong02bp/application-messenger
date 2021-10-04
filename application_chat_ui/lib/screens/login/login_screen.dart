@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
-    _userBloc.add(CheckSaveUserEvent());
+    _userBloc.add(GetUserEvent());
   }
 
   @override
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener(
       bloc: _userBloc,
       listener: (context, state) {
-        if (state is UserSavedState)
+        if (state is GetUserSuccess)
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName, arguments: {"user" : state.user});
       },
       child: Scaffold(

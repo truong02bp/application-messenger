@@ -1,47 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:messenger_ui/bloc/user_bloc.dart';
+import 'package:messenger_ui/bloc_event/user_event.dart';
+import 'package:messenger_ui/bloc_state/user_state.dart';
 import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/screens/home/components/body.dart';
 import 'package:messenger_ui/screens/home/components/home_drawer.dart';
 import 'package:messenger_ui/screens/home/components/search_bar.dart';
-class HomeScreen extends StatelessWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+class HomeScreen extends StatefulWidget {
   static final String routeName = "/home";
 
-  const HomeScreen({Key? key}) : super(key: key);
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late UserBloc _userBloc;
+  User? user;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _userBloc = BlocProvider.of<UserBloc>(context);
+    _userBloc.add(GetUserEvent());
+  }
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    User user = args["user"];
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Người trồng cà chua', style: TextStyle(color: Colors.deepOrangeAccent),),
-            Container(
-              height: 40,
-              width: 40,
-              child: Image.asset("assets/images/tomato_tree.png"),
-            )
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              SizedBox(height: 20,),
-              SearchBar(),
-              SizedBox(height: 20,),
-              Expanded(child: Body(user: user)),
-            ],
+    return BlocBuilder(
+      bloc: _userBloc,
+      builder: (context, state){
+        if (state is GetUserSuccess) {
+          user = state.user;
+        }
+        if (user == null)
+          return CircularProgressIndicator();
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Người trồng cà chua', style: TextStyle(color: Colors.deepOrangeAccent),),
+                Container(
+                  height: 40,
+                  width: 40,
+                  child: Image.asset("assets/images/tomato_tree.png"),
+                )
+              ],
+            ),
           ),
-        ),
-      ),
-      drawer: Drawer(
-        child: HomeDrawer(user: user,)
-      ),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 20,),
+                  SearchBar(),
+                  SizedBox(height: 20,),
+                  Expanded(child: Body(user: user!)),
+                ],
+              ),
+            ),
+          ),
+          drawer: Drawer(
+              child: HomeDrawer(user: user!,)
+          ),
+        );
+      },
     );
   }
 }

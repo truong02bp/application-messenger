@@ -3,18 +3,33 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/gallery_bloc.dart';
 import 'package:messenger_ui/constants/gallery_constants.dart';
+import 'package:messenger_ui/host_api.dart';
+import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/widgets/gallery.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
+
+  final User user;
+
+  Body({required this.user});
 
   @override
   _BodyState createState() => _BodyState();
 }
 
 class _BodyState extends State<Body> {
+
+  late User user;
   File? image;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    user = widget.user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,12 +41,12 @@ class _BodyState extends State<Body> {
               constraints: BoxConstraints.expand(),
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: image != null ? FileImage(image!) : AssetImage("assets/images/background3.jpg") as ImageProvider,
+                      image: image != null ? FileImage(image!) : NetworkImage(minioUrl + user.avatar.url) as ImageProvider,
                       fit: BoxFit.cover)),
             ),
             Positioned(
-                top: 35,
-                left: 30,
+                top: 45,
+                left: 25,
                 child: InkWell(
                     onTap: (){
                       Navigator.pop(context);
@@ -43,15 +58,15 @@ class _BodyState extends State<Body> {
                 bottom: 35,
                 left: 10,
                 child: Text(
-                  'Nguyen Huy Truong',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  '${user.name}',
+                  style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
                 )),
             Positioned(
                 bottom: 12,
                 left: 10,
                 child: Text(
                   'online',
-                  style: TextStyle(fontSize: 15, color: Colors.grey),
+                  style: TextStyle(fontSize: 15, color: Colors.grey, fontWeight: FontWeight.bold),
                 )),
             Positioned(
               bottom: 0,

@@ -31,7 +31,7 @@ class HomeDrawer extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius.circular(35),
                 onTap: (){
-                  Navigator.pushNamed(context, ProfileScreen.routeName);
+                  Navigator.pushNamed(context, ProfileScreen.routeName, arguments: {"user" : user});
                 },
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(35),

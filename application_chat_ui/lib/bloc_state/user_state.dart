@@ -30,12 +30,12 @@ class GetUserContactSuccess extends UserState {
   GetUserContactSuccess({required this.userContacts});
 }
 
-class UserSavedState extends UserState {
+class GetUserSuccess extends UserState {
   User user;
 
-  UserSavedState({required this.user});
+  GetUserSuccess({required this.user});
 }
 
-class UserNotSavedState extends UserState {
+class GetUserFailure extends UserState {
 
 }
