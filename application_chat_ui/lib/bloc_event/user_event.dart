@@ -1,3 +1,4 @@
+import 'package:messenger_ui/model/dto/media_dto.dart';
 import 'package:messenger_ui/model/user.dart';
 
 class UserEvent {}
@@ -23,4 +24,11 @@ class GetUserContact extends UserEvent {
 
 class GetUserEvent extends UserEvent {
 
+}
+
+class UpdateAvatar extends UserEvent {
+  int userId;
+  MediaDto mediaDto;
+
+  UpdateAvatar({required this.userId, required this.mediaDto});
 }

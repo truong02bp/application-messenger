@@ -39,3 +39,9 @@ class GetUserSuccess extends UserState {
 class GetUserFailure extends UserState {
 
 }
+
+class UpdateAvatarSuccess extends UserState {
+  User user;
+
+  UpdateAvatarSuccess({required this.user});
+}

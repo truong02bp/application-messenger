@@ -30,6 +30,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           yield GetUserFailure();
         }
         break;
+
       case SubmitLogin:
         event as SubmitLogin;
         yield Loading();
