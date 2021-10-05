@@ -10,7 +10,6 @@ import 'package:messenger_ui/constants/gallery_constants.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'icon_without_background.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 class Gallery extends StatefulWidget {
   final String type;
   final String option;
@@ -142,8 +141,8 @@ class _GalleryState extends State<Gallery> {
                               child: GridView.builder(
                                   controller: _scrollController,
                                   gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3),
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
                                   shrinkWrap: true,
                                   itemCount: medias.length,
                                   itemBuilder: (context, index) {
@@ -154,7 +153,7 @@ class _GalleryState extends State<Gallery> {
                                       child: Container(
                                         key: ValueKey(medias[index].path),
                                         margin:
-                                            EdgeInsets.only(left: 3, bottom: 3),
+                                        EdgeInsets.only(left: 3, bottom: 3),
                                         decoration: BoxDecoration(
                                             image: DecorationImage(
                                                 image: FileImage(medias[index]),
