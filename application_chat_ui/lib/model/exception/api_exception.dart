@@ -1,7 +1,7 @@
 
 class ApiException {
   int? code;
-  int message;
+  String message;
 
   ApiException({this.code, required this.message});
 }

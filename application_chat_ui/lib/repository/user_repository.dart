@@ -1,5 +1,6 @@
 import 'package:messenger_ui/injection.dart';
 import 'package:messenger_ui/model/authentication_request.dart';
+import 'package:messenger_ui/model/dto/media_dto.dart';
 import 'package:messenger_ui/model/dto/user_contact.dart';
 import 'package:messenger_ui/model/dto/user_dto.dart';
 import 'package:messenger_ui/model/user.dart';
@@ -49,6 +50,19 @@ class UserRepository {
         }
     );
     User user = await apiRepository.post(apiModel);
+    return user;
+  }
+
+  Future<User> updateAvatar({required int id, required MediaDto mediaDto}) async {
+    ApiModel apiModel = new ApiModel(
+        url: userUrl + "/avatar",
+        params: {"userId": "$id"},
+        body: mediaDto,
+        parse: (json) {
+          return User.fromJson(json);
+        }
+    );
+    User user = await apiRepository.put(apiModel);
     return user;
   }
 

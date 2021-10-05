@@ -27,6 +27,7 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
   int page = 0;
   int size = 15;
   int chatBoxUpdateId = -1;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -72,6 +73,8 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
             }
 
             if (state is GetAllChatBoxSuccess) {
+              if (page == 0)
+                chatBoxes.clear();
               chatBoxes.addAll(state.chatBoxes);
               chatBoxes.removeWhere((element) => element.lastMessage == null && !element.isGroup);
             }

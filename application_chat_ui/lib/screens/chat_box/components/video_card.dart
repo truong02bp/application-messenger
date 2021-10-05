@@ -37,6 +37,7 @@ class _VideoCardState extends State<VideoCard> {
         width: 100,
       )),
       showControls: true,
+      allowMuting: true,
       allowPlaybackSpeedChanging: false,
       looping: true,
       startAt: Duration(milliseconds: 500),

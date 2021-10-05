@@ -27,47 +27,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocListener(
       bloc: _userBloc,
-      builder: (context, state){
-        if (state is GetUserSuccess) {
-          user = state.user;
+      listener: (context, state) {
+        if (state is UpdateUserSuccess) {
+          setState(() {
+            user = state.user;
+          });
         }
-        if (user == null)
-          return CircularProgressIndicator();
-
-        return Scaffold(
-          appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        if (state is GetUserSuccess) {
+          setState(() {
+            user = state.user;
+          });
+        }
+      },
+      child: user != null ? Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Người trồng cà chua', style: TextStyle(color: Colors.deepOrangeAccent),),
+              Container(
+                height: 40,
+                width: 40,
+                child: Image.asset("assets/images/tomato_tree.png"),
+              )
+            ],
+          ),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
               children: [
-                Text('Người trồng cà chua', style: TextStyle(color: Colors.deepOrangeAccent),),
-                Container(
-                  height: 40,
-                  width: 40,
-                  child: Image.asset("assets/images/tomato_tree.png"),
-                )
+                SizedBox(height: 20,),
+                SearchBar(),
+                SizedBox(height: 20,),
+                Expanded(child: Body(user: user!)),
               ],
             ),
           ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  SizedBox(height: 20,),
-                  SearchBar(),
-                  SizedBox(height: 20,),
-                  Expanded(child: Body(user: user!)),
-                ],
-              ),
-            ),
-          ),
-          drawer: Drawer(
-              child: HomeDrawer(user: user!,)
-          ),
-        );
-      },
+        ),
+        drawer: Drawer(
+            child: HomeDrawer(user: user!,)
+        ),
+      ) : Center(
+        child: Container(
+          height: 40,
+          width: 40,
+          child: CircularProgressIndicator(),
+        ),
+      ),
     );
   }
 }

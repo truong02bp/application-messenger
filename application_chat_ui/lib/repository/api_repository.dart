@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
+import 'package:messenger_ui/model/exception/api_exception.dart';
 import 'package:messenger_ui/repository/api_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,13 +63,12 @@ class ApiRepository {
         return res.body;
       }
       else {
-        log("${model.url} ${res.statusCode}");
+        throw ApiException(message: '${model.url} ' + res.body, code: res.statusCode);
       }
     }
     catch (exception){
-      log("${model.url} ${exception.toString()}");
+      throw ApiException(message: '${model.url} ' + exception.toString());
     }
-    return null;
   }
 
   Future<dynamic> put<T>(ApiModel<T> model) async {
@@ -97,8 +97,8 @@ class ApiRepository {
     }
     catch (exception){
       log("${model.url} ${exception.toString()}");
+
     }
-    return null;
   }
 
   Future<dynamic> delete<T>(ApiModel<T> model) async {

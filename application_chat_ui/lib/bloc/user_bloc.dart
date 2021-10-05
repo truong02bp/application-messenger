@@ -72,6 +72,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield GetUserContactSuccess(userContacts: usersContacts);
         break;
 
+      case UpdateAvatar:
+        event as UpdateAvatar;
+        User user = await userRepository.updateAvatar(id: event.userId, mediaDto: event.mediaDto);
+        yield UpdateUserSuccess(user: user);
+        break;
     }
   }
 

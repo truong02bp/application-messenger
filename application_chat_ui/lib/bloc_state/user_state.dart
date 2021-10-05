@@ -40,8 +40,8 @@ class GetUserFailure extends UserState {
 
 }
 
-class UpdateAvatarSuccess extends UserState {
+class UpdateUserSuccess extends UserState {
   User user;
 
-  UpdateAvatarSuccess({required this.user});
+  UpdateUserSuccess({required this.user});
 }
