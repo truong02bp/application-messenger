@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MediaEntity extends BaseEntity {
+public class Media extends BaseEntity {
 
     @Column(name = "name")
     private String name;

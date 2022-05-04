@@ -1,25 +1,25 @@
 package com.app.chat.data.dto;
 
-import com.app.chat.data.entities.FriendShipEntity;
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.FriendShip;
+import com.app.chat.data.entities.User;
 
 public class UserContact {
-    UserEntity user;
-    FriendShipEntity friendShip;
+    User user;
+    FriendShip friendShip;
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public FriendShipEntity getFriendShip() {
+    public FriendShip getFriendShip() {
         return friendShip;
     }
 
-    public void setFriendShip(FriendShipEntity friendShip) {
+    public void setFriendShip(FriendShip friendShip) {
         this.friendShip = friendShip;
     }
 }

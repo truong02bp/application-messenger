@@ -1,22 +1,21 @@
 package com.app.chat.data.repository;
 
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Set;
 
-public interface UserRepository extends JpaRepository<UserEntity,Long> {
+public interface UserRepository extends JpaRepository<User,Long> {
 
-    UserEntity findByUsername(String username);
-    UserEntity findByEmail(String email);
+    User findByUsername(String username);
+    User findByEmail(String email);
 
-    @Query(value = "select user from UserEntity user where user.name like %:name%")
-    List<UserEntity> findAllByName(@Param("name") String name, Pageable pageable);
+    @Query(value = "select user from User user where user.name like %:name%")
+    List<User> findAllByName(@Param("name") String name, Pageable pageable);
 
-    @Query(value = "select user from UserEntity user where user.id in ?1")
-    List<UserEntity> findByUserIds(List<Long> ids);
+    @Query(value = "select user from User user where user.id in ?1")
+    List<User> findByUserIds(List<Long> ids);
 }

@@ -1,9 +1,9 @@
 package com.app.chat.data.dto;
 
-import com.app.chat.data.entities.MessageEntity;
+import com.app.chat.data.entities.Message;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.app.chat.data.entities.MediaEntity;
-import com.app.chat.data.entities.MessengerEntity;
+import com.app.chat.data.entities.Media;
+import com.app.chat.data.entities.Messenger;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -16,10 +16,10 @@ public class ChatBoxDto extends BaseDto {
     private String color;
     private String name;
     private Boolean isGroup;
-    private MediaEntity image;
-    private MessengerEntity currentUser;
-    private List<MessengerEntity> guestUser;
-    private MessageEntity lastMessage;
+    private Media image;
+    private Messenger currentUser;
+    private List<Messenger> guestUser;
+    private Message lastMessage;
 
     public String getColor() {
         return color;
@@ -45,35 +45,35 @@ public class ChatBoxDto extends BaseDto {
         isGroup = group;
     }
 
-    public MediaEntity getImage() {
+    public Media getImage() {
         return image;
     }
 
-    public void setImage(MediaEntity image) {
+    public void setImage(Media image) {
         this.image = image;
     }
 
-    public MessengerEntity getCurrentUser() {
+    public Messenger getCurrentUser() {
         return currentUser;
     }
 
-    public void setCurrentUser(MessengerEntity currentUser) {
+    public void setCurrentUser(Messenger currentUser) {
         this.currentUser = currentUser;
     }
 
-    public List<MessengerEntity> getGuestUser() {
+    public List<Messenger> getGuestUser() {
         return guestUser;
     }
 
-    public void setGuestUser(List<MessengerEntity> guestUser) {
+    public void setGuestUser(List<Messenger> guestUser) {
         this.guestUser = guestUser;
     }
 
-    public MessageEntity getLastMessage() {
+    public Message getLastMessage() {
         return lastMessage;
     }
 
-    public void setLastMessage(MessageEntity lastMessage) {
+    public void setLastMessage(Message lastMessage) {
         this.lastMessage = lastMessage;
     }
 }

@@ -1,7 +1,7 @@
 package com.app.chat.controllers;
 
 import com.app.chat.data.dto.MessageDto;
-import com.app.chat.data.entities.MessageEntity;
+import com.app.chat.data.entities.Message;
 import com.app.chat.services.MessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,22 +31,22 @@ class MessageController {
 //    }
 
     @MessageMapping("/message/send")
-    public MessageEntity sendMessage(@Payload MessageDto messageDto) {
-        MessageEntity messageEntity = messageService.create(messageDto);
-        this.template.convertAndSend("/topic/"+messageEntity.getSender().getChatBoxId(), messageEntity);
-        return messageEntity;
+    public Message sendMessage(@Payload MessageDto messageDto) {
+        Message message = messageService.create(messageDto);
+        this.template.convertAndSend("/topic/"+ message.getSender().getChatBoxId(), message);
+        return message;
     }
 
     @MessageMapping("/message/update/seen")
-    public List<MessageEntity> updateSeen(@Payload MessageDto messageDto) {
-        List<MessageEntity> messages = messageService.updateSeen(messageDto.getMessengerId(), messageDto.getChatBoxId());
+    public List<Message> updateSeen(@Payload MessageDto messageDto) {
+        List<Message> messages = messageService.updateSeen(messageDto.getMessengerId(), messageDto.getChatBoxId());
         this.template.convertAndSend("/topic/update/seen", messages);
         return messages;
     }
 
     @MessageMapping("/message/update/reaction")
-    public MessageEntity updateReaction(@Payload MessageDto messageDto) {
-        MessageEntity message = messageService.updateReaction(messageDto);
+    public Message updateReaction(@Payload MessageDto messageDto) {
+        Message message = messageService.updateReaction(messageDto);
         this.template.convertAndSend("/topic/update/reaction", message);
         return message;
     }

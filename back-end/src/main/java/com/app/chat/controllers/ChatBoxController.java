@@ -1,7 +1,6 @@
 package com.app.chat.controllers;
 
 import com.app.chat.data.dto.ChatBoxDto;
-import com.app.chat.data.entities.ChatBoxEntity;
 import com.app.chat.services.ChatBoxService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -9,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor

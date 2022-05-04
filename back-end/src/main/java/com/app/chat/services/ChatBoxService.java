@@ -1,7 +1,6 @@
 package com.app.chat.services;
 
 import com.app.chat.data.dto.ChatBoxDto;
-import com.app.chat.data.entities.ChatBoxEntity;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import com.app.chat.common.constants.FolderConstants;
 import com.app.chat.data.repository.MediaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.app.chat.data.dto.MediaDto;
-import com.app.chat.data.entities.MediaEntity;
+import com.app.chat.data.entities.Media;
 import com.app.chat.services.MediaService;
 import com.app.chat.services.MinioService;
 import lombok.AllArgsConstructor;
@@ -25,8 +25,11 @@ public class MediaServiceImpl implements MediaService {
     private MediaRepository mediaRepository;
 
     @Override
-    public MediaEntity create(MediaDto mediaDto) {
-        MediaEntity media = objectMapper.convertValue(mediaDto,MediaEntity.class);
+    public Media create(MediaDto mediaDto) {
+        Media media = mediaRepository.findByName(mediaDto.getName());
+        if (media != null)
+            return media;
+        media = objectMapper.convertValue(mediaDto, Media.class);
         String contentType;
         if (mediaDto.getBytes() != null) {
             minioService.upload(FolderConstants.IMAGES_FOLDER, mediaDto.getName(), new ByteArrayInputStream(mediaDto.getBytes()));
@@ -36,7 +39,7 @@ public class MediaServiceImpl implements MediaService {
         else {
             contentType = "sticker";
             media.setUrl(mediaDto.getUrl());
-            MediaEntity sticker = mediaRepository.findByUrl(media.getUrl());
+            Media sticker = mediaRepository.findByUrl(media.getUrl());
             if (sticker != null)
                 return sticker;
         }

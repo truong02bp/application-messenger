@@ -1,14 +1,14 @@
 package com.app.chat.services.impl;
 
 import com.app.chat.common.exceptions.ApiException;
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.User;
 import com.app.chat.data.repository.MessageRepository;
 import com.app.chat.data.repository.MessengerRepository;
 import com.app.chat.data.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.app.chat.data.dto.ChatBoxDto;
-import com.app.chat.data.entities.ChatBoxEntity;
-import com.app.chat.data.entities.MessengerEntity;
+import com.app.chat.data.entities.ChatBox;
+import com.app.chat.data.entities.Messenger;
 import com.app.chat.data.repository.ChatBoxRepository;
 import com.app.chat.services.ChatBoxService;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ public class ChatBoxServiceImpl implements ChatBoxService {
 
     @Override
     public ChatBoxDto findById(Long id, Long userId) {
-        ChatBoxEntity chatBox = chatBoxRepository.findById(id).orElse(null);
+        ChatBox chatBox = chatBoxRepository.findById(id).orElse(null);
         if (chatBox == null)
             throw ApiException.builder().message("Chat box not found with id: " + id).httpStatus(HttpStatus.NOT_FOUND);
         ChatBoxDto dto = toDto(chatBox, userId);
@@ -47,14 +47,14 @@ public class ChatBoxServiceImpl implements ChatBoxService {
 
     @Override
     public void create(List<Long> userIds) {
-        ChatBoxEntity chatBox = new ChatBoxEntity();
+        ChatBox chatBox = new ChatBox();
         chatBox = chatBoxRepository.save(chatBox);
-        List<UserEntity> users = userRepository.findByUserIds(userIds);
+        List<User> users = userRepository.findByUserIds(userIds);
         chatBox.setGroup(users.size() > 2);
-        List<MessengerEntity> messengers = new ArrayList<>();
+        List<Messenger> messengers = new ArrayList<>();
         StringBuilder name = new StringBuilder();
-        for (UserEntity user : users) {
-            MessengerEntity messenger = new MessengerEntity();
+        for (User user : users) {
+            Messenger messenger = new Messenger();
             name.append(user.getName().substring(user.getName().lastIndexOf(" ")+1)).append(", ");
             messenger.setUser(user);
             messenger.setChatBoxId(chatBox.getId());
@@ -68,9 +68,9 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     @Override
     public List<ChatBoxDto> findAllByUserId(Long userId, Pageable pageable) {
         List<ChatBoxDto> rs = new ArrayList<>();
-        List<ChatBoxEntity> chatBoxEntities = chatBoxRepository.findByUserId(userId, pageable);
-        for (ChatBoxEntity chatBoxEntity : chatBoxEntities) {
-            ChatBoxDto dto = toDto(chatBoxEntity, userId);
+        List<ChatBox> chatBoxEntities = chatBoxRepository.findByUserId(userId, pageable);
+        for (ChatBox chatBox : chatBoxEntities) {
+            ChatBoxDto dto = toDto(chatBox, userId);
             rs.add(dto);
         }
         return rs;
@@ -81,19 +81,19 @@ public class ChatBoxServiceImpl implements ChatBoxService {
         List<ChatBoxDto> rs = new ArrayList<>();
         List<Long> ids = chatBoxRepository.findMostMessage(userId, pageable);
         for (Long id : ids) {
-            ChatBoxEntity chatBox = chatBoxRepository.findById(id).orElse(null);
+            ChatBox chatBox = chatBoxRepository.findById(id).orElse(null);
             ChatBoxDto dto = toDto(chatBox, userId);
             rs.add(dto);
         }
         return rs;
     }
 
-    private ChatBoxDto toDto(ChatBoxEntity chatBoxEntity, Long userId) {
-        ChatBoxDto dto = mapper.convertValue(chatBoxEntity,ChatBoxDto.class);
-        if (chatBoxEntity.getLastMessageId() != null)
-            dto.setLastMessage(messageRepository.findById(chatBoxEntity.getLastMessageId()).orElse(null));
-        List<MessengerEntity> guestUser = new ArrayList<>();
-        for (MessengerEntity messenger : chatBoxEntity.getMessengers()) {
+    private ChatBoxDto toDto(ChatBox chatBox, Long userId) {
+        ChatBoxDto dto = mapper.convertValue(chatBox,ChatBoxDto.class);
+        if (chatBox.getLastMessageId() != null)
+            dto.setLastMessage(messageRepository.findById(chatBox.getLastMessageId()).orElse(null));
+        List<Messenger> guestUser = new ArrayList<>();
+        for (Messenger messenger : chatBox.getMessengers()) {
             if (Objects.equals(messenger.getUser().getId(), userId)) {
                 dto.setCurrentUser(messenger);
             }

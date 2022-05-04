@@ -32,30 +32,30 @@ public class MessageServiceImpl implements MessageService {
     private ChatBoxRepository chatBoxRepository;
 
     @Override
-    public List<MessageEntity> findAllByChatBoxId(Long chatBoxId, Pageable pageable) {
+    public List<Message> findAllByChatBoxId(Long chatBoxId, Pageable pageable) {
         return messageRepository.findAllByChatBoxId(chatBoxId, pageable);
     }
 
     @Override
-    public MessageEntity create(MessageDto messageDto) {
-        MessageEntity message = new MessageEntity();
+    public Message create(MessageDto messageDto) {
+        Message message = new Message();
         if (messageDto.getMediaId() != null) {
-            MediaEntity media = mediaRepository.findById(messageDto.getMediaId()).orElse(null);
+            Media media = mediaRepository.findById(messageDto.getMediaId()).orElse(null);
             message.setMedia(media);
         } else {
             message.setContent(messageDto.getContent());
         }
-        MessengerEntity messenger = messengerRepository.findById(messageDto.getMessengerId()).orElse(null);
+        Messenger messenger = messengerRepository.findById(messageDto.getMessengerId()).orElse(null);
         if (messenger == null)
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("Messenger not found");
         message.setSender(messenger);
-        List<MessageDetailEntity> details = new ArrayList<>();
-        MessageDetailEntity detail = new MessageDetailEntity();
+        List<MessageDetail> details = new ArrayList<>();
+        MessageDetail detail = new MessageDetail();
         detail.setSeenBy(messenger);
         details.add(detail);
         message.setDetails(details);
         message = messageRepository.save(message);
-        ChatBoxEntity chatBox = chatBoxRepository.findById(messageDto.getChatBoxId()).orElse(null);
+        ChatBox chatBox = chatBoxRepository.findById(messageDto.getChatBoxId()).orElse(null);
         if (chatBox == null)
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("Chat box not found");
         chatBox.setLastMessageId(message.getId());
@@ -64,22 +64,22 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageEntity> updateSeen(Long messengerId, Long chatBoxId) {
-        List<MessageEntity> messages = new ArrayList<>();
+    public List<Message> updateSeen(Long messengerId, Long chatBoxId) {
+        List<Message> messages = new ArrayList<>();
         Long lastMessageId = messageRepository.findIdLastMessageBySenderId(messengerId);
-        List<MessageEntity> messageNeedUpdate;
+        List<Message> messageNeedUpdate;
         if (lastMessageId == null)
             messageNeedUpdate = messageRepository.findAllByChatBoxId(chatBoxId);
         else
             messageNeedUpdate = messageRepository.findMessageNeedUpdate(chatBoxId, lastMessageId);
-        MessengerEntity seenBy = messengerRepository.findById(messengerId).orElse(null);
-        for (MessageEntity message : messageNeedUpdate) {
-            List<MessageDetailEntity> details = message.getDetails().stream()
-                    .filter(messageDetailEntity -> messageDetailEntity.getSeenBy().getId().equals(messengerId))
+        Messenger seenBy = messengerRepository.findById(messengerId).orElse(null);
+        for (Message message : messageNeedUpdate) {
+            List<MessageDetail> details = message.getDetails().stream()
+                    .filter(messageDetail -> messageDetail.getSeenBy().getId().equals(messengerId))
                     .collect(Collectors.toList());
 
             if (details.isEmpty()) {
-                MessageDetailEntity detail = new MessageDetailEntity();
+                MessageDetail detail = new MessageDetail();
                 detail.setSeenBy(seenBy);
                 message.getDetails().add(detail);
                 messages.add(messageRepository.save(message));
@@ -89,13 +89,13 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageEntity updateReaction(MessageDto messageDto) {
-        MessengerEntity reactBy = messengerRepository.findById(messageDto.getMessengerId()).orElse(null);
-        MessageEntity message = messageRepository.findById(messageDto.getMessageId()).orElse(null);
+    public Message updateReaction(MessageDto messageDto) {
+        Messenger reactBy = messengerRepository.findById(messageDto.getMessengerId()).orElse(null);
+        Message message = messageRepository.findById(messageDto.getMessageId()).orElse(null);
         if (message != null && reactBy != null) {
             if (messageDto.getReaction() != null && !messageDto.getReaction().isEmpty()) {
-                ReactionEntity reaction = reactionRepository.findByCode(messageDto.getReaction());
-                for (MessageDetailEntity detail : message.getDetails()) {
+                Reaction reaction = reactionRepository.findByCode(messageDto.getReaction());
+                for (MessageDetail detail : message.getDetails()) {
                     if (Objects.equals(detail.getSeenBy().getId(), reactBy.getId())) {
                         if (detail.getReaction() != null && detail.getReaction().getId().equals(reaction.getId()))
                             detail.setReaction(null);

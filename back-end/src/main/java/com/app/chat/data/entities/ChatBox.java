@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "chat_box")
-public class ChatBoxEntity extends BaseEntity {
+public class ChatBox extends BaseEntity {
 
     @Column(name = "color")
     private String color;
@@ -27,12 +27,12 @@ public class ChatBoxEntity extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "image_id")
-    private MediaEntity image;
+    private Media image;
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "chat_box_id")
-    private List<MessengerEntity> messengers;
+    private List<Messenger> messengers;
 
     private Long lastMessageId;
 
@@ -68,19 +68,19 @@ public class ChatBoxEntity extends BaseEntity {
         isGroup = group;
     }
 
-    public MediaEntity getImage() {
+    public Media getImage() {
         return image;
     }
 
-    public void setImage(MediaEntity image) {
+    public void setImage(Media image) {
         this.image = image;
     }
 
-    public List<MessengerEntity> getMessengers() {
+    public List<Messenger> getMessengers() {
         return messengers;
     }
 
-    public void setMessengers(List<MessengerEntity> messengers) {
+    public void setMessengers(List<Messenger> messengers) {
         this.messengers = messengers;
     }
 }

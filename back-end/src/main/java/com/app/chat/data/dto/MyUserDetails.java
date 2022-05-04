@@ -1,25 +1,24 @@
 package com.app.chat.data.dto;
 
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-public class MyUserDetails extends User {
+public class MyUserDetails extends org.springframework.security.core.userdetails.User {
 
-    private UserEntity userEntity;
+    private User user;
 
-    public MyUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, UserEntity userEntity) {
+    public MyUserDetails(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, User user) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-        this.userEntity = userEntity;
+        this.user = user;
     }
 
-    public UserEntity getUserEntity() {
-        return userEntity;
+    public User getUserEntity() {
+        return user;
     }
 
-    public void setUserEntity(UserEntity userEntity) {
-        this.userEntity = userEntity;
+    public void setUserEntity(User user) {
+        this.user = user;
     }
 }

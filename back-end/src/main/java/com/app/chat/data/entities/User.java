@@ -19,7 +19,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity extends BaseEntity {
+public class User extends BaseEntity {
 
     @Column(name = "name")
     private String name;
@@ -49,10 +49,10 @@ public class UserEntity extends BaseEntity {
     @JoinTable(name = "user_role"
             , joinColumns = @JoinColumn(name = "user_id")
             , inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<RoleEntity> roles;
+    private List<Role> roles;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private MediaEntity avatar;
+    private Media avatar;
 
     public String getEmail() {
         return email;
@@ -118,19 +118,19 @@ public class UserEntity extends BaseEntity {
         this.address = address;
     }
 
-    public List<RoleEntity> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RoleEntity> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
-    public MediaEntity getAvatar() {
+    public Media getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(MediaEntity avatar) {
+    public void setAvatar(Media avatar) {
         this.avatar = avatar;
     }
 }

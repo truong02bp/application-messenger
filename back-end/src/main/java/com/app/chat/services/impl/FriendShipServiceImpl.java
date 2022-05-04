@@ -1,8 +1,8 @@
 package com.app.chat.services.impl;
 
 import com.app.chat.common.exceptions.ApiException;
-import com.app.chat.data.entities.FriendShipEntity;
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.FriendShip;
+import com.app.chat.data.entities.User;
 import com.app.chat.data.repository.FriendShipRepository;
 import com.app.chat.data.repository.UserRepository;
 import com.app.chat.services.ChatBoxService;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,20 +29,20 @@ public class FriendShipServiceImpl implements FriendShipService {
     private ChatBoxService chatBoxService;
 
     @Override
-    public List<FriendShipEntity> findFriendShipByUserIdAndName(Long userId, String name, Pageable pageable) {
+    public List<FriendShip> findFriendShipByUserIdAndName(Long userId, String name, Pageable pageable) {
         return friendShipRepository.findAllByUserIdAndName(userId, name, pageable);
     }
 
     @Override
-    public FriendShipEntity findFriendShip(Long userId, Long userId2) {
+    public FriendShip findFriendShip(Long userId, Long userId2) {
         return friendShipRepository.findFriendShip(userId, userId2);
     }
 
     @Override
-    public FriendShipEntity create(Long userId, Long friendId) {
-        FriendShipEntity friendShip = new FriendShipEntity();
-        UserEntity user = userRepository.findById(userId).orElse(null);
-        UserEntity friend = userRepository.findById(friendId).orElse(null);
+    public FriendShip create(Long userId, Long friendId) {
+        FriendShip friendShip = new FriendShip();
+        User user = userRepository.findById(userId).orElse(null);
+        User friend = userRepository.findById(friendId).orElse(null);
         if (user == null || friend == null)
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("No found the user");
         friendShip.setFriend(friend);
@@ -53,8 +52,8 @@ public class FriendShipServiceImpl implements FriendShipService {
     }
 
     @Override
-    public FriendShipEntity confirmFriendShip(Long id) {
-        FriendShipEntity friendShip = friendShipRepository.findById(id).orElse(null);
+    public FriendShip confirmFriendShip(Long id) {
+        FriendShip friendShip = friendShipRepository.findById(id).orElse(null);
         if (friendShip == null)
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("Friend ship not found");
         friendShip.setAccepted(true);

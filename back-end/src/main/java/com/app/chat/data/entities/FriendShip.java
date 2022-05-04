@@ -4,32 +4,30 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "friend_ship")
-public class FriendShipEntity extends BaseEntity {
+public class FriendShip extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    UserEntity user;
-
+    User user;
     @ManyToOne
     @JoinColumn(name = "friend_id", nullable = false)
-    UserEntity friend;
-
+    User friend;
     @Column(name = "accepted", nullable = false)
     boolean accepted;
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public UserEntity getFriend() {
+    public User getFriend() {
         return friend;
     }
 
-    public void setFriend(UserEntity friend) {
+    public void setFriend(User friend) {
         this.friend = friend;
     }
 

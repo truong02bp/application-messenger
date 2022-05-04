@@ -1,16 +1,19 @@
 package com.app.chat.services.impl;
 
+import com.app.chat.data.dto.MediaDto;
 import com.app.chat.data.dto.UserContact;
 import com.app.chat.data.dto.UserDto;
-import com.app.chat.data.entities.FriendShipEntity;
-import com.app.chat.data.entities.RoleEntity;
+import com.app.chat.data.entities.FriendShip;
+import com.app.chat.data.entities.Media;
+import com.app.chat.data.entities.Role;
 import com.app.chat.data.repository.MediaRepository;
 import com.app.chat.data.repository.RoleRepository;
 import com.app.chat.services.FriendShipService;
 import com.app.chat.common.exceptions.ApiException;
 import com.app.chat.data.dto.MyUserDetails;
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.User;
 import com.app.chat.data.repository.UserRepository;
+import com.app.chat.services.MediaService;
 import com.app.chat.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -39,19 +41,21 @@ public class UserServiceImpl implements UserService {
 
     private FriendShipService friendShipService;
 
+    private MediaService mediaService;
+
     @Override
-    public UserEntity findById(Long id) {
-        UserEntity user = userRepository.findById(id).orElse(null);
+    public User findById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
         if (user == null)
             throw new ApiException().httpStatus(HttpStatus.NOT_FOUND).message("User with id: " + id + " not found");
         return user;
     }
 
     @Override
-    public UserEntity create(UserDto userDto) {
-        List<RoleEntity> roles = new ArrayList<>();
+    public User create(UserDto userDto) {
+        List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findById((long) 2).get()); // 2 is id of user role
-        UserEntity user = UserEntity.builder()
+        User user = User.builder()
                 .email(userDto.getEmail())
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())
@@ -67,8 +71,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity updateOnline(Long id, boolean online) {
-        UserEntity user = userRepository.findById(id).orElse(null);
+    public User updateOnline(Long id, boolean online) {
+        User user = userRepository.findById(id).orElse(null);
         if (user == null)
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("No found the user");
         user.setOnline(online);
@@ -92,10 +96,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserContact> findUserContact(String name, Long userId, Pageable pageable) {
         List<UserContact> contacts = new ArrayList<>();
-        List<UserEntity> users = userRepository.findAllByName(name, pageable);
-        for (UserEntity user : users) {
+        List<User> users = userRepository.findAllByName(name, pageable);
+        for (User user : users) {
             UserContact userContact = new UserContact();
-            FriendShipEntity friendShip = friendShipService.findFriendShip(userId, user.getId());
+            FriendShip friendShip = friendShipService.findFriendShip(userId, user.getId());
             userContact.setFriendShip(friendShip);
             userContact.setUser(user);
             contacts.add(userContact);
@@ -104,9 +108,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateAvatar(Long id, MediaDto avatar) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null)
+            throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("User not found");
+        Media image = mediaService.create(avatar);
+        user.setAvatar(image);
+        return userRepository.save(user);
+    }
+
+    @Override
     @Transactional
     public MyUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null)
             throw new UsernameNotFoundException("Not found username : " + username);
         List<GrantedAuthority> authorities = new ArrayList<>();

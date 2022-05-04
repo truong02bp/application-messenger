@@ -1,7 +1,7 @@
 package com.app.chat.controllers;
 
 import com.app.chat.data.dto.MediaDto;
-import com.app.chat.data.entities.MediaEntity;
+import com.app.chat.data.entities.Media;
 import com.app.chat.services.MediaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ class MediaController {
     private MediaService mediaService;
 
     @PostMapping("/media")
-    public ResponseEntity<MediaEntity> create(@RequestBody MediaDto mediaDto){
+    public ResponseEntity<Media> create(@RequestBody MediaDto mediaDto){
         return ResponseEntity.ok(mediaService.create(mediaDto));
     }
 }

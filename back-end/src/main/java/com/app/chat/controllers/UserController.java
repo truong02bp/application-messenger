@@ -1,9 +1,10 @@
 package com.app.chat.controllers;
 
+import com.app.chat.data.dto.MediaDto;
 import com.app.chat.data.dto.MyUserDetails;
 import com.app.chat.data.dto.UserContact;
 import com.app.chat.data.dto.UserDto;
-import com.app.chat.data.entities.UserEntity;
+import com.app.chat.data.entities.User;
 import com.app.chat.services.MailService;
 import com.app.chat.services.UserService;
 import lombok.AllArgsConstructor;
@@ -44,8 +45,14 @@ class UserController {
         return ResponseEntity.ok(userService.create(userDto));
     }
 
+    @PutMapping("/user/avatar")
+    public ResponseEntity<User> updateAvatar(@RequestParam("userId") Long userId, @RequestBody MediaDto avatar) {
+        User user = userService.updateAvatar(userId, avatar);
+        return ResponseEntity.ok(user);
+    }
+
     @PostMapping("/user/update-online")
-    public ResponseEntity<UserEntity> updateOnline(@RequestParam("id") Long id, @RequestParam("online") boolean online) {
+    public ResponseEntity<User> updateOnline(@RequestParam("id") Long id, @RequestParam("online") boolean online) {
         return ResponseEntity.ok(userService.updateOnline(id, online));
     }
 

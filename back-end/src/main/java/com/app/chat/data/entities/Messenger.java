@@ -4,14 +4,14 @@ import javax.persistence.*;
 
 @Entity
 @Table(name =  "messenger")
-public class MessengerEntity extends BaseEntity {
+public class Messenger extends BaseEntity {
 
     @Column(name = "nick_name")
     private String nickName;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @Column(name = "chat_box_id", nullable = false)
     private Long chatBoxId;
@@ -25,11 +25,11 @@ public class MessengerEntity extends BaseEntity {
         this.nickName = nickName;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

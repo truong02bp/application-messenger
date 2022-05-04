@@ -5,12 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
-public class RoleEntity extends BaseEntity {
-
+@Table(name = "reaction")
+public class Reaction extends BaseEntity {
     @Column(name = "code")
     private String code;
-
     @Column(name = "name")
     private String name;
 

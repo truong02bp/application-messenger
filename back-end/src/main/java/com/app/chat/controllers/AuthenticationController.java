@@ -26,10 +26,6 @@ class AuthenticationController {
     @PostMapping
     ResponseEntity<String> authenticate(@RequestBody AuthenticationRequest request){
         try {
-            /* UsernamePasswordAuthenticationToken to the default AuthenticationProvider,
-             which will use the userDetailsService to get the user based on username and compare that user's password
-             with the one in the authentication token
-             */
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         }
         catch (BadCredentialsException e) {

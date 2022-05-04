@@ -8,29 +8,29 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "message_detail")
-public class MessageDetailEntity extends BaseEntity {
+public class MessageDetail extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "reaction_id")
-    private ReactionEntity reaction;
+    private Reaction reaction;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seen_by")
-    private MessengerEntity seenBy;
+    private Messenger seenBy;
 
-    public ReactionEntity getReaction() {
+    public Reaction getReaction() {
         return reaction;
     }
 
-    public void setReaction(ReactionEntity reaction) {
+    public void setReaction(Reaction reaction) {
         this.reaction = reaction;
     }
 
-    public MessengerEntity getSeenBy() {
+    public Messenger getSeenBy() {
         return seenBy;
     }
 
-    public void setSeenBy(MessengerEntity seenBy) {
+    public void setSeenBy(Messenger seenBy) {
         this.seenBy = seenBy;
     }
 }

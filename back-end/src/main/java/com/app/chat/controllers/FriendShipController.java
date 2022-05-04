@@ -1,6 +1,6 @@
 package com.app.chat.controllers;
 
-import com.app.chat.data.entities.FriendShipEntity;
+import com.app.chat.data.entities.FriendShip;
 import com.app.chat.services.FriendShipService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,16 +17,16 @@ public class FriendShipController {
     private FriendShipService friendShipService;
 
     @GetMapping
-    public ResponseEntity<List<FriendShipEntity>> getFriendShipByUserIdAndName(@RequestParam("userId") Long userId,
-                                                                               @RequestParam("name") String name,
-                                                                               Pageable pageable) {
-        List<FriendShipEntity> friendShips = friendShipService.findFriendShipByUserIdAndName(userId, name, pageable);
+    public ResponseEntity<List<FriendShip>> getFriendShipByUserIdAndName(@RequestParam("userId") Long userId,
+                                                                         @RequestParam("name") String name,
+                                                                         Pageable pageable) {
+        List<FriendShip> friendShips = friendShipService.findFriendShipByUserIdAndName(userId, name, pageable);
         return ResponseEntity.ok(friendShips);
     }
 
     @PostMapping
-    public ResponseEntity<FriendShipEntity> create(@RequestParam(name = "userId") Long userId, @RequestParam(name = "friendId") Long friendId) {
-        FriendShipEntity friendShip = friendShipService.create(userId, friendId);
+    public ResponseEntity<FriendShip> create(@RequestParam(name = "userId") Long userId, @RequestParam(name = "friendId") Long friendId) {
+        FriendShip friendShip = friendShipService.create(userId, friendId);
         return ResponseEntity.ok(friendShip);
     }
 
@@ -36,8 +36,8 @@ public class FriendShipController {
     }
 
     @PutMapping("/confirm")
-    public ResponseEntity<FriendShipEntity> create(@RequestParam("id") Long id) {
-        FriendShipEntity friendShip = friendShipService.confirmFriendShip(id);
+    public ResponseEntity<FriendShip> create(@RequestParam("id") Long id) {
+        FriendShip friendShip = friendShipService.confirmFriendShip(id);
         return ResponseEntity.ok(friendShip);
     }
 }
