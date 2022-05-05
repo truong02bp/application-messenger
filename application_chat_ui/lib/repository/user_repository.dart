@@ -16,10 +16,9 @@ class UserRepository {
 
   Future<dynamic> login(String username, String password) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (preferences.containsKey("token"))
-      preferences.remove("token");
-    AuthenticationRequest authenticationRequest = AuthenticationRequest(
-        username: username, password: password);
+    if (preferences.containsKey("token")) preferences.remove("token");
+    AuthenticationRequest authenticationRequest =
+    AuthenticationRequest(username: username, password: password);
     ApiModel model = new ApiModel(
         url: baseUrl + "/authenticate", body: authenticationRequest);
     final token = await apiRepository.post(model);
@@ -31,14 +30,23 @@ class UserRepository {
     return null;
   }
 
-  Future<User> getByToken() async {
+  Future<dynamic> getByToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    ApiModel model = new ApiModel(url: userUrl, parse: (json) {
-      return User.fromJson(json);
-    });
-    User user = await apiRepository.get(model);
-    preferences.setInt("userId", user.id);
-    return user;
+    ApiModel model = new ApiModel(
+        url: userUrl,
+        parse: (json) {
+          return User.fromJson(json);
+        });
+    try {
+      User user = await apiRepository.get(model);
+      preferences.setInt("userId", user.id);
+      return user;
+    }
+    catch (exception) {
+      if (preferences.containsKey("token"))
+        preferences.remove("token");
+    }
+    return null;
   }
 
   Future<User> updateOnline({required int id, required bool online}) async {
@@ -47,21 +55,20 @@ class UserRepository {
         params: {"id": "$id", "online": "$online"},
         parse: (json) {
           return User.fromJson(json);
-        }
-    );
+        });
     User user = await apiRepository.post(apiModel);
     return user;
   }
 
-  Future<User> updateAvatar({required int id, required MediaDto mediaDto}) async {
+  Future<User> updateAvatar(
+      {required int id, required MediaDto mediaDto}) async {
     ApiModel apiModel = new ApiModel(
         url: userUrl + "/avatar",
         params: {"userId": "$id"},
         body: mediaDto,
         parse: (json) {
           return User.fromJson(json);
-        }
-    );
+        });
     User user = await apiRepository.put(apiModel);
     return user;
   }
@@ -73,14 +80,14 @@ class UserRepository {
         params: {"username": "$username", "email": "$email"},
         parse: (data) {
           return data.map<String>((json) => json as String).toList();
-        }
-    );
+        });
     final rs = await apiRepository.post(apiModel);
     return rs;
   }
 
   Future<String> sendOtp({required String name, required String email}) async {
-    ApiModel model = new ApiModel(url: userUrl + "/otp",
+    ApiModel model = new ApiModel(
+      url: userUrl + "/otp",
       params: {"name": "$name", "email": "$email"},
     );
     final rs = await apiRepository.post(model);
@@ -88,27 +95,32 @@ class UserRepository {
   }
 
   Future<User?> create({required UserDto userDto}) async {
-    ApiModel model = new ApiModel(url: userUrl,
-        body: userDto,
-        parse: (json) => User.fromJson(json)
-    );
+    ApiModel model = new ApiModel(
+        url: userUrl, body: userDto, parse: (json) => User.fromJson(json));
     final user = await apiRepository.post(model);
-    if (user != null)
-      return user;
+    if (user != null) return user;
     return null;
   }
 
-  Future<List<UserContact>> findUserContact({required String name,required int userId, required int page, required int size}) async {
-    ApiModel model = new ApiModel(url: userUrl + "/key",
-      params: {"name" : "$name", "page" : "$page", "size" : "$size", "userId" : "$userId"},
-      parse: (data) {
-        return data.map<UserContact>((json) => UserContact.fromJson(json)).toList();
-      }
-    );
+  Future<List<UserContact>> findUserContact({required String name,
+    required int userId,
+    required int page,
+    required int size}) async {
+    ApiModel model = new ApiModel(
+        url: userUrl + "/key",
+        params: {
+          "name": "$name",
+          "page": "$page",
+          "size": "$size",
+          "userId": "$userId"
+        },
+        parse: (data) {
+          return data
+              .map<UserContact>((json) => UserContact.fromJson(json))
+              .toList();
+        });
     final userContacts = await apiRepository.get(model);
-    if (userContacts != null)
-      return userContacts;
+    if (userContacts != null) return userContacts;
     return [];
   }
-
 }

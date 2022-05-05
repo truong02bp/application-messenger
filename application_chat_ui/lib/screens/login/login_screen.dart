@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/user_bloc.dart';
 import 'package:messenger_ui/bloc_event/user_event.dart';
@@ -17,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late UserBloc _userBloc;
+  bool isLogin = false;
 
   @override
   void initState() {
@@ -24,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _userBloc = BlocProvider.of<UserBloc>(context);
     _userBloc.add(GetUserEvent());
+    log('init');
   }
 
   @override
@@ -31,8 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener(
       bloc: _userBloc,
       listener: (context, state) {
-        if (state is GetUserSuccess)
+        if (state is GetUserSuccess && !isLogin) {
+          setState(() {
+            isLogin = true;
+          });
+          log('login add');
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName, arguments: {"user" : state.user});
+        }
       },
       child: Scaffold(
         body: Container(
@@ -45,5 +54,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

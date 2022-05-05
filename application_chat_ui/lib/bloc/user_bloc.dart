@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:messenger_ui/bloc_event/user_event.dart';
@@ -9,9 +8,11 @@ import 'package:messenger_ui/model/dto/user_contact.dart';
 import 'package:messenger_ui/model/user.dart';
 import 'package:messenger_ui/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserRepository userRepository = getIt<UserRepository>();
   late int userId;
+
   UserBloc() : super(UserState());
 
   @override
@@ -23,10 +24,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         String? token = preferences.getString("token");
         if (token != null) {
           userId = preferences.getInt("userId")!;
-          User user = await userRepository.getByToken();
-          yield GetUserSuccess(user: user);
-        }
-        else {
+          final user = await userRepository.getByToken();
+          if (user != null) {
+            yield GetUserSuccess(user: user);
+          } else {
+            yield GetUserFailure();
+          }
+        } else {
           yield GetUserFailure();
         }
         break;
@@ -36,17 +40,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         yield Loading();
         List<String> errors = validateInfo(event.username, event.password);
         if (errors.isEmpty) {
-          final user = await userRepository.login(event.username, event.password);
+          final user =
+              await userRepository.login(event.username, event.password);
           if (user != null) {
-            SharedPreferences preferences = await SharedPreferences.getInstance();
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
             userId = preferences.getInt("userId")!;
             yield LoginSuccess(user: user);
           } else {
             errors.add("Username, password incorrect");
             yield LoginFailure(errors: errors);
           }
-        }
-        else {
+        } else {
           yield LoginFailure(errors: errors);
         }
         break;
@@ -58,9 +63,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         break;
 
       case UpdateOfflineEvent:
+        event as UpdateOfflineEvent;
         log("offline");
-        User user = await userRepository.updateOnline(id: userId, online: false);
+        User user =
+            await userRepository.updateOnline(id: userId, online: false);
         yield UpdateOnlineSuccess(user: user);
+        if (event.isLogout) {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.remove("token");
+        }
         break;
 
       case GetUserContact:
@@ -68,25 +79,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (event.page == 0) {
           yield Loading();
         }
-        List<UserContact> usersContacts = await userRepository.findUserContact(name: event.name, userId: userId, page: event.page, size: event.size);
+        List<UserContact> usersContacts = await userRepository.findUserContact(
+            name: event.name,
+            userId: userId,
+            page: event.page,
+            size: event.size);
         yield GetUserContactSuccess(userContacts: usersContacts);
         break;
 
       case UpdateAvatar:
         event as UpdateAvatar;
-        User user = await userRepository.updateAvatar(id: event.userId, mediaDto: event.mediaDto);
+        User user = await userRepository.updateAvatar(
+            id: event.userId, mediaDto: event.mediaDto);
         yield UpdateUserSuccess(user: user);
         break;
     }
   }
 
-
   List<String> validateInfo(String username, String password) {
     List<String> errors = [];
-    if (username.isEmpty)
-      errors.add("Username must be not empty");
-    if (password.isEmpty)
-      errors.add("Password must be not empty");
+    if (username.isEmpty) errors.add("Username must be not empty");
+    if (password.isEmpty) errors.add("Password must be not empty");
     return errors;
   }
 }

@@ -1,6 +1,6 @@
-final host = "192.168.1.10";
+final host = "192.168.1.9";
 final baseUrl = "http://$host:8080";
-final minioUrl = "http://$host:9000/company";
+final minioUrl = "http://$host:9000/messenger";
 
 final userUrl = baseUrl + "/api/user";
 final chatBoxUrl = baseUrl + "/api/chat-box";

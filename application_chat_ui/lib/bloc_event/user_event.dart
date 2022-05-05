@@ -12,7 +12,11 @@ class SubmitLogin extends UserEvent {
 
 class UpdateOnlineEvent extends UserEvent {}
 
-class UpdateOfflineEvent extends UserEvent {}
+class UpdateOfflineEvent extends UserEvent {
+    bool isLogout;
+
+    UpdateOfflineEvent({required this.isLogout});
+}
 
 class GetUserContact extends UserEvent {
   String name;

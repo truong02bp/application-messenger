@@ -34,7 +34,8 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
     super.initState();
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context);
-    _chatBoxBloc.add(GetAllChatBox(userId: widget.user.id, page: page, size: size));
+    _chatBoxBloc
+        .add(GetAllChatBox(userId: widget.user.id, page: page, size: size));
     _userBloc.add(UpdateOnlineEvent());
     WidgetsBinding.instance!.addObserver(this);
     _scrollController.addListener(() {
@@ -52,18 +53,17 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
     if (state == AppLifecycleState.resumed) {
       _userBloc.add(UpdateOnlineEvent());
     } else
-      _userBloc.add(UpdateOfflineEvent());
+      _userBloc.add(UpdateOfflineEvent(isLogout: false));
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 80,
-            child: ActiveBar(user: widget.user)
+        Container(height: 80, child: ActiveBar(user: widget.user)),
+        SizedBox(
+          height: 10,
         ),
-        SizedBox(height: 10,),
         BlocConsumer(
           bloc: _chatBoxBloc,
           listener: (context, state) {
@@ -73,13 +73,14 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
             }
 
             if (state is GetAllChatBoxSuccess) {
-              if (page == 0)
-                chatBoxes.clear();
+              if (page == 0) chatBoxes.clear();
               chatBoxes.addAll(state.chatBoxes);
-              chatBoxes.removeWhere((element) => element.lastMessage == null && !element.isGroup);
+              chatBoxes.removeWhere(
+                  (element) => element.lastMessage == null && !element.isGroup);
             }
             if (state is GetChatBoxSuccess) {
-              chatBoxes.removeWhere((element) => element.id == state.chatBox.id);
+              chatBoxes
+                  .removeWhere((element) => element.id == state.chatBox.id);
               chatBoxes.insert(0, state.chatBox);
               chatBoxUpdateId = state.chatBox.id;
             }
@@ -91,8 +92,12 @@ class _BodyState extends State<Body> with WidgetsBindingObserver {
                   itemCount: chatBoxes.length,
                   itemBuilder: (context, index) {
                     if (chatBoxUpdateId == chatBoxes[index].id)
-                      return ChatBoxCard(chatBox: chatBoxes[index], key: UniqueKey());
-                    return ChatBoxCard(chatBox: chatBoxes[index], key: ValueKey(chatBoxes[index].id),);
+                      return ChatBoxCard(
+                          chatBox: chatBoxes[index], key: UniqueKey());
+                    return ChatBoxCard(
+                      chatBox: chatBoxes[index],
+                      key: ValueKey(chatBoxes[index].id),
+                    );
                   }),
             );
           },

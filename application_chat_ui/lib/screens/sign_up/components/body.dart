@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
       children: [
         Spacer(flex: 1,),
         Flexible(
-          flex: 4,
+          flex: 6,
           child: Container(
             width: double.infinity,
             padding: EdgeInsets.only(top: 50, left: 25, right: 25),

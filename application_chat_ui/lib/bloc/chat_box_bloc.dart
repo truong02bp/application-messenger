@@ -27,8 +27,8 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
     switch (event.runtimeType) {
       case GetAllChatBox:
         event as GetAllChatBox;
-        final chatBoxes =
-            await chatBoxRepository.getAllChatBoxByUserId(userId: event.userId, page: event.page, size: event.size);
+        final chatBoxes = await chatBoxRepository.getAllChatBoxByUserId(
+            userId: event.userId, page: event.page, size: event.size);
         if (chatBoxes.isNotEmpty) {
           connect(chatBoxes);
           yield GetAllChatBoxSuccess(chatBoxes: chatBoxes);
@@ -38,8 +38,8 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
 
       case GetChatBoxMostMessage:
         event as GetChatBoxMostMessage;
-        final chatBoxes =
-        await chatBoxRepository.getChatBoxMostMessage(userId: event.userId, page: event.page, size: event.size);
+        final chatBoxes = await chatBoxRepository.getChatBoxMostMessage(
+            userId: event.userId, page: event.page, size: event.size);
         if (chatBoxes.isNotEmpty) {
           connect(chatBoxes);
           yield GetChatBoxMostMessageSuccess(chatBoxes: chatBoxes);
@@ -63,18 +63,22 @@ class ChatBoxBloc extends Bloc<ChatBoxEvent, ChatBoxState> {
       case UpdateMessageSeenEvent:
         event as UpdateMessageSeenEvent;
         if (event.messages.length > 0) {
-          yield UpdateMessageSeenSuccess(messages: event.messages, chatBoxId: event.messages[0].sender.chatBoxId);
+          yield UpdateMessageSeenSuccess(
+              messages: event.messages,
+              chatBoxId: event.messages[0].sender.chatBoxId);
         }
         break;
 
       case UpdateMessageReactionEvent:
         event as UpdateMessageReactionEvent;
-        yield UpdateMessageReactionSuccess(message: event.message, chatBoxId: event.message.sender.chatBoxId);
+        yield UpdateMessageReactionSuccess(
+            message: event.message, chatBoxId: event.message.sender.chatBoxId);
         break;
 
       case GetChatBox:
         event as GetChatBox;
-        final chatBox = await chatBoxRepository.getChatBoxById(id: event.id, userId: event.userId);
+        final chatBox = await chatBoxRepository.getChatBoxById(
+            id: event.id, userId: event.userId);
         yield GetChatBoxSuccess(chatBox: chatBox);
     }
   }

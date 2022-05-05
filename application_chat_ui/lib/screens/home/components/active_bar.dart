@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:messenger_ui/bloc/chat_box_bloc.dart';
 import 'package:messenger_ui/bloc_event/chat_box_event.dart';
@@ -29,6 +31,7 @@ class _ActiveBarState extends State<ActiveBar> {
     // TODO: implement initState
     super.initState();
     _chatBoxBloc = BlocProvider.of<ChatBoxBloc>(context);
+    chatBoxes = [];
     _chatBoxBloc.add(
         GetChatBoxMostMessage(userId: widget.user.id, page: page, size: size));
     _scrollController.addListener(() {
@@ -110,7 +113,10 @@ class _ActiveBarState extends State<ActiveBar> {
                                   SizedBox(
                                     height: 2,
                                   ),
-                                  Text('${name.substring(name.lastIndexOf(" "))}')
+                                  name.contains(" ")
+                                      ? Text(
+                                          '${name.substring(name.lastIndexOf(" "))}')
+                                      : Text('$name')
                                 ],
                               ),
                             ),
@@ -125,4 +131,5 @@ class _ActiveBarState extends State<ActiveBar> {
       ],
     );
   }
+
 }
