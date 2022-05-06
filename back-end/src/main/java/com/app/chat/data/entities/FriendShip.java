@@ -8,12 +8,12 @@ public class FriendShip extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
     @ManyToOne
     @JoinColumn(name = "friend_id", nullable = false)
-    User friend;
+    private User friend;
     @Column(name = "accepted", nullable = false)
-    boolean accepted;
+    private boolean accepted;
 
     public User getUser() {
         return user;

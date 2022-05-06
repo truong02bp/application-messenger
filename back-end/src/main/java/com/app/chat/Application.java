@@ -17,12 +17,12 @@ import java.util.TimeZone;
 @SpringBootApplication
 @ComponentScan("com.*")
 @EnableSwagger2
-public class CompanyApplication {
+public class Application {
 	@Value(value = "${app.timezone}")
 	String appTimeZone;
 
 	public static void main(String[] args) {
-		SpringApplication.run(CompanyApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 	@PostConstruct

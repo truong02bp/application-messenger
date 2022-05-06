@@ -24,7 +24,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
                 .address("")
                 .online(false)
                 .roles(roles)
-                .avatar(mediaRepository.findById((long) 73).get()) // 73 is id of anonymous image
+                .avatar(mediaRepository.findById((long) 1).get()) // 1 is id of anonymous image
                 .build();
         user = userRepository.save(user);
         return user;
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
             throw ApiException.builder().httpStatus(HttpStatus.NOT_FOUND).message("No found the user");
         user.setOnline(online);
         if (!user.isOnline())
-            user.setLastOnline(Instant.now());
+            user.setLastOnline(LocalDateTime.now());
         return userRepository.save(user);
     }
 

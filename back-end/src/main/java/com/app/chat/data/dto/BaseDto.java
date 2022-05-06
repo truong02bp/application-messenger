@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Data
@@ -12,8 +12,8 @@ import java.time.Instant;
 public class BaseDto {
     protected Long id;
     protected String createdBy;
-    protected Instant createdDate;
+    protected LocalDateTime createdDate;
     protected String lastModifiedBy;
-    protected Instant lastModifiedDate;
+    protected LocalDateTime lastModifiedDate;
 
 }

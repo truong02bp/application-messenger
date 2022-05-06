@@ -1,19 +1,13 @@
 package com.app.chat.data.entities;
 
-import lombok.Builder;
-import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import java.time.Instant;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -23,8 +17,10 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
+
     @CreatedDate
-    protected Instant createdDate;
+    @Column(name = "created_at", columnDefinition = "timestamp with time zone")
+    protected LocalDateTime createdDate;
 
     @CreatedBy
     protected String createdBy;
@@ -33,7 +29,8 @@ public class BaseEntity {
     protected String lastModifiedBy;
 
     @LastModifiedDate
-    protected Instant lastModifiedDate;
+    @Column(name = "last_modified_date", columnDefinition = "timestamp with time zone")
+    protected LocalDateTime lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -43,11 +40,11 @@ public class BaseEntity {
         this.id = id;
     }
 
-    public Instant getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Instant createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -67,11 +64,11 @@ public class BaseEntity {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public Instant getLastModifiedDate() {
+    public LocalDateTime getLastModifiedDate() {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+    public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 }

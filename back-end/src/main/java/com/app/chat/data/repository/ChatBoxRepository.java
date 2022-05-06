@@ -15,7 +15,7 @@ public interface ChatBoxRepository extends JpaRepository<ChatBox, Long> {
     List<ChatBox> findByUserId(@Param("userId") Long userId, Pageable pageable);
 
     @Query(value = "SELECT chatBox.id FROM ChatBox chatBox " +
-            "left join Messenger messenger on messenger.chatBoxId = chatBox.id and messenger.user.id=?1 " +
+            "inner join Messenger messenger on messenger.chatBoxId = chatBox.id and messenger.user.id=?1 " +
             "left join Message message on message.sender.id = messenger.id " +
             "group by chatBox.id " +
             "order by count(message.id) desc")

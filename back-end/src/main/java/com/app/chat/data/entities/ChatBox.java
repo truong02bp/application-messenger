@@ -15,25 +15,19 @@ import java.util.List;
 @Entity
 @Table(name = "chat_box")
 public class ChatBox extends BaseEntity {
-
     @Column(name = "color")
     private String color;
-
     @Column(name = "name")
     private String name;
-
     @Column(name = "is_group")
     private Boolean isGroup = false;
-
     @ManyToOne
     @JoinColumn(name = "image_id")
     private Media image;
-
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "chat_box_id")
     private List<Messenger> messengers;
-
     private Long lastMessageId;
 
     public Long getLastMessageId() {

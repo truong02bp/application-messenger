@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -42,8 +42,8 @@ public class User extends BaseEntity {
     @Column(name = "online")
     private boolean online;
 
-    @Column(name = "last_online")
-    private Instant lastOnline;
+    @Column(name = "last_online", columnDefinition = "timestamp with time zone")
+    private LocalDateTime lastOnline;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role"
@@ -78,11 +78,11 @@ public class User extends BaseEntity {
         this.online = online;
     }
 
-    public Instant getLastOnline() {
+    public LocalDateTime getLastOnline() {
         return lastOnline;
     }
 
-    public void setLastOnline(Instant lastOnline) {
+    public void setLastOnline(LocalDateTime lastOnline) {
         this.lastOnline = lastOnline;
     }
 
